@@ -55,6 +55,13 @@ $navbar-background-color: $storm_grey;
      }
   }
 
+  #particles-js canvas{
+    position: absolute;
+    height: 100vh;
+    z-index: 0;
+    background-color: $primary;
+  }
+
 
 
 // Import only what you need from Bulma

@@ -5,6 +5,12 @@
 .navbar-item.has-dropdown.is-active .navbar-dropdown {
   display: block; }
 
+#particles-js canvas {
+  position: absolute;
+  height: 100vh;
+  z-index: 0;
+  background-color: #142139; }
+
 /* Bulma Utilities */
 .button, .input, .textarea, .select select, .file-cta,
 .file-name, .pagination-previous,
