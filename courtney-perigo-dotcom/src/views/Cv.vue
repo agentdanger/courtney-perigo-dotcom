@@ -33,13 +33,15 @@
                         </header>
                         <div class="card-content">
                             <div class="buttons is-centered ">
-                                <a href="https://github.com/agentdanger" target="_blank" rel="noopener noreferrer" class="button is-link">
+                                <a href="https://github.com/agentdanger" target="_blank" rel="noopener noreferrer"
+                                    class="button is-link">
                                     <span class="icon">
                                         <i class="fab fa-github"></i>
                                     </span>
                                     <span>Github</span>
                                 </a>
-                                <a href="https://courtney-perigo.medium.com/" target="_blank" rel="noopener noreferrer" class="button is-link">
+                                <a href="https://courtney-perigo.medium.com/" target="_blank" rel="noopener noreferrer"
+                                    class="button is-link">
                                     <span class="icon">
                                         <i class="fab fa-medium"></i>
                                     </span>
@@ -55,8 +57,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="box p-1 mt-1 has-text-centered">
-                    <div class="card has-background-primary has-text-centered">
+                <div class="box p-1 mt-1 ">
+                    <div class="card has-background-primary ">
                         <header class="card-header ">
                             <p class="card-header-title has-text-white is-size-4">
                                 Skills
@@ -151,7 +153,7 @@
                                             <figure class="media-left">
                                                 <figure class="image is-96x96">
                                                     <img src="../assets/Northwestern_University_seal.png"
-                                                    alt="Northwestern University Seal">
+                                                        alt="Northwestern University Seal">
                                                 </figure>
                                             </figure>
                                             <div class="media-content">
@@ -168,12 +170,13 @@
                                             <figure class="media-left">
                                                 <figure class="image is-96x96">
                                                     <img src="../assets/University_of_South_Florida_seal.svg"
-                                                    alt="University of South Florida Seal">
+                                                        alt="University of South Florida Seal">
                                                 </figure>
                                             </figure>
                                             <div class="media-content">
                                                 <div class="content">
-                                                    <p class="title is-4 has-text-white">Master of Business Administration</p>
+                                                    <p class="title is-4 has-text-white">Master of Business Administration
+                                                    </p>
                                                     <p class="subtitle is-6 has-text-white">University of South Florida</p>
                                                     <p class="subtitle is-6 has-text-white">2007 - 2009</p>
                                                 </div>
@@ -281,21 +284,63 @@
                         <header class="card-header ">
                             <p class="card-header-title has-text-white">
                                 <span class="has-text-info mr-1"> Sr. Market Analyst</span> | Media General, The Tampa
-                            Tribune | 2005 - 2009
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <div class="content has-text-white">
-                            Conducted statistical analysis, and developed data visualizations in support of news and
-                            sales
-                            teams with emphasis on geographic information systems and mapping.
+                                Tribune | 2005 - 2009
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content has-text-white">
+                                Conducted statistical analysis, and developed data visualizations in support of news and
+                                sales
+                                teams with emphasis on geographic information systems and mapping.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box p-1 mt-1">
+                    <div class="card has-background-primary">
+                        <header class="card-header ">
+                            <p class="card-header-title has-text-white is-size-4">
+                                Publications
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <article class="media">
+                                <figure class="media-left">
+                                    <figure class="image is-128x128 center-cropped">
+                                        <img src="../assets/balloons_unsplash.jpg" alt="Balloons Floating in the Sky, Credit to Kyle Hinkson @ Unsplash">
+                                    </figure>
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p class="title is-4 has-text-white">"Get More Out of Your Data With Analytics Microservices"</p>
+                                        <p class="subtitle is-6 has-text-white">Towards Data Science | 2022</p>
+                                        <a href="https://towardsdatascience.com/get-more-out-of-your-data-with-analytics-microservices-9a5a34a3ad2f" class="subtitle is-6 has-text-white has-text-link">Read Article</a>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="card-content">
+                            <article class="media">
+                                <figure class="media-left">
+                                    <figure class="image is-128x128 center-cropped">
+                                        <img src="../assets/baseball_diamond_hackernoon.jpeg" alt="Baseball Home Plate, Credit to Mark Duffel @ Unsplash">
+                                    </figure>
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p class="title is-4 has-text-white">"Risk Assessment of Daily Fantasy Baseball Games Using Monte Carlo Simulation"</p>
+                                        <p class="subtitle is-6 has-text-white">Hackernoon | 2022</p>
+                                        <a href="https://hackernoon.com/using-monte-carlo-simulation-to-determine-why-you-wont-win-daily-fantasy-baseball-games" class="subtitle is-6 has-text-white has-text-link">Read Article</a>
+                                    </div>
+                                </div>
+                            </article>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section></template>
+    </section>
+</template>
 
 <script>
 import AppNavBar from '../components/AppNavBar.vue'
