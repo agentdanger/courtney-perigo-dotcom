@@ -1,8 +1,6 @@
 <template>
     <AppNavBar />
-
     <section class="hero is-fullheight is-primary">
-
         <div class="hero-body">
             <div class="container">
                 <div class="box p-1 mt-6">
