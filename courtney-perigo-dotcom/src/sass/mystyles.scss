@@ -4,41 +4,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Play:wght@500;700&display=swap');
 
 // Set your brand colors
-$blue_whale: #142139;
-$dodger_blue: #0091FF;
-$robins_egg_blue: #00C6BE;
+$tangaroa: #192532;
+$iris_blue: #09A2CD;
+$teal: #007D81;
 $alice: #F5F9FF;
-$saffron: #F5BE3B;
-$mountain_meadow: #0CB387;
-$siren: #722D3C;
-$mischka: #A6ABBD;
-$storm_grey: #727787;
+$ochre: #BE861F;
+$hunter_green: #305434;
+$tosca: #704140;
+$grey:   #808080;
+$tuna: #484E55;
 
 
 // Update Bulma's global variables
 $family-sans-serif: 'Play', sans-serif;
-$grey-dark: $storm_grey;
-$grey-light: $mischka;
-$primary: $blue_whale;
-$info: $dodger_blue;
-$link: $robins_egg_blue;
-$success: $mountain_meadow;
-$warning: $saffron;
-$danger: $siren;
-$background: $mischka;
+$grey-dark: $tuna;
+$grey-light: $grey;
+$primary: $tangaroa;
+$info: $iris_blue;
+$link: $teal;
+$success: $hunter_green;
+$warning: $ochre;
+$danger: $tosca;
+$background: $grey;
 $white: $alice;
-$black: $storm_grey;
+$black: $tuna;
 
 
 $widescreen-enabled: true;
 $fullhd-enabled: true;
 
 // Update some of Bulma's component variables
-$body-background-color: $mischka;
+$body-background-color: $grey;
 $control-border-width: 2px;
 $input-border-color: transparent;
-$dropdown-background-color: $storm_grey;
-$navbar-background-color: $storm_grey;
+$dropdown-background-color: $tuna;
+$navbar-background-color: $tuna;
 // $input-shadow: none;
 
 .navbar-item {
