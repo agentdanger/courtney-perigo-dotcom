@@ -1,7 +1,7 @@
 <template>
     <AppNavBar />
 
-    <div class="hero is-fullheight-with-navbar is-primary">
+    <div class="hero is-fullheight is-primary">
         <div id="particles-js"></div>
         <div class="hero-body" id="particles-js">
             <div class="container">
@@ -24,7 +24,7 @@
                             {{ main_intro }}
                         </div>
                         <div class="content has-text-centered">
-                            <a href="#running_stats" class="icon is-size-1 is-white is-large">
+                            <a href="#featured_projects" class="icon is-size-1 is-white is-large">
                                 <i class="fas fa-caret-down"></i>
                             </a>
                         </div>
@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <section id="running_stats" class="hero is-large is-primary">
+    <section id="featured_projects" class="hero is-medium is-primary">
         <div class="hero-body">
             <div class="container">
                 <div class="box p-1 mt-6">
@@ -73,16 +73,14 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="featured_projects" class="hero is-large is-black">
+    <section id="featured_projects" class="hero is-medium is-black">
         <div class="hero-body">
             <div class="container">
                 <div class="box p-1 mt-6">

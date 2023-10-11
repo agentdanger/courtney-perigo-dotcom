@@ -199,6 +199,11 @@ export default {
                     name: 'Medium',
                     icon: 'fab fa-medium',
                     link: 'https://courtney-perigo.medium.com/'
+                },
+                {
+                    name: 'LinkedIn',
+                    icon: 'fab fa-linkedin',
+                    link: 'https://www.linkedin.com/in/courtneyperigo/'
                 }
             ],
             resume_skills: [
