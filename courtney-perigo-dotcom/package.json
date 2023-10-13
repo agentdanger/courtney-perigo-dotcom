@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "create-env": "printenv > .env",
     "preview": "vite preview",
     "css-build": "node-sass --omit-source-map-url src/sass/mystyles.scss css/mystyles.css",
     "css-watch": "npm run css-build -- --watch",
