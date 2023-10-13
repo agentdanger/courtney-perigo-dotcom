@@ -1,6 +1,7 @@
 steps:
 #Create .env file from Google Cloud Build substitution variables
 - name: node
+  dir: "courtney-perigo-dotcom"
   entrypoint: npm
   # auto create an environment file before deployment.  create-env is a custom script in package.json
   args: ["run", "create-env"]
@@ -11,5 +12,6 @@ steps:
   #   - 'VUE_APP_OTHER_SECRET=${_VUE_APP_OTHER_SECRET}'
 #The .env file is prepared and ready to deploy to Google App Engine
 - name: "gcr.io/cloud-builders/gcloud"
+  dir: "courtney-perigo-dotcom"
   args: ["app", "deploy"]
 timeout: "1600s"
