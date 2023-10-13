@@ -38,12 +38,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="hero is-small is-black">
-        <div class="hero-body">
-            <div class="container">
                 <div class="box p-1 mt-6">
                     <div class="card has-background-primary">
                         <header class="card-header ">
