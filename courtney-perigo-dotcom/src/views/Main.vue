@@ -12,7 +12,7 @@
                             <div class="column"></div>
                             <div class="column is-6">
                                 <figure class="image">
-                                    <img class="is-rounded has-ratio" src="../assets/lion_courtney.JPG">
+                                    <img class="is-rounded has-ratio" :src="main_image">
                                 </figure>
                             </div>
                             <div class="column"></div>
@@ -119,6 +119,7 @@ export default {
             working with creative people, using state-of-the-art technologies, \
             and building amazing products.  Interested in working together?  \
             Feel free to contact me.",
+            main_image: "../assets/lion_courtney.JPG",
             featured_projects: [
                 {
                     title: "Chicago Data Portal Analyst Microservices",
