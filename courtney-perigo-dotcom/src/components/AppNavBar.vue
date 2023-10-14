@@ -5,13 +5,13 @@
                 <a class="navbar-item is-size-4" href="/">
                     Courtney Perigo
                 </a>
-                <span data-target="navbarMenuHeroA">
+                <span :class="navbarClass1" data-target="navbarMenuHeroA" @click="toggleDropdown('navbar')">
                     <span></span>
                     <span></span>
                     <span></span>
                 </span>
             </div>
-            <div id='navbarMenuHeroA' class="navbar-menu">
+            <div id='navbarMenuHeroA' :class="navbarClass0">
                 <div class="navbar-end">
                     <span class="navbar-item">
                         <p class="buttons">
@@ -36,3 +36,38 @@
         </div>
     </nav>
 </template>
+
+<script>
+export default {
+    name: 'AppNavBar',
+    data() {
+        return {
+            navbarActive0: false
+        }
+    },
+    methods: {
+        toggleDropdown: function (dropdown) {
+            if (dropdown === 'navbar') {
+                this.navbarActive0 = !this.navbarActive0
+            }
+        }
+    },
+    computed: {
+        navbarClass0: function () {
+            if (this.navbarActive0) {
+                return "navbar-menu is-active"
+            } else {
+                return "navbar-menu"
+            }
+        },
+        navbarClass1: function () {
+            if (this.navbarActive0) {
+                return "navbar-burger is-active"
+            } else {
+                return "navbar-burger"
+            }
+        }
+    },
+}
+
+</script>
