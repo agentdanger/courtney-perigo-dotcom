@@ -87,12 +87,29 @@
                     <div class="card has-background-primary">
                         <header class="card-header ">
                             <p class="card-header-title has-text-white is-size-4">
-                                My Running Stats
+                                My Running Stats | Last 30 Activities
                             </p>
                         </header>
                         <div class="card-content">
-                            <div class="content has-text-white">
-                                GRAPHIC HERE
+                            <div class="columns">
+                                <div class="column is-8">
+                                    <div class="content">
+                                        <apexchart type="line" :options="options" :series="this.chartSeries.length > 0 ? this.chartSeries: []" />
+                                    </div>
+                                </div>
+                                <div class="column is-4">
+                                    <div class="content">
+                                        <h1 class="title is-size-4">
+                                            Total Distance Covered: {{ total_miles }} miles
+                                        </h1>
+                                        <h1 class="title is-size-4">
+                                            Longest Run: {{ longest_run }} miles
+                                        </h1>
+                                        <h1 class="title is-size-4">
+                                            Fastest Pace: {{ fastest_time }} min/mile
+                                        </h1>    
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -103,12 +120,16 @@
 </template>
 
 <script>
+import stravaService from '../service/StravaService'
 import '../particles.js-master/particles.js'
 import AppNavBar from '../components/AppNavBar.vue'
+import VueApexCharts from 'vue3-apexcharts';
 
 export default {
+    
     components: {
-        AppNavBar
+        AppNavBar,
+        apexchart: VueApexCharts
     },
     data() {
         return {
@@ -120,6 +141,61 @@ export default {
             and building amazing products.  Interested in working together?  \
             Feel free to contact me.",
             main_image: "../assets/lion_courtney.JPG",
+            longest_run: null,
+            fastest_time: null,
+            total_miles: null,
+            activities: null,
+            miles_list: [0, 0, 0],
+            dates_list: [1,2,3],
+            stravaServiceGet: null,
+            stravaDataLoading: false,
+            chartSeries: [{
+                name: "Miles",
+                data: {
+                    x: null,
+                    y: null
+                }
+            }],
+            options: {
+                chart: {
+                    fontFamily: "'Play', sans-serif'",
+                    id: 'running-stats',
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight'
+                },
+                title: {
+                    text: 'Running Stats',
+                    align: 'left'
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    type: 'datetime',
+                },
+                yaxis: {
+                    type: 'numeric',
+                    title: {
+                        text: 'Miles'
+                    },
+                    min: 0,
+                    max: 26.2,
+                    formatter: function (value) {
+                            return value.toFixed(1)
+                    }
+                }
+            },
             featured_projects: [
                 {
                     title: "Chicago Data Portal Analyst Microservices",
@@ -147,12 +223,28 @@ export default {
         }
     },
     mounted() {
-        this.initParticles()
+        this.initParticles(),
+        this.stravaServiceGet = new stravaService(),
+        this.stravaServiceGet.getStravaData().then((response) => {
+            this.stravaDataLoading = true
+            this.longest_run = response.longest_run_string
+            this.fastest_time = response.fastest_time_string
+            this.total_miles = response.total_miles
+            this.activities = response.data
+            this.chartSeries[0].data.x = response.miles_list
+            this.chartSeries[0].data.y = response.dates_list
+            this.dates_list = response.dates_list
+            console.log(Array.from(this.chartSeries[0].data))
+        }).catch((error) => {
+            console.log(error)
+        }).finally(() => {
+            this.stravaDataLoading = false
+        })
     },
-    methods: {
+    methods: { 
         initParticles() {
             particlesJS('particles-js')
-        }
+        },
     }
 }
 </script>
