@@ -37,7 +37,7 @@ export default class stravaService {
           d.data[key]['size'] = d.data[key]['miles'].toFixed(1);
           d.data[key]['name'] = d.data[key]['display_pace'];
           d.miles_list.push(d.data[key]['miles'])
-          d.dates_list.push(d.data[key]['start_date_unix'])
+          d.dates_list.push(Date(d.data[key]['start_date_unix']))
           d['total_miles'] += d.data[key]['miles']
           if (d.data[key]['pace'] < d['fastest_time']) {
             d['fastest_time'] = d.data[key]['pace'];

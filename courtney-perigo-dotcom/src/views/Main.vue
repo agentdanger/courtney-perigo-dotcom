@@ -94,7 +94,7 @@
                             <div class="columns">
                                 <div class="column is-8">
                                     <div class="content">
-                                        <apexchart type="line" :options="options" :series="this.chartSeries.length > 0 ? this.chartSeries: []" />
+                                        <apexchart type="line" :options="options" :series="this.chartSeries" />
                                     </div>
                                 </div>
                                 <div class="column is-4">
@@ -151,10 +151,7 @@ export default {
             stravaDataLoading: false,
             chartSeries: [{
                 name: "Miles",
-                data: {
-                    x: null,
-                    y: null
-                }
+                data: null
             }],
             options: {
                 chart: {
@@ -169,28 +166,29 @@ export default {
                     enabled: false
                 },
                 stroke: {
-                    curve: 'straight'
-                },
-                title: {
-                    text: 'Running Stats',
-                    align: 'left'
+                    curve: 'smooth'
                 },
                 grid: {
                     row: {
-                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                        opacity: 0.5
+                        colors: ['#F5F9FF', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.1
                     },
                 },
                 xaxis: {
                     type: 'datetime',
+                    categories: [1,2,3],
+                    lables: {
+                        format: 'MMM dd'
+                    }
                 },
                 yaxis: {
                     type: 'numeric',
+                    forceNiceScale: true,
                     title: {
                         text: 'Miles'
                     },
                     min: 0,
-                    max: 26.2,
+                    decimalsInFloat: 1,
                     formatter: function (value) {
                             return value.toFixed(1)
                     }
@@ -231,10 +229,9 @@ export default {
             this.fastest_time = response.fastest_time_string
             this.total_miles = response.total_miles
             this.activities = response.data
-            this.chartSeries[0].data.x = response.miles_list
-            this.chartSeries[0].data.y = response.dates_list
-            this.dates_list = response.dates_list
-            console.log(Array.from(this.chartSeries[0].data))
+            console.log(response.dates_list)
+            this.chartSeries[0].data = response.miles_list            
+            this.options.xaxis.categories = response.dates_list
         }).catch((error) => {
             console.log(error)
         }).finally(() => {
