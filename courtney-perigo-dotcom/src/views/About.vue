@@ -87,7 +87,7 @@ export default {
             The source code is available on Github.",
             about_running: "The running data visualization leverages a GoLang microservice app to refresh keys and pull data from Strava's API \
             formatting it for ingestion into this website upon request.  The VueJS website calls the GoLang microservice API for updated data. \
-            This data pipeline managed by the is completely automated using Google App Engine.",
+            This data pipeline is completely automated using Google App Engine.",
             about_news: "The news page is a work in progress. It leverages a pre-trained recommendation model based on my data science news preferences \
             and pulls interesting data science articles from an RSS feed. The front-end is built with Vue.js and the back-end is built with Python and GoLang.",
             about_me_interests_list: [
