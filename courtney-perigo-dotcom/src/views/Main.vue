@@ -94,7 +94,8 @@
                             <div class="columns">
                                 <div class="column is-8">
                                     <div class="content">
-                                        <apexchart type="line" :options="options" :series="this.chartSeries" />
+                                        <apexchart height="250" id='running-stats-pace' type="line" :options="options_pace" :series="this.chartSeries_pace" />
+                                        <apexchart height="250" id='running-stats-miles' type="area" :options="options_miles" :series="this.chartSeries_miles" />
                                     </div>
                                 </div>
                                 <div class="column is-4">
@@ -149,19 +150,36 @@ export default {
             dates_list: [1,2,3],
             stravaServiceGet: null,
             stravaDataLoading: false,
-            chartSeries: [{
+            chartSeries_miles: [{
                 name: "Miles",
-                data: null
+                data: [[0,0]]
             }],
-            options: {
+            chartSeries_pace: [{
+                name: "Pace (min/mile)",
+                data: [[0,0]]
+            }],
+            options_miles: {
+                title: {
+                    text: 'Miles',
+                    align: 'left',
+                    style: {
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        fontFamily: undefined,
+                        color: '#F5F9FF'
+                    },
+                },
                 chart: {
+                    foreColor: '#F5F9FF',
                     fontFamily: "'Play', sans-serif'",
-                    id: 'running-stats',
+                    id: 'running-stats-miles',
+                    group: 'running-stats',
                     type: 'line',
                     zoom: {
                         enabled: false
                     }
                 },
+                colors: ['#BE861F'],
                 dataLabels: {
                     enabled: false
                 },
@@ -176,17 +194,67 @@ export default {
                 },
                 xaxis: {
                     type: 'datetime',
-                    categories: [1,2,3],
-                    lables: {
-                        format: 'MMM dd'
-                    }
+                    tickAmount: 'dataPoints'
                 },
                 yaxis: {
                     type: 'numeric',
                     forceNiceScale: true,
-                    title: {
-                        text: 'Miles'
+                    title: [{
+                        text: 'Pace (min/mile)'
+                    }
+                ],
+                    min: 0,
+                    decimalsInFloat: 1,
+                    formatter: function (value) {
+                            return value.toFixed(1)
+                    }
+                }
+            },
+            options_pace: {
+                title: {
+                    text: 'Pace (min/mile)',
+                    align: 'left',
+                    style: {
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        fontFamily: undefined,
+                        color: '#F5F9FF'
                     },
+                },
+                chart: {
+                    foreColor: '#F5F9FF',
+                    fontFamily: "'Play', sans-serif'",
+                    id: 'running-stats-pace',
+                    group: 'running-stats',
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                colors: ['#09A2CD'],
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth'
+                },
+                grid: {
+                    row: {
+                        colors: ['#F5F9FF', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.1
+                    },
+                },
+                xaxis: {
+                    type: 'datetime',
+                    tickAmount: 'dataPoints'
+                },
+                yaxis: {
+                    type: 'numeric',
+                    forceNiceScale: true,
+                    title: [{
+                        text: 'Miles'
+                    }
+                ],
                     min: 0,
                     decimalsInFloat: 1,
                     formatter: function (value) {
@@ -229,9 +297,10 @@ export default {
             this.fastest_time = response.fastest_time_string
             this.total_miles = response.total_miles
             this.activities = response.data
-            console.log(response.dates_list)
-            this.chartSeries[0].data = response.miles_list            
-            this.options.xaxis.categories = response.dates_list
+            this.options_miles.xaxis.categories = Array.from(response.dates_list)
+            this.options_pace.xaxis.categories = Array.from(response.dates_list)
+            this.chartSeries_miles[0].data = response.graph_data
+            this.chartSeries_pace[0].data = response.graph_data_pace
         }).catch((error) => {
             console.log(error)
         }).finally(() => {
