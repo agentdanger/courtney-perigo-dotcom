@@ -5,11 +5,6 @@ steps:
   entrypoint: npm
   # auto create an environment file before deployment.  create-env is a custom script in package.json
   args: ["run", "create-env"]
-  # when we need environment variables in the build step, we can use the env property
-  # env:
-  #   - 'VUE_APP_APP_NAME=${_VUE_APP_APP_NAME}'
-  #   - 'VUE_APP_BASE_API_URL=${_VUE_APP_BASE_API_URL}'
-  #   - 'VUE_APP_OTHER_SECRET=${_VUE_APP_OTHER_SECRET}'
 - name: node
   dir: "courtney-perigo-dotcom"
   entrypoint: npm
