@@ -246,7 +246,10 @@ export default {
                 },
                 xaxis: {
                     type: 'datetime',
-                    tickAmount: 'dataPoints'
+                    tickAmount: 'dataPoints',
+                    tooltip: {
+                        enabled: false
+                    }
                 },
                 yaxis: {
                     type: 'numeric',
