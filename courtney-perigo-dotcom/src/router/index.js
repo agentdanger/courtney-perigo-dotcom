@@ -20,7 +20,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/About.vue'),
       meta: {
-        title: 'Courtney Perigo | about me'
+        title: 'Courtney Perigo | about'
       }
     },
     {
@@ -32,6 +32,17 @@ const router = createRouter({
       component: () => import('../views/Cv.vue'),
       meta: {
         title: 'Courtney Perigo | CV'
+      }
+    },
+    {
+      path: '/news-recommender',
+      name: 'news-recommender',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/News.vue'),
+      meta: {
+        title: 'Courtney Perigo | news-recommender'
       }
     }
   ]
