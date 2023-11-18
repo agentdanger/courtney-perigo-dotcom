@@ -29,8 +29,8 @@
                 <!-- show first 25 articles retrieved -->
                 <span v-for="(article, index) in articlesToDisplay" :key="index">
                     <div class="box p-1 mt-6">
-                        <div class="card has-background-primary">
-                            <header class="card-header">
+                        <div class="card has-background-white">
+                            <header class="card-header has-background-primary">
                                 <p class="card-header-title is-size-4 has-text-white">
                                     {{ article.entry_title }}
                                 </p>
@@ -42,15 +42,16 @@
                                             <img :src="article.entry_image.url" alt="Placeholder image">
                                         </figure>
                                     </div>
-                                    <div class="media-content has-text-white">
-                                        <p>{{ article.entry_summary }}</p>
+                                    <div class="media-content ">
+                                        <p class="title is-size-5 has-text-grey-dark">{{ article.feed_title }}</p>
+                                        <p class="subtitle is-size-6 has-text-grey-dark">{{ article.entry_summary }}</p>                                        
                                     </div>
                                 </div>
                                 
                             </div>
                             <div class="card-footer">
                                     <a :href="article.entry_link" target="_blank" rel="noopener noreferrer"
-                                        class="card-footer-item has-text-white">
+                                        class="card-footer-item has-background-link has-text-white">
                                         <span>Read More</span>
                                     </a>
                             </div>
