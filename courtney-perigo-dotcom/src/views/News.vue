@@ -40,6 +40,21 @@
                         </div>
                     </div>
                 </div>
+                <!-- show message when articles are loading -->
+                <div class="box p-1 mt-6" v-if="newsServiceLoading">
+                    <div class="card has-background-primary">
+                        <header class="card-header ">
+                            <p class="card-header-title has-text-white is-size-4">
+                                Loading Articles...
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content has-text-white">
+                                <progress class="progress is-primary" max="100">15%</progress>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- show first 25 articles retrieved -->
                 <span v-for="(article, index) in articlesToDisplay" :key="index" v-if="!customNewsActive">
                     <div class="box p-1 mt-6">
