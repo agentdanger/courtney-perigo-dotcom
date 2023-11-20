@@ -24,11 +24,12 @@ export default class defaultNewsService {
       try {
         const response = await fetchWithTimeout(`https://getmachinanovanews-dot-personal-website-35.uc.r.appspot.com/get-custom-news/v1?query=${query}`)
         const d = await response.json()
-        // remove items with a date not equal to today in constant format
+        // remove items with a date not equal to a day in the past 2 weeks
         const today = this.formatDate(new Date())
-        // turn string entry_published "Sat, 18 Nov 2023 09:46:04 GMT" into constant format
-        // turn string entry_published "Thu, 19 Oct 2023 07:00:50 +0100" into constant format
-        const filtered = d.filter(item => this.formatDate(new Date(item.entry_published)) === today)
+        const twoWeeksAgo = this.formatDate(new Date(new Date().setDate(new Date().getDate() - 14)))
+
+        const filtered = d.filter(item => this.formatDate(new Date(item.entry_published)) <= today && this.formatDate(new Date(item.entry_published)) >= twoWeeksAgo)
+
         // limit article summary to 100 words 
         filtered.forEach(item => {
           item.entry_summary = item.entry_summary.split(' ').slice(0, 75).join(' ')
