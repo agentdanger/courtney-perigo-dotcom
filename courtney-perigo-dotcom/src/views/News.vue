@@ -75,11 +75,12 @@
                                         <p class="title is-size-5 has-text-grey-dark">{{ article.feed_title }}</p>
                                         <p class="subtitle is-size-6 has-text-grey-dark">{{ article.entry_summary }}</p>
                                         <div class="tags">
-                                            <!-- show only first 4 tags -->
-                                            <span v-for="(tag, index) in article.entry_tags.slice(0, 4)" :key="index"
-                                                class="tag is-info">
-                                                {{ tag.term }}
-                                            </span>  
+                                            <!-- show only first 4 tags where tag.scheme is not equal to "foxnews.com/metadata/dc.identifier" or 
+                                                "foxnews.com/metadata/prism.channel" the split by "\" and show the last item -->
+                                            <span v-for="(tag, index) in article.entry_tags.filter(tag => tag.scheme !== 'foxnews.com/metadata/dc.identifier' && tag.scheme !== 'foxnews.com/metadata/prism.channel' && tag.scheme !== 'foxnews.com/metadata/dc.source').slice(0, 4)" :key="index" class="tag is-info">
+                                                <!-- split tag by "\" or "|" and show the last item -->
+                                                {{ tag.term.split('\/').pop().split('|').pop().split('\\').pop() }}
+                                            </span>
                                         </div>                                   
                                     </div>
                                     
