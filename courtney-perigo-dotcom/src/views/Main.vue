@@ -282,6 +282,13 @@ export default {
                     link: "https://github.com/agentdanger/ad-forecasting-gcp"
                 },
                 {
+                    title: "A Zero Training, News Recommendation Engine",
+                    description: "A demonstration of a pre-trained, AI-based, sentence vectorizer \
+                    being used as a news recommender on this website.",
+                    image: "../assets/brittany.jpg",
+                    link: "https://github.com/agentdanger/news-retriever"
+                },
+                {
                     title: "Predicting Top MLB Batters of All Time",
                     description: "A demonstration of a statistical analysis using R of \
                     Major League Baseball players looking for the best batters of all time.",
