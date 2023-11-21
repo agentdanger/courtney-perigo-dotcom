@@ -17,7 +17,7 @@
                             <div class="content has-text-white">
                                 <div class="field has-addons">
                                     <div class="control is-expanded">
-                                        <input class="input" v-model="queryValue" type="text" placeholder="Enter a topic to find news">
+                                        <input class="input" v-on:keyup.enter="findNews(queryValue)" v-model="queryValue" type="text" placeholder="Enter a topic to find news">
                                     </div>
                                     <div class="control">
                                         <button class="button is-link" @click="findNews(queryValue)">
