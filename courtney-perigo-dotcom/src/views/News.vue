@@ -180,7 +180,7 @@ export default {
             defaultNewsServiceGet: null,
             articlesToDisplay: null,
             customArticlesToDisplay: null,
-            newsServiceLoading: false,
+            newsServiceLoading: true,
             about_machinanova: "This is a simple application that fetches recommended, recent data science news. \
             You can also type in your own data science topic and the model will pull recommended news in \
             your topic area.",
