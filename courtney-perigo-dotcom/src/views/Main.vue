@@ -285,7 +285,7 @@ export default {
                     title: "A Zero Training, News Recommendation Engine",
                     description: "A demonstration of a pre-trained, AI-based, sentence vectorizer \
                     being used as a news recommender on this website.",
-                    image: "../assets/brittany.jpg",
+                    image: "../assets/brittany.png",
                     link: "https://github.com/agentdanger/news-retriever"
                 },
                 {
