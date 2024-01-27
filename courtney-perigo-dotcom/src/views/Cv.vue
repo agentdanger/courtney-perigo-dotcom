@@ -224,6 +224,10 @@ export default {
                     icon: 'fas fa-chart-line'
                 },
                 { 
+                    name: 'Servant Leadership',
+                    icon: 'fas fa-battery-full'
+                },
+                { 
                     name: 'Python',
                     icon: 'fab fa-python'
                 },
@@ -242,10 +246,6 @@ export default {
                 { 
                     name: 'Javascript',
                     icon: 'fab fa-js'
-                },
-                { 
-                    name: 'Servant Leadership',
-                    icon: 'fas fa-battery-full'
                 },
                 { 
                     name: 'SFMC (Salesforce)',
