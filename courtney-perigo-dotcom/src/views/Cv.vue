@@ -224,10 +224,6 @@ export default {
                     icon: 'fas fa-chart-line'
                 },
                 { 
-                    name: 'Cloud Infrastructure',
-                    icon: 'fas fa-cloud'
-                },
-                { 
                     name: 'Python',
                     icon: 'fab fa-python'
                 },
@@ -250,7 +246,19 @@ export default {
                 { 
                     name: 'Servant Leadership',
                     icon: 'fas fa-battery-full'
-                }
+                },
+                { 
+                    name: 'SFMC (Salesforce)',
+                    icon: 'fas fa-cloud'
+                },
+                { 
+                    name: 'GCP',
+                    icon: 'fab fa-google'
+                },
+                { 
+                    name: 'AWS',
+                    icon: 'fab fa-amazon'
+                },
             ],
             resume_experience: [
                 {
