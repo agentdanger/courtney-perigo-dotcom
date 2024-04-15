@@ -15,6 +15,7 @@ function forceInput1(input_string) {
     }
 }
 
+
 var greenLetters = ref(['none', 'none', 'none', 'none', 'none'])
 // default null values for green letters
 var greenLetters1 = ref('')
@@ -313,9 +314,24 @@ var recommendedWords = ref([])
 function createWordle(greenLetters, yellowLetters, blackLettersList, doubleLettersList, tripleLettersList) {
     wordleSrv.getWordleData(greenLetters, yellowLetters, blackLettersList, doubleLettersList, tripleLettersList)
         .then(response => {
-            // set recommended words to response
-            recommendedWords = response
+            recommendedWords.value = response
         })
+}
+
+
+var num = ref(0.0)
+
+function forceDecimal2(number) {
+    num = number.toFixed(2)
+    return num
+}
+
+var wordleRecoList = ['Words']
+
+function getWordleReco(wordleWord) {
+    for (var i = 0; i < wordleWord.length; i++) {
+        wordleRecoList.value.push(wordleWord[i])
+    }
 }
 
 </script>
@@ -493,7 +509,9 @@ function createWordle(greenLetters, yellowLetters, blackLettersList, doubleLette
                             <div class="content has-text-white has-text-centered">
                                 <p>Recommended Words:</p>
                                 <div v-for="word in recommendedWords">
-                                    <p>{{ word }}</p>
+                                    <p class="is-size-4">
+                                        <span class="has-text-link">{{ word.word.toUpperCase() }}</span> -- Bits Remaining: {{ forceDecimal2(word.bits) }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
