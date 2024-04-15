@@ -357,9 +357,10 @@ function getWordleReco(wordleWord) {
                         <div class="card-content">
                             <div class="content has-text-white">
                                 <p>Enter the green, yellow, and black letters from your Wordle game below. If you have
-                                    any letters you can't use more than two or three times, enter them in the
+                                    any letters you can't use more than once or twice, enter them in the
                                     appropriate
-                                    fields. Click the button to see the recommended words. You'll see a mix of common
+                                    fields, do not enter doubles and triples into the black letter list. Click the
+                                    button to see the recommended words. You'll see a mix of common
                                     and uncommon words to help you zero in on the Wordle answer.</p>
                             </div>
                         </div>
