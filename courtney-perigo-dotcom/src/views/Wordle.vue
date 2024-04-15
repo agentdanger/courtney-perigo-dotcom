@@ -318,11 +318,6 @@ function createWordle(greenLetters, yellowLetters, blackLettersList, doubleLette
         })
 }
 
-// watch(greenLetters1, (newGreenLetters1, oldGreenLetters1) => {
-//     greenLetters1 = newGreenLetters1
-// })
-
-
 </script>
 
 <template>
@@ -495,7 +490,7 @@ function createWordle(greenLetters, yellowLetters, blackLettersList, doubleLette
                             </div>
                         </div>
                         <div class="card-content">
-                            <div class="content has-text-white">
+                            <div class="content has-text-white has-text-centered">
                                 <p>Recommended Words:</p>
                                 <div v-for="word in recommendedWords">
                                     <p>{{ word }}</p>
