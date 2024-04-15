@@ -2,7 +2,7 @@
 
 <script setup>
 import AppNavBar from '../components/AppNavBar.vue'
-import wordleService from '../service/wordleService.js'
+import wordleService from '../service/WordleService.js'
 import { ref, watch } from 'vue'
 
 const wordleSrv = new wordleService()
