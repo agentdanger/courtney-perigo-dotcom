@@ -12,7 +12,8 @@ export default class wordleService {
     const response = await fetch('https://nytimes-wordle.courtneyperigo.com/do-wordle', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Content-Origin': 'https://nytimes-wordle.courtneyperigo.com'
       },
       body: JSON.stringify(body)
     });
