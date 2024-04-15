@@ -117,7 +117,7 @@ var yellowLetters = ref([['none'], ['none'], ['none'], ['none'], ['none']])
 var yellowLetters1 = ref('')
 var tmpYel1 = ref('')
 var tmpYel1_List = ref([])
-var yellowLettersList1 = ref([])
+var yellowLettersList1 = ref(['none'])
 var yellowLetterButton1 = ref('--') 
 
 watch(yellowLetters1, (newYellowLetter1, oldYellowLetter1) => {
@@ -146,7 +146,7 @@ watch(yellowLetters1, (newYellowLetter1, oldYellowLetter1) => {
 var yellowLetters2 = ref('')
 var tmpYel2 = ref('')
 var tmpYel2_List = ref([])
-var yellowLettersList2 = ref([])
+var yellowLettersList2 = ref(['none'])
 var yellowLetterButton2 = ref('--')
 
 watch(yellowLetters2, (newYellowLetter2, oldYellowLetter2) => {
@@ -173,7 +173,7 @@ watch(yellowLetters2, (newYellowLetter2, oldYellowLetter2) => {
 var yellowLetters3 = ref('')
 var tmpYel3 = ref('')
 var tmpYel3_List = ref([])
-var yellowLettersList3 = ref([])
+var yellowLettersList3 = ref(['none'])
 var yellowLetterButton3 = ref('--')
 
 watch(yellowLetters3, (newYellowLetter3, oldYellowLetter3) => {
@@ -200,7 +200,7 @@ watch(yellowLetters3, (newYellowLetter3, oldYellowLetter3) => {
 var yellowLetters4 = ref('')
 var tmpYel4 = ref('')
 var tmpYel4_List = ref([])
-var yellowLettersList4 = ref([])
+var yellowLettersList4 = ref(['none'])
 var yellowLetterButton4 = ref('--')
 
 watch(yellowLetters4, (newYellowLetter4, oldYellowLetter4) => {
@@ -227,7 +227,7 @@ watch(yellowLetters4, (newYellowLetter4, oldYellowLetter4) => {
 var yellowLetters5 = ref('')
 var tmpYel5 = ref('')
 var tmpYel5_List = ref([])
-var yellowLettersList5 = ref([])
+var yellowLettersList5 = ref(['none'])
 var yellowLetterButton5 = ref('--')
 
 watch(yellowLetters5, (newYellowLetter5, oldYellowLetter5) => {
