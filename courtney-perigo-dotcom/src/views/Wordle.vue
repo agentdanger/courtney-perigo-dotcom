@@ -27,7 +27,7 @@ watch(greenLetters1, (newGreenLetter1, oldgreenLetter1) => {
     if (tmpGrn1 !== '') {
         greenLetterButton1.value = tmpGrn1.value.toUpperCase()
         if (tmpGrn1.value !== '--') {
-            greenLetters.value[0] = tmpGrn1.value
+            greenLetters.value[0] = tmpGrn1.value.toLowerCase()
         } else {
             greenLetters.value[0] = 'none'
         }
@@ -46,7 +46,7 @@ watch(greenLetters2, (newGreenLetter2, oldgreenLetter2) => {
     if (tmpGrn2 !== '') {
         greenLetterButton2.value = tmpGrn2.value.toUpperCase()
         if (tmpGrn2.value !== '--') {
-            greenLetters.value[1] = tmpGrn2.value
+            greenLetters.value[1] = tmpGrn2.value.toLowerCase()
         } else {
             greenLetters.value[1] = 'none'
         }
@@ -65,7 +65,7 @@ watch(greenLetters3, (newGreenLetter3, oldgreenLetter3) => {
     if (tmpGrn3 !== '') {
         greenLetterButton3.value = tmpGrn3.value.toUpperCase()
         if (tmpGrn3.value !== '--') {
-            greenLetters.value[2] = tmpGrn3.value
+            greenLetters.value[2] = tmpGrn3.value.toLowerCase()
         } else {
             greenLetters.value[2] = 'none'
         }
@@ -84,7 +84,7 @@ watch(greenLetters4, (newGreenLetter4, oldgreenLetter4) => {
     if (tmpGrn4 !== '') {
         greenLetterButton4.value = tmpGrn4.value.toUpperCase()
         if (tmpGrn4.value !== '--') {
-            greenLetters.value[3] = tmpGrn4.value
+            greenLetters.value[3] = tmpGrn4.value.toLowerCase()
         } else {
             greenLetters.value[3] = 'none'
         }
@@ -103,7 +103,7 @@ watch(greenLetters5, (newGreenLetter5, oldgreenLetter5) => {
     if (tmpGrn5 !== '') {
         greenLetterButton5.value = tmpGrn5.value.toUpperCase()
         if (tmpGrn5.value !== '--') {
-            greenLetters.value[4] = tmpGrn5.value
+            greenLetters.value[4] = tmpGrn5.value.toLowerCase()
         } else {
             greenLetters.value[4] = 'none'
         }
@@ -112,6 +112,10 @@ watch(greenLetters5, (newGreenLetter5, oldgreenLetter5) => {
         greenLetters.value[4] = 'none'
     }
 })
+
+function isLetter(str) {
+  return str.length === 1 && str.match(/[a-z]/i);
+}
 
 var yellowLetters = ref([['none'], ['none'], ['none'], ['none'], ['none']])
 // default null values for yellow letters, can have multiple yellow letters in each position
@@ -128,6 +132,7 @@ watch(yellowLetters1, (newYellowLetter1, oldYellowLetter1) => {
         tmpYel1_List.value = []
         yellowLettersList1.value = []
         for (var i = 0; i < tmpYel1.value.length; i++) {
+            // check if character is english alphabet only.
             yellowLettersList1.value.push(tmpYel1.value[i].toLowerCase())
             if (i > 0) {
                 tmpYel1_List.value += ","
