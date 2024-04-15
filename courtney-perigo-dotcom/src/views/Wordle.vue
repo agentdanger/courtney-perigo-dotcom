@@ -15,7 +15,7 @@ function forceInput1(input_string) {
     }
 }
 
-var greenLetters = []
+var greenLetters = ref([null, null, null, null, null])
 // default null values for green letters
 var greenLetters1 = ref('')
 var tmpGrn1 = ref('')
@@ -25,8 +25,14 @@ watch(greenLetters1, (newGreenLetter1, oldgreenLetter1) => {
     tmpGrn1.value = forceInput1(newGreenLetter1)
     if (tmpGrn1 !== '') {
         greenLetterButton1.value = tmpGrn1.value.toUpperCase()
+        if (tmpGrn1.value !== '--') {
+            greenLetters.value[0] = tmpGrn1.value
+        } else {
+            greenLetters.value[0] = null
+        }
     } else {
         greenLetterButton1.value = "--"
+        greenLetters.value[0] = null
     }
 })
 
@@ -38,8 +44,14 @@ watch(greenLetters2, (newGreenLetter2, oldgreenLetter2) => {
     tmpGrn2.value = forceInput1(newGreenLetter2)
     if (tmpGrn2 !== '') {
         greenLetterButton2.value = tmpGrn2.value.toUpperCase()
+        if (tmpGrn2.value !== '--') {
+            greenLetters.value[1] = tmpGrn2.value
+        } else {
+            greenLetters.value[1] = null
+        }        
     } else {
         greenLetterButton2.value = "--"
+        greenLetters.value[1] = null
     }
 })
 
@@ -51,8 +63,14 @@ watch(greenLetters3, (newGreenLetter3, oldgreenLetter3) => {
     tmpGrn3.value = forceInput1(newGreenLetter3)
     if (tmpGrn3 !== '') {
         greenLetterButton3.value = tmpGrn3.value.toUpperCase()
+        if (tmpGrn3.value !== '--') {
+            greenLetters.value[2] = tmpGrn3.value
+        } else {
+            greenLetters.value[2] = null
+        }
     } else {
         greenLetterButton3.value = "--"
+        greenLetters.value[2] = null
     }
 })
 
@@ -64,8 +82,14 @@ watch(greenLetters4, (newGreenLetter4, oldgreenLetter4) => {
     tmpGrn4.value = forceInput1(newGreenLetter4)
     if (tmpGrn4 !== '') {
         greenLetterButton4.value = tmpGrn4.value.toUpperCase()
+        if (tmpGrn4.value !== '--') {
+            greenLetters.value[3] = tmpGrn4.value
+        } else {
+            greenLetters.value[3] = null
+        }
     } else {
         greenLetterButton4.value = "--"
+        greenLetters.value[3] = null
     }
 })
 
@@ -77,12 +101,18 @@ watch(greenLetters5, (newGreenLetter5, oldgreenLetter5) => {
     tmpGrn5.value = forceInput1(newGreenLetter5)
     if (tmpGrn5 !== '') {
         greenLetterButton5.value = tmpGrn5.value.toUpperCase()
+        if (tmpGrn5.value !== '--') {
+            greenLetters.value[4] = tmpGrn5.value
+        } else {
+            greenLetters.value[4] = null
+        }
     } else {
         greenLetterButton5.value = "--"
+        greenLetters.value[4] = null
     }
 })
 
-var yellowLetters = []
+var yellowLetters = ref([[null], [null], [null], [null], [null]])
 // default null values for yellow letters, can have multiple yellow letters in each position
 var yellowLetters1 = ref('')
 var tmpYel1 = ref('')
@@ -95,6 +125,7 @@ watch(yellowLetters1, (newYellowLetter1, oldYellowLetter1) => {
         // write each letter to a custom string of letters with commas
         tmpYel1.value = newYellowLetter1
         tmpYel1_List.value = []
+        yellowLettersList1.value = []
         for (var i = 0; i < tmpYel1.value.length; i++) {
             yellowLettersList1.value.push(tmpYel1.value[i].toLowerCase())
             if (i > 0) {
@@ -103,8 +134,10 @@ watch(yellowLetters1, (newYellowLetter1, oldYellowLetter1) => {
             tmpYel1_List.value += tmpYel1.value[i].toUpperCase()
             yellowLetterButton1.value = tmpYel1_List.value
         }
+        yellowLetters.value[0] = yellowLettersList1.value
     } else {
         yellowLetterButton1.value = "--"
+        yellowLetters.value[0] = [null]
     }
 })
 
@@ -130,8 +163,10 @@ watch(yellowLetters2, (newYellowLetter2, oldYellowLetter2) => {
             tmpYel2_List.value += tmpYel2.value[i].toUpperCase()
             yellowLetterButton2.value = tmpYel2_List.value
         }
+        yellowLetters.value[1] = yellowLettersList2.value
     } else {
         yellowLetterButton2.value = "--"
+        yellowLetters.value[1] = [null]
     }
 })
 
@@ -155,8 +190,10 @@ watch(yellowLetters3, (newYellowLetter3, oldYellowLetter3) => {
             tmpYel3_List.value += tmpYel3.value[i].toUpperCase()
             yellowLetterButton3.value = tmpYel3_List.value
         }
+        yellowLetters.value[2] = yellowLettersList3.value
     } else {
         yellowLetterButton3.value = "--"
+        yellowLetters.value[2] = [null]
     }
 })
 
@@ -180,8 +217,10 @@ watch(yellowLetters4, (newYellowLetter4, oldYellowLetter4) => {
             tmpYel4_List.value += tmpYel4.value[i].toUpperCase()
             yellowLetterButton4.value = tmpYel4_List.value
         }
+        yellowLetters.value[3] = yellowLettersList4.value
     } else {
         yellowLetterButton4.value = "--"
+        yellowLetters.value[3] = [null]
     }
 })
 
@@ -205,79 +244,74 @@ watch(yellowLetters5, (newYellowLetter5, oldYellowLetter5) => {
             tmpYel5_List.value += tmpYel5.value[i].toUpperCase()
             yellowLetterButton5.value = tmpYel5_List.value
         }
+        yellowLetters.value[4] = yellowLettersList5.value
     } else {
         yellowLetterButton5.value = "--"
+        yellowLetters.value[4] = [null]
     }
 })
 
 var blackLettersCantUse = ref('')
 var blackLettersCantUseList = ref(['-'])
+var blackLettersList = ref([null])
 
 watch(blackLettersCantUse, (newBlackLettersCantUse, oldBlackLettersCantUse) => {
     if (newBlackLettersCantUse !== '') {
         // append each letter to list
         blackLettersCantUseList.value = []
+        blackLettersList.value = []
         for (var i = 0; i < newBlackLettersCantUse.length; i++) {
             blackLettersCantUseList.value.push(newBlackLettersCantUse[i].toUpperCase())
+            blackLettersList.value.push(newBlackLettersCantUse[i].toLowerCase())
         }
     } else {
         blackLettersCantUseList.value = ['-']
+        blackLettersList.value = [null]
     }
 })
 
 var doubleLettersCantUse = ref('')
 var doubleLettersCantUseList = ref(['-'])
+var doubleLettersList = ref([null])
 
 watch(doubleLettersCantUse, (newDoubleLettersCantUse, oldDoubleLettersCantUse) => {
     if (newDoubleLettersCantUse !== '') {
         // append each letter to list
         doubleLettersCantUseList.value = []
+        doubleLettersList.value = []
         for (var i = 0; i < newDoubleLettersCantUse.length; i++) {
             doubleLettersCantUseList.value.push(newDoubleLettersCantUse[i].toUpperCase())
+            doubleLettersList.value.push(newDoubleLettersCantUse[i].toLowerCase())
         }
     } else {
         doubleLettersCantUseList.value = ['-']
+        doubleLettersList.value = [null]
     }
 })
 
 var tripleLettersCantUse = ref('')
 var tripleLettersCantUseList = ref(['-'])
+var tripleLettersList = ref([null])
 
 watch(tripleLettersCantUse, (newTripleLettersCantUse, oldTripleLettersCantUse) => {
     if (newTripleLettersCantUse !== '') {
         // append each letter to list
         tripleLettersCantUseList.value = []
+        tripleLettersList.value = []
         for (var i = 0; i < newTripleLettersCantUse.length; i++) {
             tripleLettersCantUseList.value.push(newTripleLettersCantUse[i].toUpperCase())
+            tripleLettersList.value.push(newTripleLettersCantUse[i].toLowerCase())
         }
     } else {
         tripleLettersCantUseList.value = ['-']
+        tripleLettersList.value = [null]
     }
 })
 
-var recommendedWords = null
+var recommendedWords = ref([])
 
-// function getFontAwesomeVal() {
-//     var value = forceInput1(input_string)
-//     console.log(value)
-//     // create string from value
-//     if (value == '') {
-//         // return default font awesome value if null
-//         return greenLetterButton1
-//     } else {
-//         return "fas fa-b"
-//     }
-// }
-
-// creation function to take letter inputs and call api
-
-function createWordle(greenLetters, yellowLetters, blackLetters, doubleLettersCantUse, tripleLettersCantUse) {
-    // create array of green letters
-    greenLetters = [greenLetters1, greenLetters2, greenLetters3, greenLetters4, greenLetters5]
-    // create array of yellow letters
-    yellowLetters = [yellowLetters1, yellowLetters2, yellowLetters3, yellowLetters4, yellowLetters5]
-    // call wordle function from wordleService
-    wordleSrv.getWordleData(greenLetters, yellowLetters, blackLetters, doubleLettersCantUse, tripleLettersCantUse)
+function createWordle(greenLetters, yellowLetters, blackLettersList, doubleLettersList, tripleLettersList) {
+    wordleSrv.getWordleData(greenLetters, yellowLetters, blackLettersList, doubleLettersList, tripleLettersList)
         .then(response => {
             // set recommended words to response
             recommendedWords = response
@@ -451,7 +485,7 @@ function createWordle(greenLetters, yellowLetters, blackLetters, doubleLettersCa
                             <div class="card-content">
                                 <div class="field is-grouped is-grouped-centered">
                                     <button class="button is-link"
-                                        @click="createWordle(greenLetters, yellowLetters, blackLetters, doubleLettersCantUse, tripleLettersCantUse)">
+                                        @click="createWordle(greenLetters, yellowLetters, blackLettersList, doubleLettersList, tripleLettersList)">
                                         <span class="icon">
                                             <i class="fas fa-search"></i>
                                         </span>
