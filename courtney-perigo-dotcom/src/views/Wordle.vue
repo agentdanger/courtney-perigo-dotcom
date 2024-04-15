@@ -311,10 +311,16 @@ watch(tripleLettersCantUse, (newTripleLettersCantUse, oldTripleLettersCantUse) =
 
 var recommendedWords = ref([])
 
+var isLoading = ref(false)
+var isLoaded = ref(false)
+
 function createWordle(greenLetters, yellowLetters, blackLettersList, doubleLettersList, tripleLettersList) {
+    isLoading.value = true
     wordleSrv.getWordleData(greenLetters, yellowLetters, blackLettersList, doubleLettersList, tripleLettersList)
         .then(response => {
             recommendedWords.value = response
+            isLoading.value = false
+            isLoaded.value = true
         })
 }
 
@@ -507,12 +513,29 @@ function getWordleReco(wordleWord) {
                         </div>
                         <div class="card-content">
                             <div class="content has-text-white has-text-centered">
-                                <p>Recommended Words:</p>
-                                <div v-for="word in recommendedWords">
-                                    <p class="is-size-4">
-                                        <span class="has-text-link">{{ word.word.toUpperCase() }}</span> -- Bits Remaining: {{ forceDecimal2(word.bits) }}
-                                    </p>
+                                <!-- show message when articles are loading -->
+                                <div class="box p-1 mt-6" v-if="isLoading">
+                                    <div class="card has-background-primary">
+                                        <header class="card-header ">
+                                            <p class="card-header-title has-text-white is-size-4">
+                                                Loading Recommendations...
+                                            </p>
+                                        </header>
+                                        <div class="card-content">
+                                            <div class="content has-text-white">
+                                                <progress class="progress is-primary" max="100">15%</progress>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <div v-if="isLoaded">
+                                    <div v-for="word in recommendedWords">
+                                        <p class="is-size-4">
+                                            <span class="has-text-link">{{ word.word.toUpperCase() }}</span> -- Bits Remaining: {{ forceDecimal2(word.bits) }}
+                                        </p>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
