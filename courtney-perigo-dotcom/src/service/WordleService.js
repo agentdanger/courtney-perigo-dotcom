@@ -1,46 +1,5 @@
 export default class wordleService {
   async getWordleData(greenLetters, yellowLetters, blackLetters, doubleLetters, tripleLetters) {
-    for (let i = 0; i < greenLetters.length; i++) {
-      if (greenLetters[i] === null) {
-        greenLetters[i] = 'none';
-      } else {
-        greenLetters[i] = greenLetters[i].toLowerCase();
-      }
-    }
-
-    for (let i = 0; i < yellowLetters.length; i++) {
-      if (yellowLetters[i] === null) {
-        yellowLetters[i] = 'none';
-      } else {
-        for (let j = 0; j < yellowLetters[i].length; j++) {
-          yellowLetters[i][j] = yellowLetters[i][j].toLowerCase();
-        }
-      }
-    }
-
-    for (let i = 0; i < blackLetters.length; i++) {
-      if (blackLetters[i] === null) {
-        blackLetters[i] = 'none';
-      } else {
-        blackLetters[i] = blackLetters[i].toLowerCase();
-      }
-    }
-
-    for (let i = 0; i < doubleLetters.length; i++) {
-      if (doubleLetters[i] === null) {
-        doubleLetters[i] = 'none';
-      } else {
-        doubleLetters[i] = doubleLetters[i].toLowerCase();
-      }
-    }
-
-    for (let i = 0; i < tripleLetters.length; i++) {
-      if (tripleLetters[i] === null) {
-        tripleLetters[i] = 'none';
-      } else {
-        tripleLetters[i] = tripleLetters[i].toLowerCase();
-      }
-    }
 
     const body = {
       green_letters: greenLetters,

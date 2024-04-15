@@ -15,7 +15,7 @@ function forceInput1(input_string) {
     }
 }
 
-var greenLetters = ref([null, null, null, null, null])
+var greenLetters = ref(['none', 'none', 'none', 'none', 'none'])
 // default null values for green letters
 var greenLetters1 = ref('')
 var tmpGrn1 = ref('')
@@ -28,11 +28,11 @@ watch(greenLetters1, (newGreenLetter1, oldgreenLetter1) => {
         if (tmpGrn1.value !== '--') {
             greenLetters.value[0] = tmpGrn1.value
         } else {
-            greenLetters.value[0] = null
+            greenLetters.value[0] = 'none'
         }
     } else {
         greenLetterButton1.value = "--"
-        greenLetters.value[0] = null
+        greenLetters.value[0] = 'none'
     }
 })
 
@@ -47,11 +47,11 @@ watch(greenLetters2, (newGreenLetter2, oldgreenLetter2) => {
         if (tmpGrn2.value !== '--') {
             greenLetters.value[1] = tmpGrn2.value
         } else {
-            greenLetters.value[1] = null
+            greenLetters.value[1] = 'none'
         }        
     } else {
         greenLetterButton2.value = "--"
-        greenLetters.value[1] = null
+        greenLetters.value[1] = 'none'
     }
 })
 
@@ -66,11 +66,11 @@ watch(greenLetters3, (newGreenLetter3, oldgreenLetter3) => {
         if (tmpGrn3.value !== '--') {
             greenLetters.value[2] = tmpGrn3.value
         } else {
-            greenLetters.value[2] = null
+            greenLetters.value[2] = 'none'
         }
     } else {
         greenLetterButton3.value = "--"
-        greenLetters.value[2] = null
+        greenLetters.value[2] = 'none'
     }
 })
 
@@ -85,11 +85,11 @@ watch(greenLetters4, (newGreenLetter4, oldgreenLetter4) => {
         if (tmpGrn4.value !== '--') {
             greenLetters.value[3] = tmpGrn4.value
         } else {
-            greenLetters.value[3] = null
+            greenLetters.value[3] = 'none'
         }
     } else {
         greenLetterButton4.value = "--"
-        greenLetters.value[3] = null
+        greenLetters.value[3] = 'none'
     }
 })
 
@@ -104,15 +104,15 @@ watch(greenLetters5, (newGreenLetter5, oldgreenLetter5) => {
         if (tmpGrn5.value !== '--') {
             greenLetters.value[4] = tmpGrn5.value
         } else {
-            greenLetters.value[4] = null
+            greenLetters.value[4] = 'none'
         }
     } else {
         greenLetterButton5.value = "--"
-        greenLetters.value[4] = null
+        greenLetters.value[4] = 'none'
     }
 })
 
-var yellowLetters = ref([[null], [null], [null], [null], [null]])
+var yellowLetters = ref([['none'], ['none'], ['none'], ['none'], ['none']])
 // default null values for yellow letters, can have multiple yellow letters in each position
 var yellowLetters1 = ref('')
 var tmpYel1 = ref('')
@@ -137,7 +137,7 @@ watch(yellowLetters1, (newYellowLetter1, oldYellowLetter1) => {
         yellowLetters.value[0] = yellowLettersList1.value
     } else {
         yellowLetterButton1.value = "--"
-        yellowLetters.value[0] = [null]
+        yellowLetters.value[0] = ['none']
     }
 })
 
@@ -166,7 +166,7 @@ watch(yellowLetters2, (newYellowLetter2, oldYellowLetter2) => {
         yellowLetters.value[1] = yellowLettersList2.value
     } else {
         yellowLetterButton2.value = "--"
-        yellowLetters.value[1] = [null]
+        yellowLetters.value[1] = ['none']
     }
 })
 
@@ -193,7 +193,7 @@ watch(yellowLetters3, (newYellowLetter3, oldYellowLetter3) => {
         yellowLetters.value[2] = yellowLettersList3.value
     } else {
         yellowLetterButton3.value = "--"
-        yellowLetters.value[2] = [null]
+        yellowLetters.value[2] = ['none']
     }
 })
 
@@ -220,7 +220,7 @@ watch(yellowLetters4, (newYellowLetter4, oldYellowLetter4) => {
         yellowLetters.value[3] = yellowLettersList4.value
     } else {
         yellowLetterButton4.value = "--"
-        yellowLetters.value[3] = [null]
+        yellowLetters.value[3] = ['none']
     }
 })
 
@@ -247,13 +247,13 @@ watch(yellowLetters5, (newYellowLetter5, oldYellowLetter5) => {
         yellowLetters.value[4] = yellowLettersList5.value
     } else {
         yellowLetterButton5.value = "--"
-        yellowLetters.value[4] = [null]
+        yellowLetters.value[4] = ['none']
     }
 })
 
 var blackLettersCantUse = ref('')
 var blackLettersCantUseList = ref(['-'])
-var blackLettersList = ref([null])
+var blackLettersList = ref(['none'])
 
 watch(blackLettersCantUse, (newBlackLettersCantUse, oldBlackLettersCantUse) => {
     if (newBlackLettersCantUse !== '') {
@@ -266,13 +266,13 @@ watch(blackLettersCantUse, (newBlackLettersCantUse, oldBlackLettersCantUse) => {
         }
     } else {
         blackLettersCantUseList.value = ['-']
-        blackLettersList.value = [null]
+        blackLettersList.value = ['none']
     }
 })
 
 var doubleLettersCantUse = ref('')
 var doubleLettersCantUseList = ref(['-'])
-var doubleLettersList = ref([null])
+var doubleLettersList = ref(['none'])
 
 watch(doubleLettersCantUse, (newDoubleLettersCantUse, oldDoubleLettersCantUse) => {
     if (newDoubleLettersCantUse !== '') {
@@ -285,13 +285,13 @@ watch(doubleLettersCantUse, (newDoubleLettersCantUse, oldDoubleLettersCantUse) =
         }
     } else {
         doubleLettersCantUseList.value = ['-']
-        doubleLettersList.value = [null]
+        doubleLettersList.value = ['none']
     }
 })
 
 var tripleLettersCantUse = ref('')
 var tripleLettersCantUseList = ref(['-'])
-var tripleLettersList = ref([null])
+var tripleLettersList = ref(['none'])
 
 watch(tripleLettersCantUse, (newTripleLettersCantUse, oldTripleLettersCantUse) => {
     if (newTripleLettersCantUse !== '') {
@@ -304,7 +304,7 @@ watch(tripleLettersCantUse, (newTripleLettersCantUse, oldTripleLettersCantUse) =
         }
     } else {
         tripleLettersCantUseList.value = ['-']
-        tripleLettersList.value = [null]
+        tripleLettersList.value = ['none']
     }
 })
 
