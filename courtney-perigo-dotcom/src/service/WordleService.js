@@ -6,7 +6,7 @@ export default class wordleService {
       yellow_letters: yellowLetters,
       black_letters: blackLetters,
       double_letters_cant_use: doubleLetters,
-      tripleLetters: tripleLetters
+      triple_letters_cant_use: tripleLetters
     }
 
     const response = await fetch('https://nytimes-wordle.courtneyperigo.com/do-wordle/', {
