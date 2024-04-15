@@ -13,7 +13,7 @@ export default class wordleService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-Origin': 'https://nytimes-wordle.courtneyperigo.com'
+        'Content-Origin': 'https://courtneyperigo.com'
       },
       body: JSON.stringify(body)
     });
