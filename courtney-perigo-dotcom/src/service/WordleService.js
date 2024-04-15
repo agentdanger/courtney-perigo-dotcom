@@ -9,11 +9,11 @@ export default class wordleService {
       tripleLetters: tripleLetters
     }
 
-    const response = await fetch('https://nytimes-wordle.courtneyperigo.com/do-wordle', {
+    const response = await fetch('https://nytimes-wordle.courtneyperigo.com/do-wordle/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-Origin': 'https://courtneyperigo.com'
+        'Content-Origin': 'https://courtneyperigo.com/'
       },
       body: JSON.stringify(body)
     });
