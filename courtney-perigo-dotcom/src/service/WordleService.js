@@ -9,22 +9,20 @@ export default class wordleService {
     }
 
     for (let i = 0; i < yellowLetters.length; i++) {
-      for (let j = 0; j < yellowLetters[i].length; j++) {
-        if (yellowLetters[i][j] === null) {
-          yellowLetters[i][j] = 'none';
-        } else {
+      if (yellowLetters[i] === null) {
+        yellowLetters[i] = 'none';
+      } else {
+        for (let j = 0; j < yellowLetters[i].length; j++) {
           yellowLetters[i][j] = yellowLetters[i][j].toLowerCase();
         }
       }
     }
 
-    for (let i = 0; i < blackLetters.length; i++) {
-      for (let j = 0; j < blackLetters[i].length; j++) {
-        if (blackLetters[i][j] === null) {
-          blackLetters[i][j] = 'none';
-        } else {
-          blackLetters[i][j] = blackLetters[i][j].toLowerCase();
-        }
+    for (let i = 0; i < greenLetters.length; i++) {
+      if (greenLetters[i] === null) {
+        greenLetters[i] = 'none';
+      } else {
+        greenLetters[i] = greenLetters[i].toLowerCase();
       }
     }
 
@@ -51,7 +49,7 @@ export default class wordleService {
       double_letters_cant_use: doubleLetters,
       tripleLetters: tripleLetters
     }
-    
+
     const response = await fetch('https://nytimes-wordle.courtneyperigo.com/do-wordle', {
       method: 'POST',
       headers: {
