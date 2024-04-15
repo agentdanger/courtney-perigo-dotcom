@@ -18,11 +18,11 @@ export default class wordleService {
       }
     }
 
-    for (let i = 0; i < greenLetters.length; i++) {
-      if (greenLetters[i] === null) {
-        greenLetters[i] = 'none';
+    for (let i = 0; i < blackLetters.length; i++) {
+      if (blackLetters[i] === null) {
+        blackLetters[i] = 'none';
       } else {
-        greenLetters[i] = greenLetters[i].toLowerCase();
+        blackLetters[i] = blackLetters[i].toLowerCase();
       }
     }
 
