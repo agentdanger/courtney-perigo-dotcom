@@ -1,0 +1,7 @@
+# dispatch to custom subdomains for each service
+
+dispatch:
+  - url: nytimes-wordle.courtneyperigo.com/* # e.g. subdomain.example.com/*
+    service: nytimes-wordle
+
+
