@@ -23,6 +23,9 @@
                                 <span>data science news</span>
                             </span>
                         </a> -->
+                            <a class="button is-primary" href="/wordle">
+                                <span>wordle</span>
+                            </a>
                             <a class="button is-primary" href="/news-recommender">
                                 <span>news recommender</span>
                             </a>
