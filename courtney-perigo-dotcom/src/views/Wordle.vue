@@ -11,7 +11,7 @@ function forceInput1(input_string) {
     if (input_string == '') {
         return '--'
     } else {
-        return input_string.substring(1,0)
+        return input_string.substring(1, 0)
     }
 }
 
@@ -49,7 +49,7 @@ watch(greenLetters2, (newGreenLetter2, oldgreenLetter2) => {
             greenLetters.value[1] = tmpGrn2.value
         } else {
             greenLetters.value[1] = 'none'
-        }        
+        }
     } else {
         greenLetterButton2.value = "--"
         greenLetters.value[1] = 'none'
@@ -119,7 +119,7 @@ var yellowLetters1 = ref('')
 var tmpYel1 = ref('')
 var tmpYel1_List = ref([])
 var yellowLettersList1 = ref(['none'])
-var yellowLetterButton1 = ref('--') 
+var yellowLetterButton1 = ref('--')
 
 watch(yellowLetters1, (newYellowLetter1, oldYellowLetter1) => {
     if (newYellowLetter1 !== '') {
@@ -357,48 +357,49 @@ function getWordleReco(wordleWord) {
                         <div class="card-content">
                             <div class="content has-text-white">
                                 <p>Enter the green, yellow, and black letters from your Wordle game below. If you have
-                                    any letters you can't use more than two or three times, enter them in the appropriate
+                                    any letters you can't use more than two or three times, enter them in the
+                                    appropriate
                                     fields. Click the button to see the recommended words.</p>
                             </div>
                         </div>
                         <div class="card-content has-text-centered">
                             <!-- show the values in each text box as font awesome buttons in a nice layout -->
                             <div class="field is-grouped is-grouped-centered">
-                                    <button class="button is-link mr-2">
-                                        <span class="is-size-5">{{ greenLetterButton1 }}</span>
-                                    </button>
-                                    <button class="button is-link mr-2">
-                                        <span class="is-size-5">{{ greenLetterButton2 }}</span>
-                                    </button>
-                                    <button class="button is-link mr-2">
-                                        <span class="is-size-5">{{ greenLetterButton3 }}</span>
-                                    </button>
-                                    <button class="button is-link mr-2">
-                                        <span class="is-size-5">{{ greenLetterButton4 }}</span>
-                                    </button>
-                                    <button class="button is-link mr-2">
-                                        <span class="is-size-5">{{ greenLetterButton5 }}</span>
-                                    </button>
+                                <button class="button is-link mr-2">
+                                    <span class="is-size-5">{{ greenLetterButton1 }}</span>
+                                </button>
+                                <button class="button is-link mr-2">
+                                    <span class="is-size-5">{{ greenLetterButton2 }}</span>
+                                </button>
+                                <button class="button is-link mr-2">
+                                    <span class="is-size-5">{{ greenLetterButton3 }}</span>
+                                </button>
+                                <button class="button is-link mr-2">
+                                    <span class="is-size-5">{{ greenLetterButton4 }}</span>
+                                </button>
+                                <button class="button is-link mr-2">
+                                    <span class="is-size-5">{{ greenLetterButton5 }}</span>
+                                </button>
                             </div>
                         </div>
                         <div class="card-content has-text-centered">
                             <!-- show the values in each text box as font awesome buttons in a nice layout -->
                             <div class="field is-grouped is-grouped-centered">
-                                    <button class="button is-warning mr-2">
-                                        <span class="is-size-5">{{ yellowLetterButton1 }}</span>
-                                    </button>
-                                    <button class="button is-warning mr-2">
-                                        <span class="is-size-5">{{ yellowLetterButton2 }}</span>
-                                    </button>
-                                    <button class="button is-warning mr-2">
-                                        <span class="is-size-5">{{ yellowLetterButton3 }}</span>
-                                    </button>
-                                    <button class="button is-warning mr-2">
-                                        <span class="is-size-5">{{ yellowLetterButton4 }}</span>
-                                    </button>
-                                    <button class="button is-warning mr-2">
-                                        <span class="is-size-5">{{ yellowLetterButton5 }}</span>
-                                    </button>
+                                <button class="button is-warning mr-2">
+                                    <span class="is-size-5">{{ yellowLetterButton1 }}</span>
+                                </button>
+                                <button class="button is-warning mr-2">
+                                    <span class="is-size-5">{{ yellowLetterButton2 }}</span>
+                                </button>
+                                <button class="button is-warning mr-2">
+                                    <span class="is-size-5">{{ yellowLetterButton3 }}</span>
+                                </button>
+                                <button class="button is-warning mr-2">
+                                    <span class="is-size-5">{{ yellowLetterButton4 }}</span>
+                                </button>
+                                <button class="button is-warning mr-2">
+                                    <span class="is-size-5">{{ yellowLetterButton5 }}</span>
+                                </button>
                             </div>
                         </div>
                         <div class="card-content has-text-centered">
@@ -424,79 +425,92 @@ function getWordleReco(wordleWord) {
                         </div>
                         <div class="card-content">
                             <div class="columns is-vcentered">
-                                <div class = "column is-one-fifth has-text-white has-text-centered">
+                                <div class="column is-one-fifth has-text-white has-text-centered">
                                     Enter Green Letters:
                                 </div>
-                                <div class = "column">
-                                    <div class = "columns">
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-1" v-model="greenLetters1">
+                                <div class="column">
+                                    <div class="columns">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Green Pos-1"
+                                                v-model="greenLetters1">
                                         </div>
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-2" v-model="greenLetters2">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Green Pos-2"
+                                                v-model="greenLetters2">
                                         </div>
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-3" v-model="greenLetters3">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Green Pos-3"
+                                                v-model="greenLetters3">
                                         </div>
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-4" v-model="greenLetters4">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Green Pos-4"
+                                                v-model="greenLetters4">
                                         </div>
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-5" v-model="greenLetters5">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Green Pos-5"
+                                                v-model="greenLetters5">
                                         </div>
                                     </div>
                                 </div>
-                                <div class = "column is-one-fifth">
+                                <div class="column is-one-fifth">
                                 </div>
                             </div>
                         </div>
                         <div class="card-content">
                             <div class="columns is-vcentered">
-                                <div class = "column is-one-fifth has-text-white has-text-centered">
+                                <div class="column is-one-fifth has-text-white has-text-centered">
                                     Enter Yellow Letters:
                                 </div>
-                                <div class = "column">
-                                    <div class = "columns">
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-1" v-model="yellowLetters1">
+                                <div class="column">
+                                    <div class="columns">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Yellow Pos-1"
+                                                v-model="yellowLetters1">
                                         </div>
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-2" v-model="yellowLetters2">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Yellow Pos-2"
+                                                v-model="yellowLetters2">
                                         </div>
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-3" v-model="yellowLetters3">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Yellow Pos-3"
+                                                v-model="yellowLetters3">
                                         </div>
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-4" v-model="yellowLetters4">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Yellow Pos-4"
+                                                v-model="yellowLetters4">
                                         </div>
-                                        <div class = "column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-5" v-model="yellowLetters5">
+                                        <div class="column is-one-fifth">
+                                            <input class="input" type="text" placeholder="Yellow Pos-5"
+                                                v-model="yellowLetters5">
                                         </div>
                                     </div>
                                 </div>
-                                <div class = "column is-one-fifth">
+                                <div class="column is-one-fifth">
                                 </div>
                             </div>
                         </div>
                         <div class="card-content">
                             <div class="columns is-vcentered">
-                                <div class = "column is-one-fifth has-text-white has-text-centered">
+                                <div class="column is-one-fifth has-text-white has-text-centered">
                                     Enter Unused Letters:
                                 </div>
-                                <div class = "column">
-                                    <div class = "columns">
-                                        <div class = "column is-one-third">
-                                            <input class="input" type="text" placeholder="Black Letters" v-model="blackLettersCantUse">
+                                <div class="column">
+                                    <div class="columns">
+                                        <div class="column is-one-third">
+                                            <input class="input" type="text" placeholder="Black Letters"
+                                                v-model="blackLettersCantUse">
                                         </div>
-                                        <div class = "column is-one-third">
-                                            <input class="input" type="text" placeholder="Double Letters" v-model="doubleLettersCantUse">
+                                        <div class="column is-one-third">
+                                            <input class="input" type="text" placeholder="Double Letters"
+                                                v-model="doubleLettersCantUse">
                                         </div>
-                                        <div class = "column is-one-third">
-                                            <input class="input" type="text" placeholder="Triple Letters" v-model="tripleLettersCantUse">
+                                        <div class="column is-one-third">
+                                            <input class="input" type="text" placeholder="Triple Letters"
+                                                v-model="tripleLettersCantUse">
                                         </div>
                                     </div>
                                 </div>
-                                <div class = "column is-one-fifth">
+                                <div class="column is-one-fifth">
                                 </div>
                             </div>
                             <div class="card-content">
@@ -529,13 +543,23 @@ function getWordleReco(wordleWord) {
                                     </div>
                                 </div>
                                 <div v-if="isLoaded">
-                                    <div v-for="word in recommendedWords">
-                                        <p class="is-size-4">
-                                            <span class="has-text-link">{{ word.word.toUpperCase() }}</span> -- Bits Remaining: {{ forceDecimal2(word.bits) }}
-                                        </p>
+                                    <div class="columns is-vcentered">
+                                        <div class="column is-one-third">
+                                        </div>
+                                        <div class="column is-one-third">
+                                            <ol type="1">
+                                                <div v-for="word in recommendedWords">
+                                                    <li class="is-size-4">
+                                                        <span class="has-text-link">{{ word.word.toUpperCase() }}</span>
+                                                        -- Bits Remaining: {{ forceDecimal2(word.bits) }}
+                                                    </li>
+                                                </div>
+                                            </ol>
+                                        </div>
+                                        <div class="column is-one-third">
+                                        </div>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
