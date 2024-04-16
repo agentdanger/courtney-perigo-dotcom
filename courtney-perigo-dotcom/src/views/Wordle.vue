@@ -438,23 +438,23 @@ function getWordleReco(wordleWord) {
                                 <div class="column">
                                     <div class="columns">
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-1"
+                                            <input class="input has-text-link" type="text" placeholder="Green Pos-1"
                                                 v-model="greenLetters1">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-2"
+                                            <input class="input has-text-link" type="text" placeholder="Green Pos-2"
                                                 v-model="greenLetters2">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-3"
+                                            <input class="input has-text-link" type="text" placeholder="Green Pos-3"
                                                 v-model="greenLetters3">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-4"
+                                            <input class="input has-text-link" type="text" placeholder="Green Pos-4"
                                                 v-model="greenLetters4">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Green Pos-5"
+                                            <input class="input has-text-link" type="text" placeholder="Green Pos-5"
                                                 v-model="greenLetters5">
                                         </div>
                                     </div>
@@ -471,23 +471,23 @@ function getWordleReco(wordleWord) {
                                 <div class="column">
                                     <div class="columns">
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-1"
+                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-1"
                                                 v-model="yellowLetters1">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-2"
+                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-2"
                                                 v-model="yellowLetters2">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-3"
+                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-3"
                                                 v-model="yellowLetters3">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-4"
+                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-4"
                                                 v-model="yellowLetters4">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input" type="text" placeholder="Yellow Pos-5"
+                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-5"
                                                 v-model="yellowLetters5">
                                         </div>
                                     </div>
