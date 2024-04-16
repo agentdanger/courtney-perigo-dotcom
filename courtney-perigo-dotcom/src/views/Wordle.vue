@@ -114,7 +114,7 @@ watch(greenLetters5, (newGreenLetter5, oldgreenLetter5) => {
 })
 
 function isLetter(str) {
-  return str.length === 1 && str.match(/[a-z]/i);
+    return str.length === 1 && str.match(/[a-z]/i);
 }
 
 var yellowLetters = ref([['none'], ['none'], ['none'], ['none'], ['none']])
@@ -356,17 +356,19 @@ function getWordleReco(wordleWord) {
                     <div class="card has-background-primary">
                         <header class="card-header ">
                             <p class="card-header-title has-text-white is-size-4">
-                                Wordle
+                                Beating Wordle Using Entropy.
                             </p>
                         </header>
                         <div class="card-content">
                             <div class="content has-text-white">
-                                <p>Enter the green, yellow, and black letters from your Wordle game below. If you have
-                                    any letters you can't use more than once or twice, enter them in the
-                                    appropriate
+                                <p><span class="is-underlined has-text-weight-bold">Directions:</span> Enter the green,
+                                    yellow, and black letters from your Wordle game below. Enter letters only - no
+                                    commas or spaces. If you have any letters you can't use more than once or twice,
+                                    enter them in the appropriate
                                     fields, do not enter doubles and triples into the black letter list. Click the
                                     button to see the recommended words. You'll see a mix of common
-                                    and uncommon words to help you zero in on the Wordle answer.</p>
+                                    and uncommon words to help you zero in on the Wordle answer. Playing the #1 word
+                                    reveals the most information about the game using information theory / entropy.</p>
                             </div>
                         </div>
                         <div class="card-content has-text-centered">
@@ -471,24 +473,24 @@ function getWordleReco(wordleWord) {
                                 <div class="column">
                                     <div class="columns">
                                         <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-1"
-                                                v-model="yellowLetters1">
+                                            <input class="input has-text-warning-dark" type="text"
+                                                placeholder="Yellow Pos-1" v-model="yellowLetters1">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-2"
-                                                v-model="yellowLetters2">
+                                            <input class="input has-text-warning-dark" type="text"
+                                                placeholder="Yellow Pos-2" v-model="yellowLetters2">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-3"
-                                                v-model="yellowLetters3">
+                                            <input class="input has-text-warning-dark" type="text"
+                                                placeholder="Yellow Pos-3" v-model="yellowLetters3">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-4"
-                                                v-model="yellowLetters4">
+                                            <input class="input has-text-warning-dark" type="text"
+                                                placeholder="Yellow Pos-4" v-model="yellowLetters4">
                                         </div>
                                         <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text" placeholder="Yellow Pos-5"
-                                                v-model="yellowLetters5">
+                                            <input class="input has-text-warning-dark" type="text"
+                                                placeholder="Yellow Pos-5" v-model="yellowLetters5">
                                         </div>
                                     </div>
                                 </div>

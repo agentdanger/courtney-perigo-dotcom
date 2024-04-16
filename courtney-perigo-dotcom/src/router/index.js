@@ -31,7 +31,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/Wordle.vue'),
       meta: {
-        title: 'Courtney Perigo | Wordle Helper'
+        title: 'Courtney Perigo | Beating Wordle with Entropy'
       }
     },
     {
