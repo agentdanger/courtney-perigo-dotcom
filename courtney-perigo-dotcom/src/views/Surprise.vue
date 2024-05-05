@@ -40,8 +40,7 @@ function getGender() {
                         <div class="card-content is-centered">
                             <div class="content has-text-white is-centered">
                                 <p class="has-text-centered">
-                                    <span
-                                        class="is-underlined has-text-weight-bold">Directions:
+                                    <span class="is-underlined has-text-weight-bold">Directions:
                                     </span>
                                     Press the button to reveal the family surprise!
                                 </p>
@@ -65,18 +64,18 @@ function getGender() {
                         <div class="card-content">
                             <div class="content has-text-white has-text-centered">
                                 <!-- show message when articles are loading -->
-                                    <div class="card has-background-primary">
-                                        <header class="card-header ">
-                                            <p class="card-header-title has-text-white is-size-4">
-                                                Loading The Family Secret...
-                                            </p>
-                                        </header>
-                                        <div class="card-content">
-                                            <div class="content has-text-white">
-                                                <progress class="progress is-primary" max="100">15%</progress>
-                                            </div>
+                                <div class="card has-background-primary">
+                                    <header class="card-header ">
+                                        <p class="card-header-title has-text-white is-size-4">
+                                            Loading The Family Secret...
+                                        </p>
+                                    </header>
+                                    <div class="card-content">
+                                        <div class="content has-text-white">
+                                            <progress class="progress is-primary" max="100">15%</progress>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -90,8 +89,9 @@ function getGender() {
                             </p>
                         </header>
                         <div class="card-content is-centered">
-                            <div class="content has-text-white is-centered">
-                                <img class="has-text-centered" src="/assets/its_a_boy.jpg" alt="It's a boy!" width="450" height="450" />
+                            <div class="content has-text-white is-centered has-text-centered">
+                                <img class="has-text-centered" src="/assets/its_a_boy.jpg" alt="It's a boy!" width="450"
+                                    height="450" />
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,8 @@ function getGender() {
                         </header>
                         <div class="card-content is-centered">
                             <div class="content has-text-white is-centered has-text-centered">
-                                    <img class="has-text-centered" src="/assets/its_a_girl.jpg" alt="It's a girl!" width="450" height="450" />
+                                <img class="has-text-centered" src="/assets/its_a_girl.jpg" alt="It's a girl!"
+                                    width="450" height="450" />
                             </div>
                         </div>
                     </div>
