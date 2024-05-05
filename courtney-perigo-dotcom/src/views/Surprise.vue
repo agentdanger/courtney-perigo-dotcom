@@ -29,7 +29,7 @@ function getGender() {
     <div class="hero is-fullheight is-primary">
         <div class="hero-body">
             <div class="container">
-                <div class="box p-1 mt-6">
+                <div class="box p-1 mt-6" v-if="!isLoaded">
                     <div class="card has-background-primary">
                         <header class="card-header">
                             <p class="card-header-title has-text-white is-centered is-size-4">
@@ -76,6 +76,26 @@ function getGender() {
                                             </div>
                                         </div>
                                     </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box p-1 mt-6" v-if="isLoaded">
+                    <div class="card has-background-primary">
+                        <header class="card-header">
+                            <p class="card-header-title has-text-white is-centered is-size-4">
+                                The Family Surprise
+                            </p>
+                        </header>
+                        <div class="card-content is-centered">
+                            <div class="content has-text-white is-centered">
+                                <p class="has-text-centered">
+                                    <span
+                                        class="is-underlined has-text-weight-bold">The Surprise:
+                                    </span>
+                                    {{ theGender }}
+                                </p>
                             </div>
                         </div>
                     </div>
