@@ -12,13 +12,12 @@
     "start": "npm run css-watch"
   },
   "dependencies": {
-    "apexcharts": "3.0.0",
+    "apexcharts": "^3.0.0",
     "bulma": "0.9.4",
-    "i": "^0.3.7",
     "node-sass": "9.0.0",
     "vue": "3.3.4",
     "vue-router": "4.2.4",
-    "vue3-apexcharts": "1.4.4"
+    "vue3-apexcharts": "^1.4.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "4.3.4",
