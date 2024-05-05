@@ -16,7 +16,7 @@ function getGender() {
     isLoading.value = true
     genderServ.getGenderRevealData()
         .then(response => {
-            recommendedWords.value = response.gender
+            console.log(response)
             isLoading.value = false
             isLoaded.value = true
         })
