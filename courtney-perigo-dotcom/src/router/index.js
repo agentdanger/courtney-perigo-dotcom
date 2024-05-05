@@ -35,6 +35,17 @@ const router = createRouter({
       }
     },
     {
+      path: '/surprise',
+      name: 'surprise',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/Surprise.vue'),
+      meta: {
+        title: 'Courtney Perigo | a positive, suprise addition to the family'
+      }
+    },
+    {
       path: '/cv',
       name: 'cv',
       // route level code-splitting
