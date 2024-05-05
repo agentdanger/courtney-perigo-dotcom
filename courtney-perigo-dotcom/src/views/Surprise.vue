@@ -93,6 +93,44 @@ function getGender() {
                                 <img class="has-text-centered" src="/assets/its_a_boy.jpg" alt="It's a boy!" width="450"
                                     height="450" />
                             </div>
+                            <div class="card-content">
+                                <div class="field is-grouped is-grouped-centered">
+                                    <div class="columns">
+                                        <div class="column">
+                                            <span class="icon is-large">
+                                                <i class="far fa-baseball-bat-ball"
+                                                    style="color:steelblue; font-size: 3em;"></i>
+                                            </span>
+                                        </div>
+                                        <div class="column">
+                                            <span class="icon is-large">
+                                                <i class="far fa-futbol" style="color:steelblue; font-size: 3em;"></i>
+                                            </span>
+                                        </div>
+                                        <div class="column">
+                                            <span class="icon is-large">
+                                                <i class="far fa-teddy-bear"
+                                                    style="color:steelblue; font-size: 3em;"></i>
+                                            </span>
+                                        </div>
+                                        <div class="column">
+                                            <span class="icon is-large">
+                                                <i class="far fa-books" style="color:steelblue; font-size: 3em;"></i>
+                                            </span>
+                                        </div>
+                                        <div class="column">
+                                            <span class="icon is-large">
+                                                <i class="far fa-train" style="color:steelblue; font-size: 3em;"></i>
+                                            </span>
+                                        </div>
+                                        <div class="column">
+                                            <span class="icon is-large">
+                                                <i class="far fa-robot" style="color:steelblue; font-size: 3em;"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,6 +145,42 @@ function getGender() {
                             <div class="content has-text-white is-centered has-text-centered">
                                 <img class="has-text-centered" src="/assets/its_a_girl.jpg" alt="It's a girl!"
                                     width="450" height="450" />
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="field is-grouped is-grouped-centered">
+                                <div class="columns">
+                                    <div class="column">
+                                        <span class="icon is-large">
+                                            <i class="far fa-baseball-bat-ball" style="color:pink; font-size: 3em;"></i>
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="icon is-large">
+                                            <i class="far fa-futbol" style="color:pink; font-size: 3em;"></i>
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="icon is-large">
+                                            <i class="far fa-teddy-bear" style="color:pink; font-size: 3em;"></i>
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="icon is-large">
+                                            <i class="far fa-books" style="color:pink; font-size: 3em;"></i>
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="icon is-large">
+                                            <i class="far fa-flask-vial" style="color:pink; font-size: 3em;"></i>
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="icon is-large">
+                                            <i class="far fa-music" style="color:pink; font-size: 3em;"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
