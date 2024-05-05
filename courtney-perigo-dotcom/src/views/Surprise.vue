@@ -19,6 +19,7 @@ function getGender() {
             console.log(response)
             isLoading.value = false
             isLoaded.value = true
+            theGender.value = response['gender']
         })
 }
 
