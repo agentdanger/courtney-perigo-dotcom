@@ -19,7 +19,7 @@ function getGender() {
             console.log(response)
             isLoading.value = false
             isLoaded.value = true
-            theGender.value = response['gender']
+            theGender.value = response['gender'].toLowerCase()
         })
 }
 
@@ -82,7 +82,7 @@ function getGender() {
                     </div>
                 </div>
 
-                <div class="box p-1 mt-6" v-if="isLoaded">
+                <div class="box p-1 mt-6" v-if="isLoaded && theGender == 'male'">
                     <div class="card has-background-primary">
                         <header class="card-header">
                             <p class="card-header-title has-text-white is-centered is-size-4">
@@ -91,12 +91,21 @@ function getGender() {
                         </header>
                         <div class="card-content is-centered">
                             <div class="content has-text-white is-centered">
-                                <p class="has-text-centered">
-                                    <span
-                                        class="is-underlined has-text-weight-bold">The Surprise:
-                                    </span>
-                                    {{ theGender }}
-                                </p>
+                                <img class="has-text-centered" src="/assets/its_a_boy.jpg" alt="It's a boy!" width="450" height="450" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box p-1 mt-6" v-if="isLoaded && theGender == 'female'">
+                    <div class="card has-background-primary">
+                        <header class="card-header">
+                            <p class="card-header-title has-text-white is-centered is-size-4">
+                                The Family Surprise
+                            </p>
+                        </header>
+                        <div class="card-content is-centered">
+                            <div class="content has-text-white is-centered has-text-centered">
+                                    <img class="has-text-centered" src="/assets/its_a_girl.jpg" alt="It's a girl!" width="450" height="450" />
                             </div>
                         </div>
                     </div>
