@@ -79,7 +79,7 @@ export default {
     },
     data() {
         return {
-            about_me: "Courtney lives in Chicago, IL, USA with his beautiful fiance and cat Roscoe. \
+            about_me: "Courtney lives in Chicago, IL, USA with his beautiful wife, Emilie, and our cat, Roscoe. \
             He's an avid runner, and always up for a challenge. He can be reached via his LinkedIn profile \
             so feel free to send a note.",
             about_website: "This website runs on Google Cloud Platform leveraging their Google App Engine product. \
