@@ -487,12 +487,16 @@ function processWord(word, greenLettersList, yellowLettersList1, yellowLettersLi
         blackLettersList.value = blackLettersList.value.filter(blkLetter => blkLetter !== 'none');
         // remove duplicates in doubleLettersList
         doubleLettersList.value = [...new Set(doubleLettersList.value)];
-        // remove none from doubleLettersList
-        doubleLettersList.value = doubleLettersList.value.filter(dblLetter => dblLetter !== 'none');
+        // remove none from doubleLettersList if doubleLettersList is longer than 1 entry
+        if (doubleLettersList.value.length > 1) {
+            doubleLettersList.value = doubleLettersList.value.filter(dblLetter => dblLetter !== 'none');
+        }
         // remove duplicates in tripleLettersList
         tripleLettersList.value = [...new Set(tripleLettersList.value)];
         // remove none from tripleLettersList
-        tripleLettersList.value = tripleLettersList.value.filter(trpLetter => trpLetter !== 'none');
+        if (tripleLettersList.value.length > 1) {
+            tripleLettersList.value = tripleLettersList.value.filter(trpLetter => trpLetter !== 'none');
+        }
     }
     return greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList
 }
@@ -662,7 +666,7 @@ onBeforeUnmount(() => {
                             <div class="content has-text-white">
                                 <p><span class="is-underlined has-text-weight-bold">Directions:</span>
                                 <ol>
-                                    <li>Enter your starting word from your Wordle using the keyboard below.</li>
+                                    <li>Enter your starting word from your Wordle using the keyboard.</li>
                                     <li>Click the letters to change the color of your letters based on your
                                         Wordle game.</li>
                                     <li>Click "Enter" on the keyboard to submit your word, and get a list of the
