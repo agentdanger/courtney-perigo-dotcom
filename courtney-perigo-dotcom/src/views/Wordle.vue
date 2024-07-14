@@ -3,7 +3,7 @@
 <script setup>
 import AppNavBar from '../components/AppNavBar.vue'
 import wordleService from '../service/WordleService.js'
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
 const wordleSrv = new wordleService()
 
@@ -623,6 +623,26 @@ function getWordleReco(wordleWord) {
         wordleRecoList.value.push(wordleWord[i])
     }
 }
+
+// Handle keyboard events
+function handleKeydown(event) {
+    const key = event.key.toLowerCase();
+    if (key === 'enter') {
+        enterWordle();
+    } else if (key === 'backspace') {
+        backspaceInput();
+    } else if (/^[a-z]$/.test(key)) {
+        keyboardInput(key);
+    }
+}
+
+onMounted(() => {
+    window.addEventListener('keydown', handleKeydown);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('keydown', handleKeydown);
+});
 
 </script>
 
