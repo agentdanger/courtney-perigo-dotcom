@@ -610,29 +610,22 @@ function getWordleReco(wordleWord) {
                         </header>
                         <div class="card-content">
                             <div class="content has-text-white">
-                                <div class="columns">
-                                    <div class="column is-1"></div>
-                                    <div class="column">
-                                        <p><span class="is-underlined has-text-weight-bold">Directions:</span>
-                                        <ol>
-                                            <li>Enter your starting word from your Wordle using the keyboard below.</li>
-                                            <li>Click the letters to change the color of your letters based on your
-                                                Wordle game.</li>
-                                            <li>Click "Enter" on the keyboard to submit your word, and get a list of the
-                                                best words to play next.</li>
-                                            <li>Continue adding words until you finish, and find your Wordle word.</li>
-                                        </ol>
-                                        <span class="is-underlined has-text-weight-bold">Note:</span>
-                                        <p>
-                                            You'll see a list of the best words to play next. Playing the #1 word
-                                            reveals the most
-                                            information about the game using information theory / entropy.
-                                        </p>
-                                        </p>
-                                    </div>
-                                    <div class="column is-1"></div>
-                                </div>
-
+                                <p><span class="is-underlined has-text-weight-bold">Directions:</span>
+                                <ol>
+                                    <li>Enter your starting word from your Wordle using the keyboard below.</li>
+                                    <li>Click the letters to change the color of your letters based on your
+                                        Wordle game.</li>
+                                    <li>Click "Enter" on the keyboard to submit your word, and get a list of the
+                                        best words to play next.</li>
+                                    <li>Continue adding words until you finish, and find your Wordle word.</li>
+                                </ol>
+                                <span class="is-underlined has-text-weight-bold">Note:</span>
+                                <p>
+                                    You'll see a list of the best words to play next. Playing the #1 word
+                                    reveals the most
+                                    information about the game using information theory / entropy.
+                                </p>
+                                </p>
                             </div>
                         </div>
                         <div class="card-content">
