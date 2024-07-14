@@ -16,303 +16,458 @@ function forceInput1(input_string) {
 }
 
 
-var greenLetters = ref(['none', 'none', 'none', 'none', 'none'])
-// default null values for green letters
-var greenLetters1 = ref('')
-var tmpGrn1 = ref('')
-var greenLetterButton1 = ref('--')
-
-watch(greenLetters1, (newGreenLetter1, oldgreenLetter1) => {
-    tmpGrn1.value = forceInput1(newGreenLetter1)
-    if (tmpGrn1 !== '') {
-        greenLetterButton1.value = tmpGrn1.value.toUpperCase()
-        if (tmpGrn1.value !== '--') {
-            greenLetters.value[0] = tmpGrn1.value.toLowerCase()
-        } else {
-            greenLetters.value[0] = 'none'
-        }
-    } else {
-        greenLetterButton1.value = "--"
-        greenLetters.value[0] = 'none'
+// json object to track the status of each letter in the wordle words
+var wordleWords = ref({
+    word1: {
+        active: true,
+        value1: '_',
+        value2: '_',
+        value3: '_',
+        value4: '_',
+        value5: '_',
+        status1: 'inactive',
+        status2: 'inactive',
+        status3: 'inactive',
+        status4: 'inactive',
+        status5: 'inactive'
+    },
+    word2: {
+        active: false,
+        value1: '_',
+        value2: '_',
+        value3: '_',
+        value4: '_',
+        value5: '_',
+        status1: 'inactive',
+        status2: 'inactive',
+        status3: 'inactive',
+        status4: 'inactive',
+        status5: 'inactive'
+    },
+    word3: {
+        active: false,
+        value1: '_',
+        value2: '_',
+        value3: '_',
+        value4: '_',
+        value5: '_',
+        status1: 'inactive',
+        status2: 'inactive',
+        status3: 'inactive',
+        status4: 'inactive',
+        status5: 'inactive'
+    },
+    word4: {
+        active: false,
+        value1: '_',
+        value2: '_',
+        value3: '_',
+        value4: '_',
+        value5: '_',
+        status1: 'inactive',
+        status2: 'inactive',
+        status3: 'inactive',
+        status4: 'inactive',
+        status5: 'inactive'
+    },
+    word5: {
+        active: false,
+        value1: '_',
+        value2: '_',
+        value3: '_',
+        value4: '_',
+        value5: '_',
+        status1: 'inactive',
+        status2: 'inactive',
+        status3: 'inactive',
+        status4: 'inactive',
+        status5: 'inactive'
     }
 })
 
-var greenLetters2 = ref('')
-var tmpGrn2 = ref('')
-var greenLetterButton2 = ref('--')
-
-watch(greenLetters2, (newGreenLetter2, oldgreenLetter2) => {
-    tmpGrn2.value = forceInput1(newGreenLetter2)
-    if (tmpGrn2 !== '') {
-        greenLetterButton2.value = tmpGrn2.value.toUpperCase()
-        if (tmpGrn2.value !== '--') {
-            greenLetters.value[1] = tmpGrn2.value.toLowerCase()
-        } else {
-            greenLetters.value[1] = 'none'
+function keyboardInput(letter) {
+    if (wordleWords.value.word1.active && wordleWords.value.word1.value5 == '_') {
+        // replace the first underscore with the letter
+        if (wordleWords.value.word1.value1 == '_') {
+            wordleWords.value.word1.value1 = letter.toUpperCase()
+        } else if (wordleWords.value.word1.value2 == '_') {
+            wordleWords.value.word1.value2 = letter.toUpperCase()
+        } else if (wordleWords.value.word1.value3 == '_') {
+            wordleWords.value.word1.value3 = letter.toUpperCase()
+        } else if (wordleWords.value.word1.value4 == '_') {
+            wordleWords.value.word1.value4 = letter.toUpperCase()
+        } else if (wordleWords.value.word1.value5 == '_') {
+            wordleWords.value.word1.value5 = letter.toUpperCase()
         }
-    } else {
-        greenLetterButton2.value = "--"
-        greenLetters.value[1] = 'none'
-    }
-})
-
-var greenLetters3 = ref('')
-var tmpGrn3 = ref('')
-var greenLetterButton3 = ref('--')
-
-watch(greenLetters3, (newGreenLetter3, oldgreenLetter3) => {
-    tmpGrn3.value = forceInput1(newGreenLetter3)
-    if (tmpGrn3 !== '') {
-        greenLetterButton3.value = tmpGrn3.value.toUpperCase()
-        if (tmpGrn3.value !== '--') {
-            greenLetters.value[2] = tmpGrn3.value.toLowerCase()
-        } else {
-            greenLetters.value[2] = 'none'
+    } else if (wordleWords.value.word2.active && wordleWords.value.word2.value5 == '_') {
+        // replace the first underscore with the letter
+        if (wordleWords.value.word2.value1 == '_') {
+            wordleWords.value.word2.value1 = letter.toUpperCase()
+        } else if (wordleWords.value.word2.value2 == '_') {
+            wordleWords.value.word2.value2 = letter.toUpperCase()
+        } else if (wordleWords.value.word2.value3 == '_') {
+            wordleWords.value.word2.value3 = letter.toUpperCase()
+        } else if (wordleWords.value.word2.value4 == '_') {
+            wordleWords.value.word2.value4 = letter.toUpperCase()
+        } else if (wordleWords.value.word2.value5 == '_') {
+            wordleWords.value.word2.value5 = letter.toUpperCase()
         }
-    } else {
-        greenLetterButton3.value = "--"
-        greenLetters.value[2] = 'none'
-    }
-})
-
-var greenLetters4 = ref('')
-var tmpGrn4 = ref('')
-var greenLetterButton4 = ref('--')
-
-watch(greenLetters4, (newGreenLetter4, oldgreenLetter4) => {
-    tmpGrn4.value = forceInput1(newGreenLetter4)
-    if (tmpGrn4 !== '') {
-        greenLetterButton4.value = tmpGrn4.value.toUpperCase()
-        if (tmpGrn4.value !== '--') {
-            greenLetters.value[3] = tmpGrn4.value.toLowerCase()
-        } else {
-            greenLetters.value[3] = 'none'
+    } else if (wordleWords.value.word3.active && wordleWords.value.word3.value5 == '_') {
+        // replace the first underscore with the letter
+        if (wordleWords.value.word3.value1 == '_') {
+            wordleWords.value.word3.value1 = letter.toUpperCase()
+        } else if (wordleWords.value.word3.value2 == '_') {
+            wordleWords.value.word3.value2 = letter.toUpperCase()
+        } else if (wordleWords.value.word3.value3 == '_') {
+            wordleWords.value.word3.value3 = letter.toUpperCase()
+        } else if (wordleWords.value.word3.value4 == '_') {
+            wordleWords.value.word3.value4 = letter.toUpperCase()
+        } else if (wordleWords.value.word3.value5 == '_') {
+            wordleWords.value.word3.value5 = letter.toUpperCase()
         }
-    } else {
-        greenLetterButton4.value = "--"
-        greenLetters.value[3] = 'none'
-    }
-})
-
-var greenLetters5 = ref('')
-var tmpGrn5 = ref('')
-var greenLetterButton5 = ref('--')
-
-watch(greenLetters5, (newGreenLetter5, oldgreenLetter5) => {
-    tmpGrn5.value = forceInput1(newGreenLetter5)
-    if (tmpGrn5 !== '') {
-        greenLetterButton5.value = tmpGrn5.value.toUpperCase()
-        if (tmpGrn5.value !== '--') {
-            greenLetters.value[4] = tmpGrn5.value.toLowerCase()
-        } else {
-            greenLetters.value[4] = 'none'
+    } else if (wordleWords.value.word4.active && wordleWords.value.word4.value5 == '_') {
+        // replace the first underscore with the letter
+        if (wordleWords.value.word4.value1 == '_') {
+            wordleWords.value.word4.value1 = letter.toUpperCase()
+        } else if (wordleWords.value.word4.value2 == '_') {
+            wordleWords.value.word4.value2 = letter.toUpperCase()
+        } else if (wordleWords.value.word4.value3 == '_') {
+            wordleWords.value.word4.value3 = letter.toUpperCase()
+        } else if (wordleWords.value.word4.value4 == '_') {
+            wordleWords.value.word4.value4 = letter.toUpperCase()
+        } else if (wordleWords.value.word4.value5 == '_') {
+            wordleWords.value.word4.value5 = letter.toUpperCase()
         }
-    } else {
-        greenLetterButton5.value = "--"
-        greenLetters.value[4] = 'none'
+    } else if (wordleWords.value.word5.active && wordleWords.value.word5.value5 == '_') {
+        // replace the first underscore with the letter
+        if (wordleWords.value.word5.value1 == '_') {
+            wordleWords.value.word5.value1 = letter.toUpperCase()
+        } else if (wordleWords.value.word5.value2 == '_') {
+            wordleWords.value.word5.value2 = letter.toUpperCase()
+        } else if (wordleWords.value.word5.value3 == '_') {
+            wordleWords.value.word5.value3 = letter.toUpperCase()
+        } else if (wordleWords.value.word5.value4 == '_') {
+            wordleWords.value.word5.value4 = letter.toUpperCase()
+        } else if (wordleWords.value.word5.value5 == '_') {
+            wordleWords.value.word5.value5 = letter.toUpperCase()
+        }
     }
-})
-
-function isLetter(str) {
-    return str.length === 1 && str.match(/[a-z]/i);
 }
 
-var yellowLetters = ref([['none'], ['none'], ['none'], ['none'], ['none']])
-// default null values for yellow letters, can have multiple yellow letters in each position
-var yellowLetters1 = ref('')
-var tmpYel1 = ref('')
-var tmpYel1_List = ref([])
-var yellowLettersList1 = ref(['none'])
-var yellowLetterButton1 = ref('--')
+function backspaceInput() {
+    // replace the last letter with an underscore
+    if (wordleWords.value.word5.active) {
+        if (wordleWords.value.word5.value5 !== '_') {
+            wordleWords.value.word5.value5 = '_'
+            resetLetterStatus(5, 5)
+        } else if (wordleWords.value.word5.value4 !== '_') {
+            wordleWords.value.word5.value4 = '_'
+            resetLetterStatus(5, 4)
+        } else if (wordleWords.value.word5.value3 !== '_') {
+            wordleWords.value.word5.value3 = '_'
+            resetLetterStatus(5, 3)
+        } else if (wordleWords.value.word5.value2 !== '_') {
+            wordleWords.value.word5.value2 = '_'
+            resetLetterStatus(5, 2)
+        } else if (wordleWords.value.word5.value1 !== '_') {
+            wordleWords.value.word5.value1 = '_'
+            resetLetterStatus(5, 1)
+        }
+    } else if (wordleWords.value.word4.active) {
+        if (wordleWords.value.word4.value5 !== '_') {
+            wordleWords.value.word4.value5 = '_'
+            resetLetterStatus(4, 5)
+        } else if (wordleWords.value.word4.value4 !== '_') {
+            wordleWords.value.word4.value4 = '_'
+            resetLetterStatus(4, 4)
+        } else if (wordleWords.value.word4.value3 !== '_') {
+            wordleWords.value.word4.value3 = '_'
+            resetLetterStatus(4, 3)
+        } else if (wordleWords.value.word4.value2 !== '_') {
+            wordleWords.value.word4.value2 = '_'
+            resetLetterStatus(4, 2)
+        } else if (wordleWords.value.word4.value1 !== '_') {
+            wordleWords.value.word4.value1 = '_'
+            resetLetterStatus(4, 1)
+        }
+    } else if (wordleWords.value.word3.active) {
+        if (wordleWords.value.word3.value5 !== '_') {
+            wordleWords.value.word3.value5 = '_'
+            resetLetterStatus(3, 5)
+        } else if (wordleWords.value.word3.value4 !== '_') {
+            wordleWords.value.word3.value4 = '_'
+            resetLetterStatus(3, 4)
+        } else if (wordleWords.value.word3.value3 !== '_') {
+            wordleWords.value.word3.value3 = '_'
+            resetLetterStatus(3, 3)
+        } else if (wordleWords.value.word3.value2 !== '_') {
+            wordleWords.value.word3.value2 = '_'
+            resetLetterStatus(3, 2)
+        } else if (wordleWords.value.word3.value1 !== '_') {
+            wordleWords.value.word3.value1 = '_'
+            resetLetterStatus(3, 1)
+        }
+    } else if (wordleWords.value.word2.active) {
+        if (wordleWords.value.word2.value5 !== '_') {
+            wordleWords.value.word2.value5 = '_'
+            resetLetterStatus(2, 5)
+        } else if (wordleWords.value.word2.value4 !== '_') {
+            wordleWords.value.word2.value4 = '_'
+            resetLetterStatus(2, 4)
+        } else if (wordleWords.value.word2.value3 !== '_') {
+            wordleWords.value.word2.value3 = '_'
+            resetLetterStatus(2, 3)
+        } else if (wordleWords.value.word2.value2 !== '_') {
+            wordleWords.value.word2.value2 = '_'
+            resetLetterStatus(2, 2)
+        } else if (wordleWords.value.word2.value1 !== '_') {
+            wordleWords.value.word2.value1 = '_'
+            resetLetterStatus(2, 1)
+        }
+    } else if (wordleWords.value.word1.active) {
+        if (wordleWords.value.word1.value5 !== '_') {
+            wordleWords.value.word1.value5 = '_'
+            resetLetterStatus(1, 5)
+        } else if (wordleWords.value.word1.value4 !== '_') {
+            wordleWords.value.word1.value4 = '_'
+            resetLetterStatus(1, 4)
+        } else if (wordleWords.value.word1.value3 !== '_') {
+            wordleWords.value.word1.value3 = '_'
+            resetLetterStatus(1, 3)
+        } else if (wordleWords.value.word1.value2 !== '_') {
+            wordleWords.value.word1.value2 = '_'
+            resetLetterStatus(1, 2)
+        } else if (wordleWords.value.word1.value1 !== '_') {
+            wordleWords.value.word1.value1 = '_'
+            resetLetterStatus(1, 1)
+        }
+    }
+}
 
-watch(yellowLetters1, (newYellowLetter1, oldYellowLetter1) => {
-    if (newYellowLetter1 !== '') {
-        // write each letter to a custom string of letters with commas
-        tmpYel1.value = newYellowLetter1
-        tmpYel1_List.value = []
-        yellowLettersList1.value = []
-        for (var i = 0; i < tmpYel1.value.length; i++) {
-            // check if character is english alphabet only.
-            yellowLettersList1.value.push(tmpYel1.value[i].toLowerCase())
-            if (i > 0) {
-                tmpYel1_List.value += ","
+function rotateLetterStatus(status) {
+    if (status == 'inactive') {
+        return 'yellow'
+    } else if (status == 'yellow') {
+        return 'green'
+    } else if (status == 'green') {
+        return 'inactive'
+    }
+}
+
+function returnButtonFormat(status) {
+    if (status == 'inactive') {
+        return 'button is-black mr-1 ml-1'
+    } else if (status == 'yellow') {
+        return 'button is-warning mr-1 ml-1'
+    } else if (status == 'green') {
+        return 'button is-link mr-1 ml-1'
+    } else {
+        return 'button is-black mr-1 ml-1'
+    }
+}
+
+function resetLetterStatus(wordPos, letterPos) {
+    if (wordPos == 1) {
+        if (letterPos == 1) {
+            wordleWords.value.word1.status1 = 'inactive'
+        } else if (letterPos == 2) {
+            wordleWords.value.word1.status2 = 'inactive'
+        } else if (letterPos == 3) {
+            wordleWords.value.word1.status3 = 'inactive'
+        } else if (letterPos == 4) {
+            wordleWords.value.word1.status4 = 'inactive'
+        } else if (letterPos == 5) {
+            wordleWords.value.word1.status5 = 'inactive'
+        }
+    } else if (wordPos == 2) {
+        if (letterPos == 1) {
+            wordleWords.value.word2.status1 = 'inactive'
+        } else if (letterPos == 2) {
+            wordleWords.value.word2.status2 = 'inactive'
+        } else if (letterPos == 3) {
+            wordleWords.value.word2.status3 = 'inactive'
+        } else if (letterPos == 4) {
+            wordleWords.value.word2.status4 = 'inactive'
+        } else if (letterPos == 5) {
+            wordleWords.value.word2.status5 = 'inactive'
+        }
+    } else if (wordPos == 3) {
+        if (letterPos == 1) {
+            wordleWords.value.word3.status1 = 'inactive'
+        } else if (letterPos == 2) {
+            wordleWords.value.word3.status2 = 'inactive'
+        } else if (letterPos == 3) {
+            wordleWords.value.word3.status3 = 'inactive'
+        } else if (letterPos == 4) {
+            wordleWords.value.word3.status4 = 'inactive'
+        } else if (letterPos == 5) {
+            wordleWords.value.word3.status5 = 'inactive'
+        }
+    } else if (wordPos == 4) {
+        if (letterPos == 1) {
+            wordleWords.value.word4.status1 = 'inactive'
+        } else if (letterPos == 2) {
+            wordleWords.value.word4.status2 = 'inactive'
+        } else if (letterPos == 3) {
+            wordleWords.value.word4.status3 = 'inactive'
+        } else if (letterPos == 4) {
+            wordleWords.value.word4.status4 = 'inactive'
+        } else if (letterPos == 5) {
+            wordleWords.value.word4.status5 = 'inactive'
+        }
+    } else if (wordPos == 5) {
+        if (letterPos == 1) {
+            wordleWords.value.word5.status1 = 'inactive'
+        } else if (letterPos == 2) {
+            wordleWords.value.word5.status2 = 'inactive'
+        } else if (letterPos == 3) {
+            wordleWords.value.word5.status3 = 'inactive'
+        } else if (letterPos == 4) {
+            wordleWords.value.word5.status4 = 'inactive'
+        } else if (letterPos == 5) {
+            wordleWords.value.word5.status5 = 'inactive'
+        }
+    }
+}
+
+function changeLetterStatus(wordPos, letterPos) {
+    if (wordPos == 1) {
+        if (letterPos == 1) {
+            wordleWords.value.word1.status1 = rotateLetterStatus(wordleWords.value.word1.status1)
+        } else if (letterPos == 2) {
+            wordleWords.value.word1.status2 = rotateLetterStatus(wordleWords.value.word1.status2)
+        } else if (letterPos == 3) {
+            wordleWords.value.word1.status3 = rotateLetterStatus(wordleWords.value.word1.status3)
+        } else if (letterPos == 4) {
+            wordleWords.value.word1.status4 = rotateLetterStatus(wordleWords.value.word1.status4)
+        } else if (letterPos == 5) {
+            wordleWords.value.word1.status5 = rotateLetterStatus(wordleWords.value.word1.status5)
+        }
+    } else if (wordPos == 2) {
+        if (letterPos == 1) {
+            wordleWords.value.word2.status1 = rotateLetterStatus(wordleWords.value.word2.status1)
+        } else if (letterPos == 2) {
+            wordleWords.value.word2.status2 = rotateLetterStatus(wordleWords.value.word2.status2)
+        } else if (letterPos == 3) {
+            wordleWords.value.word2.status3 = rotateLetterStatus(wordleWords.value.word2.status3)
+        } else if (letterPos == 4) {
+            wordleWords.value.word2.status4 = rotateLetterStatus(wordleWords.value.word2.status4)
+        } else if (letterPos == 5) {
+            wordleWords.value.word2.status5 = rotateLetterStatus(wordleWords.value.word2.status5)
+        }
+    } else if (wordPos == 3) {
+        if (letterPos == 1) {
+            wordleWords.value.word3.status1 = rotateLetterStatus(wordleWords.value.word3.status1)
+        } else if (letterPos == 2) {
+            wordleWords.value.word3.status2 = rotateLetterStatus(wordleWords.value.word3.status2)
+        } else if (letterPos == 3) {
+            wordleWords.value.word3.status3 = rotateLetterStatus(wordleWords.value.word3.status3)
+        } else if (letterPos == 4) {
+            wordleWords.value.word3.status4 = rotateLetterStatus(wordleWords.value.word3.status4)
+        } else if (letterPos == 5) {
+            wordleWords.value.word3.status5 = rotateLetterStatus(wordleWords.value.word3.status5)
+        }
+    } else if (wordPos == 4) {
+        if (letterPos == 1) {
+            wordleWords.value.word4.status1 = rotateLetterStatus(wordleWords.value.word4.status1)
+        } else if (letterPos == 2) {
+            wordleWords.value.word4.status2 = rotateLetterStatus(wordleWords.value.word4.status2)
+        } else if (letterPos == 3) {
+            wordleWords.value.word4.status3 = rotateLetterStatus(wordleWords.value.word4.status3)
+        } else if (letterPos == 4) {
+            wordleWords.value.word4.status4 = rotateLetterStatus(wordleWords.value.word4.status4)
+        } else if (letterPos == 5) {
+            wordleWords.value.word4.status5 = rotateLetterStatus(wordleWords.value.word4.status5)
+        }
+    } else if (wordPos == 5) {
+        if (letterPos == 1) {
+            wordleWords.value.word5.status1 = rotateLetterStatus(wordleWords.value.word5.status1)
+        } else if (letterPos == 2) {
+            wordleWords.value.word5.status2 = rotateLetterStatus(wordleWords.value.word5.status2)
+        } else if (letterPos == 3) {
+            wordleWords.value.word5.status3 = rotateLetterStatus(wordleWords.value.word5.status3)
+        } else if (letterPos == 4) {
+            wordleWords.value.word5.status4 = rotateLetterStatus(wordleWords.value.word5.status4)
+        } else if (letterPos == 5) {
+            wordleWords.value.word5.status5 = rotateLetterStatus(wordleWords.value.word5.status5)
+        }
+    }
+}
+
+function processWord(word, greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList) {
+    // rotate through active wordleWords and create lists
+    if (word.active) {
+        var workingBlackLetters = ref([])
+        var workingLetters = ref([])
+        if (word.status1 == 'green') {
+            greenLettersList.value[0] = word.value1.toLowerCase()
+            workingLetters.value.push(word.value1.toLowerCase())
+        } else if (word.status1 === 'yellow') {
+            yellowLettersList1.value[0] = word.value1.toLowerCase()
+            workingLetters.value.push(word.value1.toLowerCase())
+        } else if (word.status1 === 'inactive') {
+            workingBlackLetters.value.push(word.value1.toLowerCase())
+        }
+        if (word.status2 == 'green') {
+            greenLettersList.value[1] = word.value2.toLowerCase()
+            workingLetters.value.push(word.value2.toLowerCase())
+        } else if (word.status2 === 'yellow') {
+            yellowLettersList2.value[0] = word.value2.toLowerCase()
+            workingLetters.value.push(word.value2.toLowerCase())
+        } else if (word.status2 === 'inactive') {
+            workingBlackLetters.value.push(word.value2.toLowerCase())
+        }
+        if (word.status3 == 'green') {
+            greenLettersList.value[2] = word.value3.toLowerCase()
+            workingLetters.value.push(word.value3.toLowerCase())
+        } else if (word.status3 === 'yellow') {
+            yellowLettersList3.value[0] = word.value3.toLowerCase()
+            workingLetters.value.push(word.value3.toLowerCase())
+        } else if (word.status3 === 'inactive') {
+            workingBlackLetters.value.push(word.value3.toLowerCase())
+        }
+        if (word.status4 == 'green') {
+            greenLettersList.value[3] = word.value4.toLowerCase()
+        } else if (word.status4 === 'yellow') {
+            yellowLettersList4.value[0] = word.value4.toLowerCase()
+        } else if (word.status4 === 'inactive') {
+            workingBlackLetters.value.push(word.value4.toLowerCase())
+        }
+        if (word.status5 == 'green') {
+            greenLettersList.value[4] = word.value5.toLowerCase()
+        } else if (word.status5 === 'yellow') {
+            yellowLettersList5.value[0] = word.value5.toLowerCase()
+        } else if (word.status5 === 'inactive') {
+            workingBlackLetters.value.push(word.value5.toLowerCase())
+        }
+        // Check for black letters in working letters
+        workingBlackLetters.value.forEach(blkLetter => {
+            const count = workingLetters.value.filter(wrkLetter => wrkLetter === blkLetter).length;
+            if (count === 2) {
+                tripleLettersList.value.push(blkLetter);
+            } else if (count === 1) {
+                doubleLettersList.value.push(blkLetter);
             }
-            tmpYel1_List.value += tmpYel1.value[i].toUpperCase()
-            yellowLetterButton1.value = tmpYel1_List.value
-        }
-        yellowLetters.value[0] = yellowLettersList1.value
-    } else {
-        yellowLetterButton1.value = "--"
-        yellowLetters.value[0] = ['none']
+        });
+        // Remove any workingBlackLetters that appear in doubleLettersList or tripleLettersList
+        workingBlackLetters.value = workingBlackLetters.value.filter(blkLetter =>
+            !doubleLettersList.value.includes(blkLetter) && !tripleLettersList.value.includes(blkLetter)
+        );
+        // Add remaining workingBlackLetters to blackLettersList
+        workingBlackLetters.value.forEach(blkLetter => {
+            blackLettersList.value.push(blkLetter);
+        });
+        // remove duplications in blackLettersList
+        blackLettersList.value = [...new Set(blackLettersList.value)];
+        // remove "none" from blackLettersList
+        blackLettersList.value = blackLettersList.value.filter(blkLetter => blkLetter !== 'none');
+        // remove duplicates in doubleLettersList
+        doubleLettersList.value = [...new Set(doubleLettersList.value)];
+        // remove duplicates in tripleLettersList
+        tripleLettersList.value = [...new Set(tripleLettersList.value)];
     }
-})
-
-
-
-var yellowLetters2 = ref('')
-var tmpYel2 = ref('')
-var tmpYel2_List = ref([])
-var yellowLettersList2 = ref(['none'])
-var yellowLetterButton2 = ref('--')
-
-watch(yellowLetters2, (newYellowLetter2, oldYellowLetter2) => {
-    if (newYellowLetter2 !== '') {
-        // write each letter to a custom string of letters with commas
-        tmpYel2.value = newYellowLetter2
-        tmpYel2_List.value = []
-        yellowLettersList2.value = []
-        for (var i = 0; i < tmpYel2.value.length; i++) {
-            yellowLettersList2.value.push(tmpYel2.value[i].toLowerCase())
-            if (i > 0) {
-                tmpYel2_List.value += ","
-            }
-            tmpYel2_List.value += tmpYel2.value[i].toUpperCase()
-            yellowLetterButton2.value = tmpYel2_List.value
-        }
-        yellowLetters.value[1] = yellowLettersList2.value
-    } else {
-        yellowLetterButton2.value = "--"
-        yellowLetters.value[1] = ['none']
-    }
-})
-
-var yellowLetters3 = ref('')
-var tmpYel3 = ref('')
-var tmpYel3_List = ref([])
-var yellowLettersList3 = ref(['none'])
-var yellowLetterButton3 = ref('--')
-
-watch(yellowLetters3, (newYellowLetter3, oldYellowLetter3) => {
-    if (newYellowLetter3 !== '') {
-        // write each letter to a custom string of letters with commas
-        tmpYel3.value = newYellowLetter3
-        tmpYel3_List.value = []
-        yellowLettersList3.value = []
-        for (var i = 0; i < tmpYel3.value.length; i++) {
-            yellowLettersList3.value.push(tmpYel3.value[i].toLowerCase())
-            if (i > 0) {
-                tmpYel3_List.value += ","
-            }
-            tmpYel3_List.value += tmpYel3.value[i].toUpperCase()
-            yellowLetterButton3.value = tmpYel3_List.value
-        }
-        yellowLetters.value[2] = yellowLettersList3.value
-    } else {
-        yellowLetterButton3.value = "--"
-        yellowLetters.value[2] = ['none']
-    }
-})
-
-var yellowLetters4 = ref('')
-var tmpYel4 = ref('')
-var tmpYel4_List = ref([])
-var yellowLettersList4 = ref(['none'])
-var yellowLetterButton4 = ref('--')
-
-watch(yellowLetters4, (newYellowLetter4, oldYellowLetter4) => {
-    if (newYellowLetter4 !== '') {
-        // write each letter to a custom string of letters with commas
-        tmpYel4.value = newYellowLetter4
-        tmpYel4_List.value = []
-        yellowLettersList4.value = []
-        for (var i = 0; i < tmpYel4.value.length; i++) {
-            yellowLettersList4.value.push(tmpYel4.value[i].toLowerCase())
-            if (i > 0) {
-                tmpYel4_List.value += ","
-            }
-            tmpYel4_List.value += tmpYel4.value[i].toUpperCase()
-            yellowLetterButton4.value = tmpYel4_List.value
-        }
-        yellowLetters.value[3] = yellowLettersList4.value
-    } else {
-        yellowLetterButton4.value = "--"
-        yellowLetters.value[3] = ['none']
-    }
-})
-
-var yellowLetters5 = ref('')
-var tmpYel5 = ref('')
-var tmpYel5_List = ref([])
-var yellowLettersList5 = ref(['none'])
-var yellowLetterButton5 = ref('--')
-
-watch(yellowLetters5, (newYellowLetter5, oldYellowLetter5) => {
-    if (newYellowLetter5 !== '') {
-        // write each letter to a custom string of letters with commas
-        tmpYel5.value = newYellowLetter5
-        tmpYel5_List.value = []
-        yellowLettersList5.value = []
-        for (var i = 0; i < tmpYel5.value.length; i++) {
-            yellowLettersList5.value.push(tmpYel5.value[i].toLowerCase())
-            if (i > 0) {
-                tmpYel5_List.value += ","
-            }
-            tmpYel5_List.value += tmpYel5.value[i].toUpperCase()
-            yellowLetterButton5.value = tmpYel5_List.value
-        }
-        yellowLetters.value[4] = yellowLettersList5.value
-    } else {
-        yellowLetterButton5.value = "--"
-        yellowLetters.value[4] = ['none']
-    }
-})
-
-var blackLettersCantUse = ref('')
-var blackLettersCantUseList = ref(['-'])
-var blackLettersList = ref(['none'])
-
-watch(blackLettersCantUse, (newBlackLettersCantUse, oldBlackLettersCantUse) => {
-    if (newBlackLettersCantUse !== '') {
-        // append each letter to list
-        blackLettersCantUseList.value = []
-        blackLettersList.value = []
-        for (var i = 0; i < newBlackLettersCantUse.length; i++) {
-            blackLettersCantUseList.value.push(newBlackLettersCantUse[i].toUpperCase())
-            blackLettersList.value.push(newBlackLettersCantUse[i].toLowerCase())
-        }
-    } else {
-        blackLettersCantUseList.value = ['-']
-        blackLettersList.value = ['none']
-    }
-})
-
-var doubleLettersCantUse = ref('')
-var doubleLettersCantUseList = ref(['-'])
-var doubleLettersList = ref(['none'])
-
-watch(doubleLettersCantUse, (newDoubleLettersCantUse, oldDoubleLettersCantUse) => {
-    if (newDoubleLettersCantUse !== '') {
-        // append each letter to list
-        doubleLettersCantUseList.value = []
-        doubleLettersList.value = []
-        for (var i = 0; i < newDoubleLettersCantUse.length; i++) {
-            doubleLettersCantUseList.value.push(newDoubleLettersCantUse[i].toUpperCase())
-            doubleLettersList.value.push(newDoubleLettersCantUse[i].toLowerCase())
-        }
-    } else {
-        doubleLettersCantUseList.value = ['-']
-        doubleLettersList.value = ['none']
-    }
-})
-
-var tripleLettersCantUse = ref('')
-var tripleLettersCantUseList = ref(['-'])
-var tripleLettersList = ref(['none'])
-
-watch(tripleLettersCantUse, (newTripleLettersCantUse, oldTripleLettersCantUse) => {
-    if (newTripleLettersCantUse !== '') {
-        // append each letter to list
-        tripleLettersCantUseList.value = []
-        tripleLettersList.value = []
-        for (var i = 0; i < newTripleLettersCantUse.length; i++) {
-            tripleLettersCantUseList.value.push(newTripleLettersCantUse[i].toUpperCase())
-            tripleLettersList.value.push(newTripleLettersCantUse[i].toLowerCase())
-        }
-    } else {
-        tripleLettersCantUseList.value = ['-']
-        tripleLettersList.value = ['none']
-    }
-})
+    return greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList
+}
 
 var recommendedWords = ref([])
 
@@ -329,6 +484,100 @@ function createWordle(greenLetters, yellowLetters, blackLettersList, doubleLette
         })
 }
 
+function activateNextWord() {
+    if (!wordleWords.value.word2.active) {
+        wordleWords.value.word2.active = true
+    } else if (!wordleWords.value.word3.active) {
+        wordleWords.value.word3.active = true
+    } else if (!wordleWords.value.word4.active) {
+        wordleWords.value.word4.active = true
+    } else if (!wordleWords.value.word5.active) {
+        wordleWords.value.word5.active = true
+    }
+}
+
+var warnWordle = ref(false)
+
+function enterWordle() {
+    // process the wordle words
+    var greenLettersList = ref(['none', 'none', 'none', 'none', 'none'])
+    var yellowLettersList1 = ref(['none'])
+    var yellowLettersList2 = ref(['none'])
+    var yellowLettersList3 = ref(['none'])
+    var yellowLettersList4 = ref(['none'])
+    var yellowLettersList5 = ref(['none'])
+    var blackLettersList = ref(['none'])
+    var doubleLettersList = ref(['none'])
+    var tripleLettersList = ref(['none'])
+    if (wordleWords.value.word1.active) {
+        // check if the word has "_" in it
+        const tmpList1 = [wordleWords.value.word1.value1, wordleWords.value.word1.value2, wordleWords.value.word1.value3, wordleWords.value.word1.value4, wordleWords.value.word1.value5]
+        for (var i = 0; i < tmpList1.length; i++) {
+            if (tmpList1[i] === '_') {
+                warnWordle.value = true
+                return
+            } else {
+                warnWordle.value = false
+            }
+        }
+        greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList = processWord(wordleWords.value.word1, greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList)
+    }
+    if (wordleWords.value.word2.active) {
+        // check if the word has "_" in it
+        const tmpList2 = [wordleWords.value.word2.value1, wordleWords.value.word2.value2, wordleWords.value.word2.value3, wordleWords.value.word2.value4, wordleWords.value.word2.value5]
+        for (var i = 0; i < tmpList2.length; i++) {
+            if (tmpList2[i] === '_') {
+                warnWordle.value = true
+                return
+            } else {
+                warnWordle.value = false
+            }
+        }
+        greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList = processWord(wordleWords.value.word2, greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList)
+    }
+    if (wordleWords.value.word3.active) {
+        // check if the word has "_" in it
+        const tmpList3 = [wordleWords.value.word3.value1, wordleWords.value.word3.value2, wordleWords.value.word3.value3, wordleWords.value.word3.value4, wordleWords.value.word3.value5]
+        for (var i = 0; i < tmpList3.length; i++) {
+            if (tmpList3[i] === '_') {
+                warnWordle.value = true
+                return
+            } else {
+                warnWordle.value = false
+            }
+        }
+        greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList = processWord(wordleWords.value.word3, greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList)
+    }
+    if (wordleWords.value.word4.active) {
+        // check if the word has "_" in it
+        const tmpList4 = [wordleWords.value.word4.value1, wordleWords.value.word4.value2, wordleWords.value.word4.value3, wordleWords.value.word4.value4, wordleWords.value.word4.value5]
+        for (var i = 0; i < tmpList4.length; i++) {
+            if (tmpList4[i] === '_') {
+                warnWordle.value = true
+                return
+            } else {
+                warnWordle.value = false
+            }
+        }
+        greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList = processWord(wordleWords.value.word4, greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList)
+    }
+    if (wordleWords.value.word5.active) {
+        // check if the word has "_" in it
+        const tmpList5 = [wordleWords.value.word5.value1, wordleWords.value.word5.value2, wordleWords.value.word5.value3, wordleWords.value.word5.value4, wordleWords.value.word5.value5]
+        for (var i = 0; i < tmpList5.length; i++) {
+            if (tmpList5[i] === '_') {
+                warnWordle.value = true
+                return
+            } else {
+                warnWordle.value = false
+            }
+        }
+        greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList = processWord(wordleWords.value.word5, greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList)
+    }
+    console.log(greenLettersList.value, yellowLettersList1.value, yellowLettersList2.value, yellowLettersList3.value, yellowLettersList4.value, yellowLettersList5.value, blackLettersList.value, doubleLettersList.value, tripleLettersList.value)
+    createWordle(greenLettersList.value, [yellowLettersList1.value, yellowLettersList2.value, yellowLettersList3.value, yellowLettersList4.value, yellowLettersList5.value], blackLettersList.value, doubleLettersList.value, tripleLettersList.value)
+    activateNextWord()
+}
 
 var num = ref(0.0)
 
@@ -361,175 +610,215 @@ function getWordleReco(wordleWord) {
                         </header>
                         <div class="card-content">
                             <div class="content has-text-white">
-                                <p><span class="is-underlined has-text-weight-bold">Directions:</span> Enter the green,
-                                    yellow, and black letters from your Wordle game below. Enter letters only - no
-                                    commas or spaces. If you have any letters you can't use more than once or twice,
-                                    enter them in the appropriate
-                                    fields, do not enter doubles and triples into the black letter list. Click the
-                                    button to see the recommended words. You'll see a mix of common
-                                    and uncommon words to help you zero in on the Wordle answer. Playing the #1 word
-                                    reveals the most information about the game using information theory / entropy.</p>
-                            </div>
-                        </div>
-                        <div class="card-content has-text-centered">
-                            <!-- show the values in each text box as font awesome buttons in a nice layout -->
-                            <div class="field is-grouped is-grouped-centered">
-                                <button class="button is-link mr-2">
-                                    <span class="is-size-5">{{ greenLetterButton1 }}</span>
-                                </button>
-                                <button class="button is-link mr-2">
-                                    <span class="is-size-5">{{ greenLetterButton2 }}</span>
-                                </button>
-                                <button class="button is-link mr-2">
-                                    <span class="is-size-5">{{ greenLetterButton3 }}</span>
-                                </button>
-                                <button class="button is-link mr-2">
-                                    <span class="is-size-5">{{ greenLetterButton4 }}</span>
-                                </button>
-                                <button class="button is-link mr-2">
-                                    <span class="is-size-5">{{ greenLetterButton5 }}</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-content has-text-centered">
-                            <!-- show the values in each text box as font awesome buttons in a nice layout -->
-                            <div class="field is-grouped is-grouped-centered">
-                                <button class="button is-warning mr-2">
-                                    <span class="is-size-5">{{ yellowLetterButton1 }}</span>
-                                </button>
-                                <button class="button is-warning mr-2">
-                                    <span class="is-size-5">{{ yellowLetterButton2 }}</span>
-                                </button>
-                                <button class="button is-warning mr-2">
-                                    <span class="is-size-5">{{ yellowLetterButton3 }}</span>
-                                </button>
-                                <button class="button is-warning mr-2">
-                                    <span class="is-size-5">{{ yellowLetterButton4 }}</span>
-                                </button>
-                                <button class="button is-warning mr-2">
-                                    <span class="is-size-5">{{ yellowLetterButton5 }}</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-content has-text-centered">
-                            <!-- show the values in each text box as font awesome buttons in a nice layout -->
-                            <div class="field is-grouped is-grouped-centered">
-                                <!-- loop through black letters list and add a black button with the letter -->
-                                <div v-for="letter in blackLettersCantUseList">
-                                    <button class="button is-dark mr-2">
-                                        <span class="is-size-5">{{ letter }}</span>
-                                    </button>
+                                <div class="columns">
+                                    <div class="column is-1"></div>
+                                    <div class="column">
+                                        <p><span class="is-underlined has-text-weight-bold">Directions:</span>
+                                        <ol>
+                                            <li>Enter your starting word from your Wordle using the keyboard below.</li>
+                                            <li>Click the letters to change the color of your letters based on your
+                                                Wordle game.</li>
+                                            <li>Click "Enter" on the keyboard to submit your word, and get a list of the
+                                                best words to play next.</li>
+                                            <li>Continue until you finish find the Wordle word!</li>
+                                        </ol>
+                                        <span class="is-underlined has-text-weight-bold">Note:</span>
+                                        <p>
+                                            You'll see a list of the best words. Playing the #1 word reveals the most
+                                            information about the game using information theory / entropy.
+                                        </p>
+                                        </p>
+                                    </div>
+                                    <div class="column is-1"></div>
                                 </div>
-                                <div v-for="letter in doubleLettersCantUseList">
-                                    <button class="button is-black mr-2">
-                                        <span class="is-size-5">{{ letter }}</span>
-                                    </button>
-                                </div>
-                                <div v-for="letter in tripleLettersCantUseList">
-                                    <button class="button is-light mr-2">
-                                        <span class="is-size-5">{{ letter }}</span>
-                                    </button>
+
+                            </div>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word1.active">
+                                <button :class="returnButtonFormat(wordleWords.word1.status1)"
+                                    @click="changeLetterStatus(1, 1)">
+                                    <span class="is-size-5">{{ wordleWords.word1.value1 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word1.status2)"
+                                    @click="changeLetterStatus(1, 2)">
+                                    <span class="is-size-5">{{ wordleWords.word1.value2 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word1.status3)"
+                                    @click="changeLetterStatus(1, 3)">
+                                    <span class="is-size-5">{{ wordleWords.word1.value3 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word1.status4)"
+                                    @click="changeLetterStatus(1, 4)">
+                                    <span class="is-size-5">{{ wordleWords.word1.value4 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word1.status5)"
+                                    @click="changeLetterStatus(1, 5)">
+                                    <span class="is-size-5">{{ wordleWords.word1.value5 }}</span>
+                                </button>
+                            </div>
+                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word2.active">
+                                <button :class="returnButtonFormat(wordleWords.word2.status1)"
+                                    @click="changeLetterStatus(2, 1)">
+                                    <span class="is-size-5">{{ wordleWords.word2.value1 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word2.status2)"
+                                    @click="changeLetterStatus(2, 2)">
+                                    <span class="is-size-5">{{ wordleWords.word2.value2 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word2.status3)"
+                                    @click="changeLetterStatus(2, 3)">
+                                    <span class="is-size-5">{{ wordleWords.word2.value3 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word2.status4)"
+                                    @click="changeLetterStatus(2, 4)">
+                                    <span class="is-size-5">{{ wordleWords.word2.value4 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word2.status5)"
+                                    @click="changeLetterStatus(2, 5)">
+                                    <span class="is-size-5">{{ wordleWords.word2.value5 }}</span>
+                                </button>
+                            </div>
+                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word3.active">
+                                <button :class="returnButtonFormat(wordleWords.word3.status1)"
+                                    @click="changeLetterStatus(3, 1)">
+                                    <span class="is-size-5">{{ wordleWords.word3.value1 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word3.status2)"
+                                    @click="changeLetterStatus(3, 2)">
+                                    <span class="is-size-5">{{ wordleWords.word3.value2 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word3.status3)"
+                                    @click="changeLetterStatus(3, 3)">
+                                    <span class="is-size-5">{{ wordleWords.word3.value3 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word3.status4)"
+                                    @click="changeLetterStatus(3, 4)">
+                                    <span class="is-size-5">{{ wordleWords.word3.value4 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word3.status5)"
+                                    @click="changeLetterStatus(3, 5)">
+                                    <span class="is-size-5">{{ wordleWords.word3.value5 }}</span>
+                                </button>
+                            </div>
+                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word4.active">
+                                <button :class="returnButtonFormat(wordleWords.word4.status1)"
+                                    @click="changeLetterStatus(4, 1)">
+                                    <span class="is-size-5">{{ wordleWords.word4.value1 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word4.status2)"
+                                    @click="changeLetterStatus(4, 2)">
+                                    <span class="is-size-5">{{ wordleWords.word4.value2 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word4.status3)"
+                                    @click="changeLetterStatus(4, 3)">
+                                    <span class="is-size-5">{{ wordleWords.word4.value3 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word4.status4)"
+                                    @click="changeLetterStatus(4, 4)">
+                                    <span class="is-size-5">{{ wordleWords.word4.value4 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word4.status5)"
+                                    @click="changeLetterStatus(4, 5)">
+                                    <span class="is-size-5">{{ wordleWords.word4.value5 }}</span>
+                                </button>
+                            </div>
+                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word5.active">
+                                <button :class="returnButtonFormat(wordleWords.word5.status1)"
+                                    @click="changeLetterStatus(5, 1)">
+                                    <span class="is-size-5">{{ wordleWords.word5.value1 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word5.status2)"
+                                    @click="changeLetterStatus(5, 2)">
+                                    <span class="is-size-5">{{ wordleWords.word5.value2 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word5.status3)"
+                                    @click="changeLetterStatus(5, 3)">
+                                    <span class="is-size-5">{{ wordleWords.word5.value3 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word5.status4)"
+                                    @click="changeLetterStatus(5, 4)">
+                                    <span class="is-size-5">{{ wordleWords.word5.value4 }}</span>
+                                </button>
+                                <button :class="returnButtonFormat(wordleWords.word5.status5)"
+                                    @click="changeLetterStatus(5, 5)">
+                                    <span class="is-size-5">{{ wordleWords.word5.value5 }}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-content" v-if="warnWordle">
+                            <!-- Add Warning Message if word has "_" -->
+                            <div class="box p-1 mt-6" >
+                                <div class="card has-background-danger">
+                                    <header class="card-header ">
+                                        <p class="card-header-title has-text-white is-size-4">
+                                            Warning: Please enter a valid word.  Refresh the page to start over.
+                                        </p>
+                                    </header>
+                                    <div class="card-content">
+                                        <div class="content has-text-white">
+                                            <p>
+                                                Please fill in all the letters in the word before submitting.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-content">
-                            <div class="columns is-vcentered">
-                                <div class="column is-one-fifth has-text-white has-text-centered">
-                                    Enter Green Letters:
-                                </div>
-                                <div class="column">
-                                    <div class="columns">
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-link" type="text" placeholder="Green Pos-1"
-                                                v-model="greenLetters1">
-                                        </div>
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-link" type="text" placeholder="Green Pos-2"
-                                                v-model="greenLetters2">
-                                        </div>
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-link" type="text" placeholder="Green Pos-3"
-                                                v-model="greenLetters3">
-                                        </div>
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-link" type="text" placeholder="Green Pos-4"
-                                                v-model="greenLetters4">
-                                        </div>
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-link" type="text" placeholder="Green Pos-5"
-                                                v-model="greenLetters5">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column is-one-fifth">
+                            <!-- Add a keyboard here -->
+                            <div class="field is-grouped is-grouped-centered">
+                                <div class="buttons are-small">
+                                    <!--Add first row of qwerty keyboard here-->
+                                    <button class="button is-black " @click="keyboardInput('q')">Q</button>
+                                    <button class="button is-black " @click="keyboardInput('w')">W</button>
+                                    <button class="button is-black " @click="keyboardInput('e')">E</button>
+                                    <button class="button is-black " @click="keyboardInput('r')">R</button>
+                                    <button class="button is-black " @click="keyboardInput('t')">T</button>
+                                    <button class="button is-black " @click="keyboardInput('y')">Y</button>
+                                    <button class="button is-black " @click="keyboardInput('u')">U</button>
+                                    <button class="button is-black " @click="keyboardInput('i')">I</button>
+                                    <button class="button is-black " @click="keyboardInput('o')">O</button>
+                                    <button class="button is-black " @click="keyboardInput('p')">P</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="columns is-vcentered">
-                                <div class="column is-one-fifth has-text-white has-text-centered">
-                                    Enter Yellow Letters:
-                                </div>
-                                <div class="column">
-                                    <div class="columns">
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text"
-                                                placeholder="Yellow Pos-1" v-model="yellowLetters1">
-                                        </div>
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text"
-                                                placeholder="Yellow Pos-2" v-model="yellowLetters2">
-                                        </div>
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text"
-                                                placeholder="Yellow Pos-3" v-model="yellowLetters3">
-                                        </div>
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text"
-                                                placeholder="Yellow Pos-4" v-model="yellowLetters4">
-                                        </div>
-                                        <div class="column is-one-fifth">
-                                            <input class="input has-text-warning-dark" type="text"
-                                                placeholder="Yellow Pos-5" v-model="yellowLetters5">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column is-one-fifth">
+                            <div class="field is-grouped is-grouped-centered">
+                                <div class="buttons are-small">
+                                    <!--Add first row of qwerty keyboard here-->
+                                    <button class="button is-black " @click="keyboardInput('a')">A</button>
+                                    <button class="button is-black " @click="keyboardInput('s')">S</button>
+                                    <button class="button is-black " @click="keyboardInput('d')">D</button>
+                                    <button class="button is-black " @click="keyboardInput('f')">F</button>
+                                    <button class="button is-black " @click="keyboardInput('g')">G</button>
+                                    <button class="button is-black " @click="keyboardInput('h')">H</button>
+                                    <button class="button is-black " @click="keyboardInput('j')">J</button>
+                                    <button class="button is-black " @click="keyboardInput('k')">K</button>
+                                    <button class="button is-black " @click="keyboardInput('l')">L</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="columns is-vcentered">
-                                <div class="column is-one-fifth has-text-white has-text-centered">
-                                    Enter Unused Letters:
-                                </div>
-                                <div class="column">
-                                    <div class="columns">
-                                        <div class="column is-one-third">
-                                            <input class="input" type="text" placeholder="Black Letters"
-                                                v-model="blackLettersCantUse">
-                                        </div>
-                                        <div class="column is-one-third">
-                                            <input class="input" type="text" placeholder="Double Letters"
-                                                v-model="doubleLettersCantUse">
-                                        </div>
-                                        <div class="column is-one-third">
-                                            <input class="input" type="text" placeholder="Triple Letters"
-                                                v-model="tripleLettersCantUse">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column is-one-fifth">
-                                </div>
-                            </div>
-                            <div class="card-content">
-                                <div class="field is-grouped is-grouped-centered">
-                                    <button class="button is-link"
-                                        @click="createWordle(greenLetters, yellowLetters, blackLettersList, doubleLettersList, tripleLettersList)">
+                            <div class="field is-grouped is-grouped-centered">
+                                <div class="buttons are-small">
+                                    <!--Add first row of qwerty keyboard here-->
+                                    <button class="button is-black " @click="enterWordle()">
+                                        <span>Enter</span>
                                         <span class="icon">
-                                            <i class="fas fa-search"></i>
+                                            <i class="fas fa-arrow-up"></i>
                                         </span>
-                                        <span>Find Words</span>
+                                    </button>
+                                    <button class="button is-black " @click="keyboardInput('z')">Z</button>
+                                    <button class="button is-black " @click="keyboardInput('x')">X</button>
+                                    <button class="button is-black " @click="keyboardInput('c')">C</button>
+                                    <button class="button is-black " @click="keyboardInput('v')">V</button>
+                                    <button class="button is-black " @click="keyboardInput('b')">B</button>
+                                    <button class="button is-black " @click="keyboardInput('n')">N</button>
+                                    <button class="button is-black " @click="keyboardInput('m')">M</button>
+                                    <!--Backspace icon fontawesome-->
+                                    <button class="button is-black " @click="backspaceInput()">
+                                        <span>Del</span>
+                                        <span class="icon">
+                                            <i class="fas fa-backspace"></i>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
