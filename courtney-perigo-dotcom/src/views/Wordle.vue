@@ -256,13 +256,13 @@ function rotateLetterStatus(status) {
 
 function returnButtonFormat(status) {
     if (status == 'inactive') {
-        return 'button is-black mr-1 ml-1'
+        return 'button is-black mr-1 ml-1 buttoncustom'
     } else if (status == 'yellow') {
-        return 'button is-warning mr-1 ml-1'
+        return 'button is-warning mr-1 ml-1 buttoncustom'
     } else if (status == 'green') {
-        return 'button is-link mr-1 ml-1'
+        return 'button is-link mr-1 ml-1 buttoncustom'
     } else {
-        return 'button is-black mr-1 ml-1'
+        return 'button is-black mr-1 ml-1 buttoncustom'
     }
 }
 
@@ -620,11 +620,12 @@ function getWordleReco(wordleWord) {
                                                 Wordle game.</li>
                                             <li>Click "Enter" on the keyboard to submit your word, and get a list of the
                                                 best words to play next.</li>
-                                            <li>Continue until you finish find the Wordle word!</li>
+                                            <li>Continue adding words until you finish, and find your Wordle word.</li>
                                         </ol>
                                         <span class="is-underlined has-text-weight-bold">Note:</span>
                                         <p>
-                                            You'll see a list of the best words. Playing the #1 word reveals the most
+                                            You'll see a list of the best words to play next. Playing the #1 word
+                                            reveals the most
                                             information about the game using information theory / entropy.
                                         </p>
                                         </p>
@@ -634,7 +635,6 @@ function getWordleReco(wordleWord) {
 
                             </div>
                         </div>
-
                         <div class="card-content">
                             <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word1.active">
                                 <button :class="returnButtonFormat(wordleWords.word1.status1)"
@@ -749,11 +749,11 @@ function getWordleReco(wordleWord) {
                         </div>
                         <div class="card-content" v-if="warnWordle">
                             <!-- Add Warning Message if word has "_" -->
-                            <div class="box p-1 mt-6" >
+                            <div class="box p-1 mt-6">
                                 <div class="card has-background-danger">
                                     <header class="card-header ">
                                         <p class="card-header-title has-text-white is-size-4">
-                                            Warning: Please enter a valid word.  Refresh the page to start over.
+                                            Warning: Please enter a valid word. Refresh the page to start over.
                                         </p>
                                     </header>
                                     <div class="card-content">
@@ -867,3 +867,9 @@ function getWordleReco(wordleWord) {
     </div>
 
 </template>
+
+<style scoped>
+.buttoncustom {
+    width: 50px;
+}
+</style>
