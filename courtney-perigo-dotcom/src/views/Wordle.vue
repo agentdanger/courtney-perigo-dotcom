@@ -403,7 +403,11 @@ function processWord(word, greenLettersList, yellowLettersList1, yellowLettersLi
             greenLettersList.value[0] = word.value1.toLowerCase()
             workingLetters.value.push(word.value1.toLowerCase())
         } else if (word.status1 === 'yellow') {
-            yellowLettersList1.value[0] = word.value1.toLowerCase()
+            if (yellowLettersList1.value[0] === 'none') {
+                yellowLettersList1.value[0] = word.value1.toLowerCase()
+            } else {
+                yellowLettersList1.value.push(word.value1.toLowerCase())
+            }
             workingLetters.value.push(word.value1.toLowerCase())
         } else if (word.status1 === 'inactive') {
             workingBlackLetters.value.push(word.value1.toLowerCase())
@@ -412,7 +416,11 @@ function processWord(word, greenLettersList, yellowLettersList1, yellowLettersLi
             greenLettersList.value[1] = word.value2.toLowerCase()
             workingLetters.value.push(word.value2.toLowerCase())
         } else if (word.status2 === 'yellow') {
-            yellowLettersList2.value[0] = word.value2.toLowerCase()
+            if (yellowLettersList2.value[0] === 'none') {
+                yellowLettersList2.value[0] = word.value2.toLowerCase()
+            } else {
+                yellowLettersList2.value.push(word.value2.toLowerCase())
+            }
             workingLetters.value.push(word.value2.toLowerCase())
         } else if (word.status2 === 'inactive') {
             workingBlackLetters.value.push(word.value2.toLowerCase())
@@ -421,22 +429,38 @@ function processWord(word, greenLettersList, yellowLettersList1, yellowLettersLi
             greenLettersList.value[2] = word.value3.toLowerCase()
             workingLetters.value.push(word.value3.toLowerCase())
         } else if (word.status3 === 'yellow') {
-            yellowLettersList3.value[0] = word.value3.toLowerCase()
+            if (yellowLettersList3.value[0] === 'none') {
+                yellowLettersList3.value[0] = word.value3.toLowerCase()
+            } else {
+                yellowLettersList3.value.push(word.value3.toLowerCase())
+            }
             workingLetters.value.push(word.value3.toLowerCase())
         } else if (word.status3 === 'inactive') {
             workingBlackLetters.value.push(word.value3.toLowerCase())
         }
         if (word.status4 == 'green') {
             greenLettersList.value[3] = word.value4.toLowerCase()
+            workingLetters.value.push(word.value4.toLowerCase())
         } else if (word.status4 === 'yellow') {
-            yellowLettersList4.value[0] = word.value4.toLowerCase()
+            if (yellowLettersList4.value[0] === 'none') {
+                yellowLettersList4.value[0] = word.value4.toLowerCase()
+            } else {
+                yellowLettersList4.value.push(word.value4.toLowerCase())
+            }
+            workingLetters.value.push(word.value4.toLowerCase())
         } else if (word.status4 === 'inactive') {
             workingBlackLetters.value.push(word.value4.toLowerCase())
         }
         if (word.status5 == 'green') {
             greenLettersList.value[4] = word.value5.toLowerCase()
+            workingLetters.value.push(word.value5.toLowerCase())
         } else if (word.status5 === 'yellow') {
-            yellowLettersList5.value[0] = word.value5.toLowerCase()
+            if (yellowLettersList5.value[0] === 'none') {
+                yellowLettersList5.value[0] = word.value5.toLowerCase()
+            } else {
+                yellowLettersList5.value.push(word.value5.toLowerCase())
+            }
+            workingLetters.value.push(word.value5.toLowerCase())
         } else if (word.status5 === 'inactive') {
             workingBlackLetters.value.push(word.value5.toLowerCase())
         }
@@ -463,8 +487,12 @@ function processWord(word, greenLettersList, yellowLettersList1, yellowLettersLi
         blackLettersList.value = blackLettersList.value.filter(blkLetter => blkLetter !== 'none');
         // remove duplicates in doubleLettersList
         doubleLettersList.value = [...new Set(doubleLettersList.value)];
+        // remove none from doubleLettersList
+        doubleLettersList.value = doubleLettersList.value.filter(dblLetter => dblLetter !== 'none');
         // remove duplicates in tripleLettersList
         tripleLettersList.value = [...new Set(tripleLettersList.value)];
+        // remove none from tripleLettersList
+        tripleLettersList.value = tripleLettersList.value.filter(trpLetter => trpLetter !== 'none');
     }
     return greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList
 }
@@ -574,7 +602,9 @@ function enterWordle() {
         }
         greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList = processWord(wordleWords.value.word5, greenLettersList, yellowLettersList1, yellowLettersList2, yellowLettersList3, yellowLettersList4, yellowLettersList5, blackLettersList, doubleLettersList, tripleLettersList)
     }
-    console.log(greenLettersList.value, yellowLettersList1.value, yellowLettersList2.value, yellowLettersList3.value, yellowLettersList4.value, yellowLettersList5.value, blackLettersList.value, doubleLettersList.value, tripleLettersList.value)
+    if (warnWordle.value) {
+        return
+    }
     createWordle(greenLettersList.value, [yellowLettersList1.value, yellowLettersList2.value, yellowLettersList3.value, yellowLettersList4.value, yellowLettersList5.value], blackLettersList.value, doubleLettersList.value, tripleLettersList.value)
     activateNextWord()
 }
