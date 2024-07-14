@@ -764,54 +764,48 @@ function getWordleReco(wordleWord) {
                             <div class="field is-grouped is-grouped-centered">
                                 <div class="buttons are-small">
                                     <!--Add first row of qwerty keyboard here-->
-                                    <button class="button is-black " @click="keyboardInput('q')">Q</button>
-                                    <button class="button is-black " @click="keyboardInput('w')">W</button>
-                                    <button class="button is-black " @click="keyboardInput('e')">E</button>
-                                    <button class="button is-black " @click="keyboardInput('r')">R</button>
-                                    <button class="button is-black " @click="keyboardInput('t')">T</button>
-                                    <button class="button is-black " @click="keyboardInput('y')">Y</button>
-                                    <button class="button is-black " @click="keyboardInput('u')">U</button>
-                                    <button class="button is-black " @click="keyboardInput('i')">I</button>
-                                    <button class="button is-black " @click="keyboardInput('o')">O</button>
-                                    <button class="button is-black " @click="keyboardInput('p')">P</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('q')">Q</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('w')">W</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('e')">E</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('r')">R</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('t')">T</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('y')">Y</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('u')">U</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('i')">I</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('o')">O</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('p')">P</button>
                                 </div>
                             </div>
                             <div class="field is-grouped is-grouped-centered">
                                 <div class="buttons are-small">
                                     <!--Add first row of qwerty keyboard here-->
-                                    <button class="button is-black " @click="keyboardInput('a')">A</button>
-                                    <button class="button is-black " @click="keyboardInput('s')">S</button>
-                                    <button class="button is-black " @click="keyboardInput('d')">D</button>
-                                    <button class="button is-black " @click="keyboardInput('f')">F</button>
-                                    <button class="button is-black " @click="keyboardInput('g')">G</button>
-                                    <button class="button is-black " @click="keyboardInput('h')">H</button>
-                                    <button class="button is-black " @click="keyboardInput('j')">J</button>
-                                    <button class="button is-black " @click="keyboardInput('k')">K</button>
-                                    <button class="button is-black " @click="keyboardInput('l')">L</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('a')">A</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('s')">S</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('d')">D</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('f')">F</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('g')">G</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('h')">H</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('j')">J</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('k')">K</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('l')">L</button>
                                 </div>
                             </div>
                             <div class="field is-grouped is-grouped-centered">
                                 <div class="buttons are-small">
                                     <!--Add first row of qwerty keyboard here-->
-                                    <button class="button is-black " @click="enterWordle()">
+                                    <button class="button is-black actionbuttons" @click="enterWordle()">
                                         <span>Enter</span>
-                                        <span class="icon">
-                                            <i class="fas fa-arrow-up"></i>
-                                        </span>
                                     </button>
-                                    <button class="button is-black " @click="keyboardInput('z')">Z</button>
-                                    <button class="button is-black " @click="keyboardInput('x')">X</button>
-                                    <button class="button is-black " @click="keyboardInput('c')">C</button>
-                                    <button class="button is-black " @click="keyboardInput('v')">V</button>
-                                    <button class="button is-black " @click="keyboardInput('b')">B</button>
-                                    <button class="button is-black " @click="keyboardInput('n')">N</button>
-                                    <button class="button is-black " @click="keyboardInput('m')">M</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('z')">Z</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('x')">X</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('c')">C</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('v')">V</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('b')">B</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('n')">N</button>
+                                    <button class="button is-black keyboard" @click="keyboardInput('m')">M</button>
                                     <!--Backspace icon fontawesome-->
-                                    <button class="button is-black " @click="backspaceInput()">
+                                    <button class="button is-black actionbuttons" @click="backspaceInput()">
                                         <span>Del</span>
-                                        <span class="icon">
-                                            <i class="fas fa-backspace"></i>
-                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -863,6 +857,12 @@ function getWordleReco(wordleWord) {
 
 <style scoped>
 .buttoncustom {
+    width: 50px;
+}
+.keyboard {
+    width: 30px;
+}
+.actionbuttons {
     width: 50px;
 }
 </style>
