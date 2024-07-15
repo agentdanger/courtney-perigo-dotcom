@@ -632,6 +632,8 @@ function getWordleReco(wordleWord) {
 function handleKeydown(event) {
     const key = event.key.toLowerCase();
     if (key === 'enter') {
+        event.preventDefault(); // Prevent the default behavior
+        event.stopPropagation(); // Stop the event from propagating
         enterWordle();
     } else if (key === 'backspace') {
         backspaceInput();
