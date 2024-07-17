@@ -14,29 +14,6 @@
                             <div class="content has-text-white">
                                 {{ about_machinanova }}
                             </div>
-                            <div class="content has-text-white">
-                                <div class="field has-addons">
-                                    <div class="control is-expanded">
-                                        <input class="input" v-on:keyup.enter="findNews(queryValue)" v-model="queryValue" type="text" placeholder="Enter a topic to find news">
-                                    </div>
-                                    <div class="control">
-                                        <button class="button is-link" @click="findNews(queryValue)">
-                                            <span class="icon">
-                                                <i class="fas fa-search"></i>
-                                            </span>
-                                            <span>Find News</span>
-                                        </button>
-                                    </div>
-                                    <div class="control">
-                                        <button class="button is-link is-light" @click="removeCustomNews">
-                                            <span class="icon">
-                                                <i class="fas fa-times"></i>
-                                            </span>
-                                            <span>Cancel</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
