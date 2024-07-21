@@ -158,9 +158,7 @@ export default {
             articlesToDisplay: null,
             customArticlesToDisplay: null,
             newsServiceLoading: true,
-            about_machinanova: "This is a simple application that fetches recommended, recent data science news. \
-            You can also type in your own data science topic and the model will pull recommended news in \
-            your topic area.",
+            about_machinanova: "This is a simple application that fetches recommended, recent data science and analytics news.",
             about_model: "The News Fetcher Machine Learning Model leverages a pre-built sentence transformer \
             to create embeddings for news articles. The embeddings are then used to find recent articles using \
             euclidean distance. More information about the underlying model can be found on its repo.",
