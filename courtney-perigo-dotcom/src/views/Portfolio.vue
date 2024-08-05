@@ -30,160 +30,270 @@ var modelLink = {
                 link: 'https://github.com/agentdanger/stock-portfolio-optimizer'
             }
 
-// Chart options
+// Initialize chart options
 const chartOptions = ref({
-    chart: {
-        type: 'scatter',
-        height: 350,
-        zoom: {
-            enabled: false,
-            type: 'xy'
-        },
-        fontFamily: 'Play, sans-serif',
+  chart: {
+    type: 'scatter',
+    height: 350,
+    zoom: {
+      enabled: false,
+      type: 'xy'
     },
-    legend: {
-        show: true,
-        position: 'top',
-        horizontalAlign: 'center',
-        fontSize: '12px',
-        fontWeight: 'bold',
-        labels: {
-            colors: '#F5F9FF', // Set the legend label color
-        },
+    fontFamily: 'Play, sans-serif',
+    events: {
+      dataPointMouseEnter: function(event, chartContext, config) {
+        highlightDataPoint(config.dataPointIndex);
+      },
+      dataPointMouseLeave: function(event, chartContext, config) {
+        resetHighlight();
+      }
+    }
+  },
+  legend: {
+    show: true,
+    position: 'top',
+    horizontalAlign: 'center',
+    fontSize: '12px',
+    fontWeight: 'bold',
+    labels: {
+      colors: '#F5F9FF', // Set the legend label color
     },
-    grid: {
-        borderColor: '#F5F9FF', // Set the gridline color
-    },
-    xaxis: {
-        title: {
-            text: 'Volatility (Standard Deviation)',
-            style: {
-                fontSize: '14px',
-                fontWeight: 'bold',
-                color: '#F5F9FF', // Set the x-axis title color
-            },
-        },
-        labels: {
-            formatter: function(value) {
-                return value.toFixed(2);  // Format x-axis values to 2 decimal places
-            },
-            style: {
-                colors: '#F5F9FF', // Set the y-axis label color
-            }
-        }
-    },
-    yaxis: {
-        title: {
-            text: 'Expected Return',
-            style: {
-                fontSize: '14px',
-                fontWeight: 'bold',
-                color: '#F5F9FF', // Set the y-axis title color
-            },
-        },
-        labels: {
-            formatter: function(value) {
-                return value.toFixed(2);  // Format y-axis values to 2 decimal places
-            },
-            style: {
-                colors: '#F5F9FF', // Set the y-axis label color
-            }
-        },
-    },
-    series: [],
+  },
+  grid: {
+    borderColor: '#F5F9FF', // Set the gridline color
+  },
+  xaxis: {
     title: {
-        text: 'Efficient Frontier and Max Sharpe Ratio Portfolios',
-        align: 'center',
-        style: {
-            fontSize: '20px',
-            fontWeight: 'bold',
-            color: '#F5F9FF', // Set the title color
-        },
+      text: 'Volatility (Standard Deviation)',
+      style: {
+        fontSize: '14px',
+        fontWeight: 'bold',
+        color: '#F5F9FF', // Set the x-axis title color
+      },
     },
-    colors: ['#BE861F', '#09A2CD'],
+    labels: {
+      formatter: function(value) {
+        return value.toFixed(2);  // Format x-axis values to 2 decimal places
+      },
+      style: {
+        colors: '#F5F9FF', // Set the x-axis label color
+      }
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Expected Return',
+      style: {
+        fontSize: '14px',
+        fontWeight: 'bold',
+        color: '#F5F9FF', // Set the y-axis title color
+      },
+    },
+    labels: {
+      formatter: function(value) {
+        return value.toFixed(2);  // Format y-axis values to 2 decimal places
+      },
+      style: {
+        colors: '#F5F9FF', // Set the y-axis label color
+      }
+    },
+  },
+  series: [],
+  title: {
+    text: 'Efficient Frontier and Max Sharpe Ratio Portfolios',
+    align: 'center',
+    style: {
+      fontSize: '20px',
+      fontWeight: 'bold',
+      color: '#F5F9FF', // Set the title color
+    },
+  },
+  colors: ['#BE861F', '#09A2CD'],
+  tooltip: {
+    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+      const dataPoint = w.config.series[seriesIndex].data[dataPointIndex];
+      const sharpeRatio = dataPoint.name === 'Max Sharpe Ratio' 
+          ? portfolio.value['max_sharpe'].sharpe.toFixed(2)
+          : (dataPoint.y / dataPoint.x).toFixed(2); // Calculate Sharpe Ratio for other points
+
+      // Construct the tooltip HTML
+      return `
+          <div style="padding:10px; font-family:Play, sans-serif;">
+              <strong>${dataPoint.name}</strong><br>
+              Expected Return: ${(dataPoint.y * 100).toFixed(2)}%<br>
+              Volatility: ${(dataPoint.x * 100).toFixed(2)}%<br>
+              Sharpe Ratio: ${sharpeRatio}<br>
+          </div>
+      `;
+    }
+  }
 });
 
-function updateChartSeries() {
-    // Extract portfolio scenarios
-    const max_sharpe = [
-        {
-            x: portfolio.value['max_sharpe'].sd,
-            y: portfolio.value['max_sharpe'].return,
-            name: 'Max Sharpe Ratio',
-        },
-    ]
-    const target_data = [
-        {
-            x: portfolio.value['target_0'].sd,
-            y: portfolio.value['target_0'].return,
-            name: 'Target 0',
-        },
-        {
-            x: portfolio.value['target_1'].sd,
-            y: portfolio.value['target_1'].return,
-            name: 'Target 1',
-        },
-        {
-            x: portfolio.value['target_2'].sd,
-            y: portfolio.value['target_2'].return,
-            name: 'Target 2',
-        },
-        {
-            x: portfolio.value['target_3'].sd,
-            y: portfolio.value['target_3'].return,
-            name: 'Target 3',
-        },
-        {
-            x: portfolio.value['target_4'].sd,
-            y: portfolio.value['target_4'].return,
-            name: 'Target 4',
-        },
-        {
-            x: portfolio.value['target_5'].sd,
-            y: portfolio.value['target_5'].return,
-            name: 'Target 5',
-        },
-        {
-            x: portfolio.value['target_6'].sd,
-            y: portfolio.value['target_6'].return,
-            name: 'Target 6',
-        },
-        {
-            x: portfolio.value['target_7'].sd,
-            y: portfolio.value['target_7'].return,
-            name: 'Target 7',
-        },
-        {
-            x: portfolio.value['target_8'].sd,
-            y: portfolio.value['target_8'].return,
-            name: 'Target 8',
-        },
-        {
-            x: portfolio.value['target_9'].sd,
-            y: portfolio.value['target_9'].return,
-            name: 'Target 9',
-        }
-    ];
+// Initialize Sharpe ratio chart options
+const sharpeChartOptions = ref({
+  chart: {
+    type: 'scatter',
+    height: 350,
+    fontFamily: 'Play, sans-serif',
+    events: {
+      dataPointMouseEnter: function(event, chartContext, config) {
+        highlightDataPoint(config.dataPointIndex);
+      },
+      dataPointMouseLeave: function(event, chartContext, config) {
+        resetHighlight();
+      }
+    }
+  },
+  xaxis: {
+    title: {
+      text: 'Portfolio',
+      style: {
+        fontSize: '14px',
+        fontWeight: 'bold',
+        color: '#F5F9FF', // Set the x-axis title color
+      },
+    },
+    labels: {
+      show: false
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Sharpe Ratio',
+      style: {
+        fontSize: '14px',
+        fontWeight: 'bold',
+        color: '#F5F9FF', // Set the y-axis title color
+      },
+    },
+    labels: {
+      formatter: function(value) {
+        return value.toFixed(2);  // Format y-axis values to 2 decimal places
+      },
+      style: {
+        colors: '#F5F9FF', // Set the y-axis label color
+      }
+    },
+  },
+  colors: ['#09A2CD', '#BE861F'],
+  series: []
+});
 
-    // Set the series for the chart
-    chartOptions.value.series = [
-        {
-            name: 'Max Sharpe Ratio Portfolio',
-            data: max_sharpe
-        },
-        {
-            name: 'Efficient Frontier',
-            data: target_data
-        }
-    ];
+
+// Function to update main chart series
+function updateChartSeries() {
+  // Extract portfolio scenarios
+  const max_sharpe = [
+    {
+      x: portfolio.value['max_sharpe'].sd,
+      y: portfolio.value['max_sharpe'].return,
+      name: 'Max Sharpe Ratio',
+    },
+  ];
+  const target_data = Object.keys(portfolio.value).filter(key => key.startsWith('target_')).map(key => ({
+      x: portfolio.value[key].sd,
+      y: portfolio.value[key].return,
+      name: key.replace('target_', 'Target '),
+  }));
+
+  // Set the series for the main chart
+  chartOptions.value.series = [
+    {
+      name: 'Max Sharpe Ratio Portfolio',
+      data: max_sharpe
+    },
+    {
+      name: 'Efficient Frontier',
+      data: target_data
+    }
+  ];
 }
 
+// Function to update Sharpe ratio chart series
+function updateSharpeChartSeries() {
+  const sharpeData = [
+    {
+      x: portfolio.value['max_sharpe'].sd,
+      y: portfolio.value['max_sharpe'].sharpe, // Use Sharpe ratio as y-value
+      name: 'Max Sharpe Ratio',
+    },
+    ...Object.keys(portfolio.value).filter(key => key.startsWith('target_')).map(key => ({
+      x: portfolio.value[key].sd,
+      y: portfolio.value[key].return / portfolio.value[key].sd, // Calculate Sharpe ratio
+      name: key.replace('target_', 'Target ')
+    }))
+  ];
+
+  // Update Sharpe ratio chart series
+  sharpeChartOptions.value.series = [
+    {
+      name: 'Sharpe Ratio',
+      data: sharpeData
+    }
+  ];
+}
+
+// Function to highlight corresponding data point
+function highlightDataPoint(index) {
+  const efficientChart = chartOptions.value;
+  const sharpeChart = sharpeChartOptions.value;
+
+  // Reset markers
+  resetHighlight();
+
+  // Highlight the data point in the main chart
+  efficientChart.series.forEach((series, seriesIndex) => {
+    if (series.data[index]) {
+      series.data[index].marker = {
+        size: 10,
+        fillColor: '#FFFFFF'
+      };
+    }
+  });
+
+  // Highlight the data point in the Sharpe ratio chart
+  sharpeChart.series.forEach((series, seriesIndex) => {
+    if (series.data[index]) {
+      series.data[index].marker = {
+        size: 10,
+        fillColor: '#FFFFFF'
+      };
+    }
+  });
+}
+
+// Function to reset highlight
+function resetHighlight() {
+  const efficientChart = chartOptions.value;
+  const sharpeChart = sharpeChartOptions.value;
+
+  // Reset markers in the main chart
+  efficientChart.series.forEach(series => {
+    series.data.forEach(point => {
+      point.marker = {
+        size: 6,
+        fillColor: series.color
+      };
+    });
+  });
+
+  // Reset markers in the Sharpe ratio chart
+  sharpeChart.series.forEach(series => {
+    series.data.forEach(point => {
+      point.marker = {
+        size: 6,
+        fillColor: '#09A2CD'
+      };
+    });
+  });
+}
 
 function getPortfolio() {
     optimalPortfolioServ.getOptimalPortfolioData()
         .then(response => {
             portfolio.value = response
             updateChartSeries() // Update chart data after loading portfolio
+            updateSharpeChartSeries() // Update Sharpe ratio chart data after loading portfolio
             error.value = null
         })
         .catch(e => {
@@ -275,13 +385,19 @@ onMounted(() => {
                         <div class="card-content">
                             <div class="content">
                                 <!-- Add the ApexCharts scatter plot here -->
-                                <div class="field mt-5">
+                                <div class="columns">
                                     <VueApexCharts
                                         type="scatter"
-                                        height="350"
                                         :options="chartOptions"
                                         :series="chartOptions.series"
-                                    />
+                                        height="350px" class="column"
+                                        />
+<!--                                     <VueApexCharts
+                                        type="scatter"
+                                        :options="sharpeChartOptions"
+                                        :series="sharpeChartOptions.series"
+                                        height="350px" class="column is-4"
+                                        /> -->
                                 </div>
                                 <div class="field">
                                     <label class="label has-text-white">Max Sharpe Ratio | Portfolio Weights</label>
