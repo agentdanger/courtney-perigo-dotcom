@@ -15,7 +15,7 @@ var budget = ref(10000)
 var aboutOptimalPortfolio = "This project uses optimal portfolio theory and Sharpe Ratio analysis " 
 + "to identify the best investment portfolio from U.S. stocks over the past decade. " 
 + "It showcases my data science skills in optimizing returns and analyzing complex datasets, " 
-+ "and is purely academic, not financial advice."
++ "and is purely academic, not financial advice.  The default budget is $10,000, but you can adjust it below."
 
 var aboutModel = "The optimal portfolio model using Scipy's optimize function to maximize the Sharpe Ratio "
 + "of a portfolio of U.S. stocks. The model uses historical stock data to calculate the optimal weights for each stock, " 
@@ -124,6 +124,15 @@ onMounted(() => {
                         </header>
                         <div class="card-content">
                             <div class="content">
+                                <div class="field">
+                                    <label class="label has-text-white">Budget</label>
+                                    <div class="control">
+                                        <input class="input" type="number" v-model="budget" @change="updateBudget($event.target.value)">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label has-text-white">Portfolio Weights</label>
+                                </div>
                                 <div class="columns is-multiline is-centered">
                                     <div v-for="stock in portfolio['max_sharpe']['weights']">
                                         <div class="column" v-if="stock.weight > 0">
