@@ -64,7 +64,18 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/News.vue'),
       meta: {
-        title: 'Courtney Perigo | news-recommender'
+        title: 'Courtney Perigo | daily data science news and information'
+      }
+    },
+    {
+      path: '/optimal-portfolio',
+      name: 'optimal-portfolio',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/Portfolio.vue'),
+      meta: {
+        title: 'Courtney Perigo | optimal portfolio of U.S. stocks'
       }
     }
   ]
