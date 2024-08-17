@@ -2,7 +2,7 @@
     <AppNavBar />
     <div class="hero is-fullheight is-primary">
         <div class="hero-body">
-            <div class="container">
+            <div class="container" ref="articleContainer">
                 <div class="box p-1 mt-6">
                     <div class="card has-background-primary">
                         <header class="card-header ">
@@ -152,6 +152,7 @@ const modelLink = ref({
 const selectedTags = ref([]);
 const currentPage = ref(1);
 const articlesPerPage = 25;
+const articleContainer = ref(null);
 
 const toggleTagFilter = (tag) => {
     if (selectedTags.value.includes(tag)) {
@@ -160,6 +161,11 @@ const toggleTagFilter = (tag) => {
         selectedTags.value.push(tag);
     }
     currentPage.value = 1;  // Reset to first page when filters change
+    scrollToTop();
+};
+
+const scrollToTop = () => {
+    articleContainer.value.scrollIntoView({ behavior: 'smooth' });
 };
 
 const filteredArticles = computed(() => {
@@ -183,17 +189,20 @@ const paginatedArticles = computed(() => {
 
 const setPage = (page) => {
     currentPage.value = page;
+    scrollToTop();
 };
 
 const prevPage = () => {
     if (currentPage.value > 1) {
         currentPage.value--;
+        scrollToTop();
     }
 };
 
 const nextPage = () => {
     if (currentPage.value < totalPages.value) {
         currentPage.value++;
+        scrollToTop();
     }
 };
 
@@ -210,12 +219,14 @@ const findNews = (query) => {
         })
         .finally(() => {
             newsServiceLoading.value = false;
+            scrollToTop();
         });
 };
 
 const removeCustomNews = () => {
     customNewsActive.value = false;
     customArticlesToDisplay.value = null;
+    scrollToTop();
 };
 
 onMounted(() => {
@@ -232,6 +243,7 @@ onMounted(() => {
         });
 });
 </script>
+
 
 
 
