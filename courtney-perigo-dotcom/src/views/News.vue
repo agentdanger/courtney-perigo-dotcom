@@ -1,8 +1,8 @@
 <template>
     <AppNavBar />
-    <div class="hero is-fullheight is-primary">
+    <div class="hero is-fullheight is-primary" ref="articleContainer">
         <div class="hero-body">
-            <div class="container" ref="articleContainer">
+            <div class="container" >
                 <div class="box p-1 mt-6">
                     <div class="card has-background-primary">
                         <header class="card-header ">
