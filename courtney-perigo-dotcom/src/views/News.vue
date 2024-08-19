@@ -2,10 +2,10 @@
     <AppNavBar />
     <div class="hero is-fullheight is-primary" ref="articleContainer">
         <div class="hero-body">
-            <div class="container" >
+            <div class="container">
                 <div class="box p-1 mt-6">
                     <div class="card has-background-primary">
-                        <header class="card-header ">
+                        <header class="card-header">
                             <p class="card-header-title has-text-white is-size-4">
                                 MachinaNova: An AI News Recommender
                             </p>
@@ -20,7 +20,7 @@
                 <!-- show message when articles are loading -->
                 <div class="box p-1 mt-6" v-if="newsServiceLoading">
                     <div class="card has-background-primary">
-                        <header class="card-header ">
+                        <header class="card-header">
                             <p class="card-header-title has-text-white is-size-4">
                                 Loading Articles...
                             </p>
@@ -48,7 +48,7 @@
                                             <img :src="article.entry_image.url" alt="Placeholder image">
                                         </figure>
                                     </div>
-                                    <div class="media-content ">
+                                    <div class="media-content">
                                         <p class="title is-size-5 has-text-grey-dark">{{ article.feed_title }}</p>
                                         <p class="subtitle is-size-6 has-text-grey-dark">{{ article.entry_summary }}</p>
                                         <div class="tags">
@@ -61,9 +61,7 @@
                                             </span>
                                         </div>                                   
                                     </div>
-                                    
                                 </div>
-                                
                             </div>
                             <div class="card-footer">
                                     <a :href="article.entry_link" target="_blank" rel="noopener noreferrer"
@@ -83,26 +81,67 @@
                         :class="{ 'is-disabled': currentPage === 1 }"
                         :style="{ pointerEvents: currentPage === 1 ? 'none' : 'auto' }"
                     >Previous</a>
-                    <a 
-                        class="pagination-next" 
-                        @click="nextPage" 
-                        :class="{ 'is-disabled': currentPage === totalPages }"
-                        :style="{ pointerEvents: currentPage === totalPages ? 'none' : 'auto' }"
-                    >Next</a>
                     <ul class="pagination-list">
-                        <li v-for="page in totalPages" :key="page">
+                        <!-- Always show the first page -->
+                        <li>
+                            <a 
+                                class="pagination-link" 
+                                @click="setPage(1)" 
+                                :class="{ 'is-current': currentPage === 1 }"
+                            >1</a>
+                        </li>
+
+                        <!-- Show ellipses if there are pages between the first and the current - 2 -->
+                        <li v-if="currentPage > 4"><span class="pagination-ellipsis">&hellip;</span></li>
+
+                        <!-- Show 2 pages before the current page -->
+                        <li v-for="page in pagesBeforeCurrent" :key="page">
                             <a 
                                 class="pagination-link" 
                                 @click="setPage(page)" 
                                 :class="{ 'is-current': currentPage === page }"
                             >{{ page }}</a>
                         </li>
+
+                        <!-- Show the current page -->
+                        <li v-if="currentPage !== 1 && currentPage !== totalPages">
+                            <a 
+                                class="pagination-link is-current" 
+                            >{{ currentPage }}</a>
+                        </li>
+
+                        <!-- Show 2 pages after the current page -->
+                        <li v-for="page in pagesAfterCurrent" :key="page">
+                            <a 
+                                class="pagination-link" 
+                                @click="setPage(page)" 
+                                :class="{ 'is-current': currentPage === page }"
+                            >{{ page }}</a>
+                        </li>
+
+                        <!-- Show ellipses if there are pages between the current + 2 and the last -->
+                        <li v-if="currentPage < totalPages - 3"><span class="pagination-ellipsis">&hellip;</span></li>
+
+                        <!-- Always show the last page -->
+                        <li>
+                            <a 
+                                class="pagination-link" 
+                                @click="setPage(totalPages)" 
+                                :class="{ 'is-current': currentPage === totalPages }"
+                            >{{ totalPages }}</a>
+                        </li>
                     </ul>
+                    <a 
+                        class="pagination-next" 
+                        @click="nextPage" 
+                        :class="{ 'is-disabled': currentPage === totalPages }"
+                        :style="{ pointerEvents: currentPage === totalPages ? 'none' : 'auto' }"
+                    >Next</a>
                 </div>
 
                 <div class="box p-1 mt-6">
                     <div class="card has-background-primary">
-                        <header class="card-header ">
+                        <header class="card-header">
                             <p class="card-header-title has-text-white is-size-4">
                                 About The Model
                             </p>
@@ -113,14 +152,14 @@
                             </div>
                         </div>
                         <div class="card-content">
-                            <div class="buttons is-centered ">
-                                    <a :href="modelLink.link" target="_blank" rel="noopener noreferrer"
-                                        class="button is-link">
-                                        <span class="icon">
-                                            <i :class="modelLink.icon"></i>
-                                        </span>
-                                        <span>{{ modelLink.name }}</span>
-                                    </a>
+                            <div class="buttons is-centered">
+                                <a :href="modelLink.link" target="_blank" rel="noopener noreferrer"
+                                    class="button is-link">
+                                    <span class="icon">
+                                        <i :class="modelLink.icon"></i>
+                                    </span>
+                                    <span>{{ modelLink.name }}</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -132,7 +171,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import defaultNewsService from '../service/DefaultNewsService'
+import defaultNewsService from '../service/DefaultNewsService';
 import AppNavBar from '../components/AppNavBar.vue';
 
 const queryValue = ref(null);
@@ -165,7 +204,7 @@ const toggleTagFilter = (tag) => {
 };
 
 const scrollToTop = () => {
-    articleContainer.value.scrollIntoView({ behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const filteredArticles = computed(() => {
@@ -185,6 +224,19 @@ const paginatedArticles = computed(() => {
     const start = (currentPage.value - 1) * articlesPerPage;
     const end = start + articlesPerPage;
     return filteredArticles.value.slice(start, end);
+});
+
+// Calculate the pages to show before and after the current page
+const pagesBeforeCurrent = computed(() => {
+    const start = Math.max(currentPage.value - 2, 2);
+    const end = currentPage.value - 1;
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+});
+
+const pagesAfterCurrent = computed(() => {
+    const start = currentPage.value + 1;
+    const end = Math.min(currentPage.value + 2, totalPages.value - 1);
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
 
 const setPage = (page) => {
@@ -243,6 +295,7 @@ onMounted(() => {
         });
 });
 </script>
+
 
 
 
