@@ -267,6 +267,12 @@ export default {
             },
             featured_projects: [
                 {
+                    title: "Workforce Optimization with Genetic Algorithms",
+                    description: "Optimizing a nanny schedule using simulation and genetic algorithms in Python.",
+                    image: "../assets/optimal_nanny.png",
+                    link: "https://github.com/agentdanger/nanny-simulation"
+                },
+                {
                     title: "Chicago Data Portal Analyst Microservices",
                     description: "A collection of Chicago Data Portal microservices \
                     using GoLang, Kubernetes, Docker, and Amazon Web Services.",
@@ -280,13 +286,6 @@ export default {
                     and Google App Engine",
                     image: "../assets/gcp_diagram.png",
                     link: "https://github.com/agentdanger/ad-forecasting-gcp"
-                },
-                {
-                    title: "A Zero Training, News Recommendation Engine",
-                    description: "A demonstration of a pre-trained, AI-based, sentence vectorizer \
-                    being used as a news recommender on this website.",
-                    image: "../assets/brittany.png",
-                    link: "https://github.com/agentdanger/news-retriever"
                 },
                 {
                     title: "Predicting Top MLB Batters of All Time",
