@@ -306,6 +306,14 @@ export default {
             ],
             resume_publications: [
                 {
+                    title: 'Data Science at Home: Solving the Nanny Schedule Puzzle with Monte Carlo and Genetic Algorithms',
+                    publication: 'Towards Data Science',
+                    date: '2024',
+                    link: 'https://courtney-perigo.medium.com/data-science-at-home-solving-the-nanny-schedule-puzzle-with-monte-carlo-and-genetic-algorithms-eb4b63ada9fe',
+                    image: '../assets/rubiks_cube_unsplash.jpg',
+                    image_alt: 'A Rubik’s cube on a black background., Credit to Nick Fewings @ Unsplash'
+                },
+                {
                     title: 'Get More Out of Your Data With Analytics Microservices',
                     publication: 'Towards Data Science',
                     date: '2022',
