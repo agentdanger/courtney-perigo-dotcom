@@ -262,6 +262,12 @@ export default {
             ],
             resume_experience: [
                 {
+                    title: 'CEO, Owner of Empire Sports Analytics (ESA)',
+                    company: 'Empire Sports Analytics',
+                    date: '2022 - Present',
+                    description: 'Founded ESA to provide data science and analytics to the sports industry. Developed a proprietary, full-stack data science platform that automates the collection, cleaning, and analysis of sports data. Created a suite of predictive models for player performance, game outcomes, and injury risk. Developed a data product, and subscription model, that provides real-time insights for organizations and individuals.'
+                },
+                {
                     title: 'SVP, Executive Director of Marketing and Data Sciences',
                     company: 'Cramer-Krasselt',
                     date: '2021 - Present',
