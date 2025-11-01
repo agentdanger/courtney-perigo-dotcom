@@ -3,7 +3,7 @@
 <script setup>
 import AppNavBar from '../components/AppNavBar.vue'
 import optimalPortfolioService from '../service/PortfolioService.js'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import VueApexCharts from 'vue3-apexcharts';
 
 const optimalPortfolioServ = new optimalPortfolioService()
@@ -13,6 +13,24 @@ const portfolio = ref([])
 const isLoading = ref(true)
 const error = ref(null)
 var budget = ref(10000)
+const latestRunDate = ref(null)
+const formattedLatestRunDate = computed(() => {
+    if (!latestRunDate.value) {
+        return null
+    }
+
+    const parsedDate = new Date(latestRunDate.value)
+
+    if (Number.isNaN(parsedDate.getTime())) {
+        return latestRunDate.value
+    }
+
+    return parsedDate.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    })
+})
 
 var aboutOptimalPortfolio = "This project uses optimal portfolio theory and Sharpe Ratio analysis " 
 + "to identify the best investment portfolio from U.S. stocks over the past decade. " 
@@ -292,6 +310,7 @@ function getPortfolio() {
     optimalPortfolioServ.getOptimalPortfolioData()
         .then(response => {
             portfolio.value = response
+            latestRunDate.value = response?.latest_run_date ?? null
             updateChartSeries() // Update chart data after loading portfolio
             updateSharpeChartSeries() // Update Sharpe ratio chart data after loading portfolio
             error.value = null
@@ -384,6 +403,12 @@ onMounted(() => {
                         </header>
                         <div class="card-content">
                             <div class="content">
+                                <p
+                                    v-if="formattedLatestRunDate"
+                                    class="has-text-white is-italic mb-4"
+                                >
+                                    Latest run: {{ formattedLatestRunDate }}
+                                </p>
                                 <!-- Add the ApexCharts scatter plot here -->
                                 <div class="columns">
                                     <VueApexCharts
