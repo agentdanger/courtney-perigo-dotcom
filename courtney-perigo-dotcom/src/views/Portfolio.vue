@@ -15,11 +15,10 @@ const error = ref(null)
 var budget = ref(10000)
 const latestRunDate = ref(null)
 const formattedLatestRunDate = computed(() => {
-    if (!latestRunDate.value) {
-        return null
-    }
+    if (!latestRunDate.value) return null
 
-    const parsedDate = new Date(latestRunDate.value)
+    // Append a local-time “T00:00:00” so JS doesn’t assume UTC
+    const parsedDate = new Date(`${latestRunDate.value}T00:00:00`)
 
     if (Number.isNaN(parsedDate.getTime())) {
         return latestRunDate.value
@@ -28,7 +27,7 @@ const formattedLatestRunDate = computed(() => {
     return parsedDate.toLocaleDateString(undefined, {
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
     })
 })
 
