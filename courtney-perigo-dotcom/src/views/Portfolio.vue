@@ -47,6 +47,55 @@ var modelLink = {
                 link: 'https://github.com/agentdanger/stock-portfolio-optimizer'
             }
 
+function stockDisplayName(stock) {
+    if (!stock || !stock.info) {
+        return null
+    }
+
+    return stock.info.longName
+        || stock.info.shortName
+        || stock.info.displayName
+        || null
+}
+
+function stockSector(stock) {
+    if (!stock || !stock.info) {
+        return null
+    }
+
+    return stock.info.sector
+        || stock.info.sectorDisp
+        || null
+}
+
+function stockWebsite(stock) {
+    if (!stock || !stock.info) {
+        return null
+    }
+
+    const website = stock.info.website || stock.info.irWebsite
+
+    if (!website) {
+        return null
+    }
+
+    return /^(http:\/\/|https:\/\/)/i.test(website) ? website : `https://${website}`
+}
+
+function stockWebsiteDisplay(stock) {
+    const website = stockWebsite(stock)
+
+    if (!website) {
+        return null
+    }
+
+    try {
+        return new URL(website).hostname
+    } catch (error) {
+        return website.replace(/^(http:\/\/|https:\/\/)/i, '')
+    }
+}
+
 // Initialize chart options
 const chartOptions = ref({
   chart: {
@@ -437,9 +486,21 @@ onMounted(() => {
                                                 </header>
                                                 <div class="card-content">
                                                     <div class="content">
+                                                        <p v-if="stockDisplayName(stock)">Name: {{ stockDisplayName(stock) }}</p>
+                                                        <p v-if="stockSector(stock)">Sector: {{ stockSector(stock) }}</p>
                                                         <p>Weight: {{ weightPercentage(stock.weight) }}</p>
                                                         <p>Budget: ${{ getStockSpendAmount(stock) }}</p>
                                                         <p>Shares to Hold: {{ getSharesToBuy(stock) }}</p>
+                                                        <p v-if="stockWebsite(stock)">
+                                                            Website:
+                                                            <a
+                                                                :href="stockWebsite(stock)"
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                {{ stockWebsiteDisplay(stock) }}
+                                                            </a>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
