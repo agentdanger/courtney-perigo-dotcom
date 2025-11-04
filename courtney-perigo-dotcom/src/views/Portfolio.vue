@@ -584,8 +584,23 @@ onMounted(() => {
                                 >
                                     Latest run: {{ formattedLatestRunDate }}
                                 </p>
+                                <!-- Add the ApexCharts scatter plot here -->
+                                <div class="columns">
+                                    <VueApexCharts
+                                        type="scatter"
+                                        :options="chartOptions"
+                                        :series="chartOptions.series"
+                                        height="350px" class="column"
+                                        />
+<!--                                     <VueApexCharts
+                                        type="scatter"
+                                        :options="sharpeChartOptions"
+                                        :series="sharpeChartOptions.series"
+                                        height="350px" class="column is-4"
+                                        /> -->
+                                </div>
                                 <div
-                                    class="box has-background-primary-light mb-5 portfolio-overview"
+                                    class="box has-background-dark mb-5 portfolio-overview"
                                     v-if="sectorBreakdown.length || largestHolding || annualReturnPct !== null"
                                 >
                                     <div class="portfolio-overview__body">
@@ -604,8 +619,7 @@ onMounted(() => {
                                                     :key="sector.sector"
                                                     class="sector-bar__segment"
                                                     :style="{ width: sector.percentage + '%', backgroundColor: sector.color }"
-                                                    :title="`${sector.sector}: ${sector.percentage.toFixed(1)}%`
-                                                    "
+                                                    :title="`${sector.sector}: ${sector.percentage.toFixed(1)}%`"
                                                 >
                                                     <span class="sector-bar__label" v-if="sector.percentage >= 12">
                                                         {{ sector.sector }}
@@ -662,21 +676,6 @@ onMounted(() => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Add the ApexCharts scatter plot here -->
-                                <div class="columns">
-                                    <VueApexCharts
-                                        type="scatter"
-                                        :options="chartOptions"
-                                        :series="chartOptions.series"
-                                        height="350px" class="column"
-                                        />
-<!--                                     <VueApexCharts
-                                        type="scatter"
-                                        :options="sharpeChartOptions"
-                                        :series="sharpeChartOptions.series"
-                                        height="350px" class="column is-4"
-                                        /> -->
                                 </div>
                                 <div class="field">
                                     <label class="label has-text-white">Max Sharpe Ratio | Portfolio Weights</label>
@@ -783,14 +782,14 @@ onMounted(() => {
     height: 32px;
     border-radius: 999px;
     overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.12);
 }
 
 .sector-bar__segment {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #0b1a33;
+    color: #ffffff;
     font-size: 0.75rem;
     font-weight: 600;
     position: relative;
@@ -826,7 +825,7 @@ onMounted(() => {
     width: 14px;
     height: 14px;
     border-radius: 3px;
-    box-shadow: 0 0 0 1px rgba(11, 26, 51, 0.15);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
 
 .sector-legend__percentage {
