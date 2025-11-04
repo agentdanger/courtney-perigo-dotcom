@@ -47,6 +47,247 @@ var modelLink = {
                 link: 'https://github.com/agentdanger/stock-portfolio-optimizer'
             }
 
+const brandColors = {
+    tangaroa: '#192532',
+    irisBlue: '#09A2CD',
+    teal: '#007D81',
+    alice: '#F5F9FF',
+    ochre: '#BE861F',
+    hunterGreen: '#305434',
+    tosca: '#704140',
+    grey: '#808080',
+    tuna: '#484E55'
+}
+
+const sectorColorOverrides = new Map([
+    ['Technology', brandColors.irisBlue],
+    ['Financials', brandColors.teal],
+    ['Healthcare', brandColors.hunterGreen],
+    ['Consumer Cyclical', brandColors.ochre],
+    ['Consumer Defensive', brandColors.tosca],
+    ['Communication Services', brandColors.tuna],
+    ['Energy', brandColors.tangaroa],
+    ['Industrials', brandColors.grey],
+    ['Real Estate', brandColors.alice],
+    ['Utilities', '#4AA7B5'],
+    ['Basic Materials', '#2F5168'],
+    ['Unknown', '#5A6B7A']
+])
+
+const sectorSynonyms = {
+    'Financial Services': 'Financials',
+    'Financial Service': 'Financials',
+    'Health Care': 'Healthcare',
+    'Consumer Staples': 'Consumer Defensive',
+    'Consumer Discretionary': 'Consumer Cyclical',
+    'Basic Materials': 'Basic Materials',
+    'Materials': 'Basic Materials',
+    'Unknown': 'Unknown'
+}
+
+const maxSharpeWeights = computed(() => {
+    const weights = portfolio.value?.max_sharpe?.weights
+
+    if (!Array.isArray(weights)) {
+        return []
+    }
+
+    return weights.filter(weight => typeof weight?.weight === 'number' && weight.weight > 0)
+})
+
+function canonicalizeSector(rawSector) {
+    if (!rawSector) {
+        return 'Unknown'
+    }
+
+    const trimmed = rawSector.trim()
+    return sectorSynonyms[trimmed] || trimmed
+}
+
+function fallbackColor(sector, usedColors = new Set()) {
+    if (!sector || sector === 'Unknown') {
+        const neutral = '#5A6B7A'
+        if (!usedColors.has(neutral)) {
+            return neutral
+        }
+    }
+
+    let hash = 0
+    for (let i = 0; i < sector.length; i += 1) {
+        hash = sector.charCodeAt(i) + ((hash << 5) - hash)
+        hash &= hash
+    }
+
+    let hue = Math.abs(hash) % 360
+    let color = `hsl(${hue}, 55%, 55%)`
+    let attempts = 0
+
+    while (usedColors.has(color) && attempts < 10) {
+        hue = (hue + 36) % 360
+        color = `hsl(${hue}, 55%, 55%)`
+        attempts += 1
+    }
+
+    return color
+}
+
+function resolveSectorColor(sector, assignedColors, availableColors, usedColors) {
+    if (assignedColors.has(sector)) {
+        return assignedColors.get(sector)
+    }
+
+    let color
+
+    if (sectorColorOverrides.has(sector)) {
+        color = sectorColorOverrides.get(sector)
+    } else if (availableColors.length) {
+        color = availableColors.shift()
+    } else {
+        color = fallbackColor(sector, usedColors)
+    }
+
+    assignedColors.set(sector, color)
+    usedColors.add(color)
+
+    return color
+}
+
+const sectorBreakdown = computed(() => {
+    if (!maxSharpeWeights.value.length) {
+        return []
+    }
+
+    const grouped = maxSharpeWeights.value.reduce((acc, stock) => {
+        const sector = stockSector(stock)
+        const total = acc[sector]?.weight ?? 0
+        acc[sector] = {
+            sector,
+            weight: total + stock.weight
+        }
+        return acc
+    }, {})
+
+    const sectors = Object.values(grouped)
+        .map(entry => ({
+            sector: entry.sector,
+            weight: entry.weight,
+            percentage: entry.weight * 100
+        }))
+        .sort((a, b) => b.percentage - a.percentage)
+
+    const totalPercentage = sectors.reduce((sum, sector) => sum + sector.percentage, 0)
+
+    if (!totalPercentage) {
+        return []
+    }
+
+    const normalizationFactor = 100 / totalPercentage
+    const overrideColors = new Set(sectorColorOverrides.values())
+    const availableColors = Object.values(brandColors).filter(color => !overrideColors.has(color))
+    const assignedColors = new Map()
+    const usedColors = new Set()
+
+    return sectors.map(sector => ({
+        ...sector,
+        percentage: sector.percentage * normalizationFactor,
+        color: resolveSectorColor(sector.sector, assignedColors, availableColors, usedColors)
+    }))
+})
+
+const sectorChartSeries = computed(() =>
+    sectorBreakdown.value.map(sector => Number(sector.percentage.toFixed(2)))
+)
+
+const sectorChartOptions = computed(() => ({
+    chart: {
+        type: 'donut',
+        background: 'transparent'
+    },
+    labels: sectorBreakdown.value.map(sector => sector.sector),
+    colors: sectorBreakdown.value.map(sector => sector.color),
+    legend: {
+        show: false
+    },
+    stroke: {
+        colors: ['#F5F9FF'],
+        show: false
+    },
+    dataLabels: {
+        style: {
+            fontSize: '12px',
+            colors: ['#F5F9FF']
+        }
+    },
+    plotOptions: {
+        pie: {
+            donut: {
+                size: '65%',
+                labels: {
+                    show: true,
+                    name: {
+                        color: '#F5F9FF',
+                        fontSize: '14px',
+                        fontWeight: 600
+                    },
+                    value: {
+                        color: '#F5F9FF',
+                        fontSize: '18px',
+                        formatter: value => `${Number(value).toFixed(1)}%`
+                    },
+                    total: {
+                        show: true,
+                        label: 'Holdings',
+                        color: '#F5F9FF',
+                        fontSize: '14px',
+                        formatter: () => holdingsCount.value || 0
+                    }
+                }
+            }
+        }
+    },
+    tooltip: {
+        y: {
+            formatter: value => `${value.toFixed(1)}%`
+        }
+    }
+}))
+
+const largestHolding = computed(() => {
+    if (!maxSharpeWeights.value.length) {
+        return null
+    }
+
+    const holding = maxSharpeWeights.value.reduce((max, stock) => {
+        if (!max || stock.weight > max.weight) {
+            return stock
+        }
+
+        return max
+    }, null)
+
+    if (!holding) {
+        return null
+    }
+
+    return {
+        name: stockDisplayName(holding) || 'Unknown',
+        ticker: holding.ticker,
+        percentage: holding.weight * 100
+    }
+})
+
+const holdingsCount = computed(() => maxSharpeWeights.value.length)
+
+const annualReturnPct = computed(() => {
+    const annualReturn = portfolio.value?.max_sharpe?.return
+
+    if (typeof annualReturn !== 'number') {
+        return null
+    }
+
+    return annualReturn * 100
+})
+
 function stockDisplayName(stock) {
     if (!stock || !stock.info) {
         return null
@@ -60,12 +301,14 @@ function stockDisplayName(stock) {
 
 function stockSector(stock) {
     if (!stock || !stock.info) {
-        return null
+        return 'Unknown'
     }
 
-    return stock.info.sector
+    return canonicalizeSector(
+        stock.info.sector
         || stock.info.sectorDisp
         || null
+    )
 }
 
 function stockWebsite(stock) {
@@ -472,6 +715,88 @@ onMounted(() => {
                                         height="350px" class="column is-4"
                                         /> -->
                                 </div>
+                                <div
+                                    class="box has-background-dark mb-5 portfolio-overview"
+                                    v-if="sectorBreakdown.length || largestHolding || annualReturnPct !== null"
+                                >
+                                    <div class="portfolio-overview__grid columns is-variable is-5 is-multiline">
+                                        <div
+                                            class="portfolio-overview__summary column is-12-mobile is-12-tablet is-7-desktop"
+                                        >
+                                            <div class="portfolio-overview__heading">
+                                                <p class="has-text-white has-text-weight-semibold is-size-5 mb-1">
+                                                    Portfolio Value by Sector
+                                                </p>
+                                                <p class="has-text-white-ter is-size-7">
+                                                    Normalized to 100% of the Max Sharpe portfolio
+                                                </p>
+                                            </div>
+                                            <div class="portfolio-overview__metrics" v-if="largestHolding || annualReturnPct !== null || holdingsCount">
+                                                <div class="portfolio-overview__metric" v-if="largestHolding">
+                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Largest Holding</p>
+                                                    <p class="metric-value has-text-white is-size-5">
+                                                        {{ largestHolding.name }}
+                                                        <span class="metric-value__ticker">({{ largestHolding.ticker }})</span>
+                                                    </p>
+                                                    <p class="metric-subtext has-text-white">{{ largestHolding.percentage.toFixed(1) }}%</p>
+                                                </div>
+                                                <div class="portfolio-overview__metric" v-if="annualReturnPct !== null">
+                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Annualized Return</p>
+                                                    <p class="metric-value has-text-white is-size-5">
+                                                        {{ annualReturnPct.toFixed(2) }}%
+                                                    </p>
+                                                    <p class="metric-subtext has-text-white">Max Sharpe Portfolio</p>
+                                                </div>
+                                                <div class="portfolio-overview__metric" v-if="holdingsCount">
+                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Holdings</p>
+                                                    <p class="metric-value has-text-white is-size-5">
+                                                        {{ holdingsCount }}
+                                                    </p>
+                                                    <p class="metric-subtext has-text-white">With non-zero allocation</p>
+                                                </div>
+                                            </div>
+                                            <div v-if="sectorBreakdown.length" class="portfolio-overview__legend">
+                                                <ul class="sector-legend">
+                                                    <li
+                                                        v-for="sector in sectorBreakdown"
+                                                        :key="`${sector.sector}-legend`"
+                                                        class="sector-legend__item"
+                                                    >
+                                                        <span
+                                                            class="sector-legend__swatch"
+                                                            :style="{ backgroundColor: sector.color }"
+                                                        ></span>
+                                                        <span class="sector-legend__label has-text-white is-size-7">
+                                                            {{ sector.sector }}
+                                                            <span class="sector-legend__percentage">
+                                                                {{ sector.percentage.toFixed(1) }}%
+                                                            </span>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <p v-else class="has-text-white">
+                                                Sector information is unavailable for this portfolio.
+                                            </p>
+                                        </div>
+                                        <div class="portfolio-overview__chart column is-12-mobile is-12-tablet is-5-desktop">
+                                            <div
+                                                v-if="sectorBreakdown.length"
+                                                class="portfolio-overview__chart-card"
+                                            >
+                                                <VueApexCharts
+                                                    type="donut"
+                                                    :options="sectorChartOptions"
+                                                    :series="sectorChartSeries"
+                                                    height="260"
+                                                />
+                                            </div>
+                                            <p v-else class="has-text-white">
+                                                Add sector data to visualize the portfolio mix.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="field">
                                     <label class="label has-text-white">Max Sharpe Ratio | Portfolio Weights</label>
                                 </div>
@@ -549,4 +874,108 @@ onMounted(() => {
     <!--  -->
 
 </template>
+
+<style scoped>
+.portfolio-overview {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.portfolio-overview__grid {
+    align-items: stretch;
+}
+
+.portfolio-overview__summary {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.portfolio-overview__heading {
+    margin-bottom: 0.5rem;
+}
+
+.portfolio-overview__metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.portfolio-overview__metric {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+}
+
+.portfolio-overview__legend {
+    margin-top: 0.5rem;
+}
+
+.sector-legend {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.sector-legend__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sector-legend__swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.sector-legend__percentage {
+    margin-left: 0.35rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.metric-label {
+    letter-spacing: 0.05em;
+}
+
+.metric-value {
+    font-weight: 600;
+}
+
+.metric-value__ticker {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.metric-subtext {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.portfolio-overview__chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.portfolio-overview__chart-card {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+    .portfolio-overview__metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-overview__summary {
+        gap: 1rem;
+    }
+}
+</style>
 
