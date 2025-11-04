@@ -209,12 +209,13 @@ const sectorChartOptions = computed(() => ({
         show: false
     },
     stroke: {
-        colors: ['#1F2933']
+        colors: ['#F5F9FF'],
+        show: false
     },
     dataLabels: {
         style: {
             fontSize: '12px',
-            colors: ['#0B1F33']
+            colors: ['#F5F9FF']
         }
     },
     plotOptions: {
@@ -765,7 +766,7 @@ onMounted(() => {
                                                             class="sector-legend__swatch"
                                                             :style="{ backgroundColor: sector.color }"
                                                         ></span>
-                                                        <span class="sector-legend__label has-text-white">
+                                                        <span class="sector-legend__label has-text-white is-size-7">
                                                             {{ sector.sector }}
                                                             <span class="sector-legend__percentage">
                                                                 {{ sector.percentage.toFixed(1) }}%
