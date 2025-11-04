@@ -47,6 +47,133 @@ var modelLink = {
                 link: 'https://github.com/agentdanger/stock-portfolio-optimizer'
             }
 
+const sectorColorMap = {
+    'Basic Materials': '#7FB3D5',
+    'Communication Services': '#AF7AC5',
+    'Consumer Cyclical': '#F1948A',
+    'Consumer Defensive': '#73C6B6',
+    'Consumer Staples': '#73C6B6',
+    'Energy': '#F7DC6F',
+    'Financial Services': '#85C1E9',
+    'Financials': '#85C1E9',
+    'Healthcare': '#BB8FCE',
+    'Health Care': '#BB8FCE',
+    'Industrials': '#F0B27A',
+    'Real Estate': '#A2D9CE',
+    'Technology': '#76D7C4',
+    'Utilities': '#F9E79F'
+}
+
+const maxSharpeWeights = computed(() => {
+    const weights = portfolio.value?.max_sharpe?.weights
+
+    if (!Array.isArray(weights)) {
+        return []
+    }
+
+    return weights.filter(weight => typeof weight?.weight === 'number' && weight.weight > 0)
+})
+
+function fallbackColor(sector) {
+    if (!sector) {
+        return '#6C7A89'
+    }
+
+    let hash = 0
+    for (let i = 0; i < sector.length; i += 1) {
+        hash = sector.charCodeAt(i) + ((hash << 5) - hash)
+        hash &= hash
+    }
+
+    const hue = Math.abs(hash) % 360
+    return `hsl(${hue}, 55%, 55%)`
+}
+
+function getSectorColor(sector) {
+    if (!sector) {
+        return '#6C7A89'
+    }
+
+    return sectorColorMap[sector] || fallbackColor(sector)
+}
+
+const sectorBreakdown = computed(() => {
+    if (!maxSharpeWeights.value.length) {
+        return []
+    }
+
+    const grouped = maxSharpeWeights.value.reduce((acc, stock) => {
+        const sector = stockSector(stock) || 'Unknown'
+        const total = acc[sector]?.weight ?? 0
+        acc[sector] = {
+            sector,
+            weight: total + stock.weight
+        }
+        return acc
+    }, {})
+
+    const sectors = Object.values(grouped)
+        .map(entry => {
+            const percentage = entry.weight * 100
+            return {
+                sector: entry.sector,
+                weight: entry.weight,
+                percentage,
+                color: getSectorColor(entry.sector)
+            }
+        })
+        .sort((a, b) => b.percentage - a.percentage)
+
+    const totalPercentage = sectors.reduce((sum, sector) => sum + sector.percentage, 0)
+
+    if (!totalPercentage) {
+        return []
+    }
+
+    const normalizationFactor = 100 / totalPercentage
+
+    return sectors.map(sector => ({
+        ...sector,
+        percentage: sector.percentage * normalizationFactor
+    }))
+})
+
+const largestHolding = computed(() => {
+    if (!maxSharpeWeights.value.length) {
+        return null
+    }
+
+    const holding = maxSharpeWeights.value.reduce((max, stock) => {
+        if (!max || stock.weight > max.weight) {
+            return stock
+        }
+
+        return max
+    }, null)
+
+    if (!holding) {
+        return null
+    }
+
+    return {
+        name: stockDisplayName(holding) || 'Unknown',
+        ticker: holding.ticker,
+        percentage: holding.weight * 100
+    }
+})
+
+const holdingsCount = computed(() => maxSharpeWeights.value.length)
+
+const annualReturnPct = computed(() => {
+    const annualReturn = portfolio.value?.max_sharpe?.return
+
+    if (typeof annualReturn !== 'number') {
+        return null
+    }
+
+    return annualReturn * 100
+})
+
 function stockDisplayName(stock) {
     if (!stock || !stock.info) {
         return null
@@ -457,6 +584,85 @@ onMounted(() => {
                                 >
                                     Latest run: {{ formattedLatestRunDate }}
                                 </p>
+                                <div
+                                    class="box has-background-primary-light mb-5 portfolio-overview"
+                                    v-if="sectorBreakdown.length || largestHolding || annualReturnPct !== null"
+                                >
+                                    <div class="portfolio-overview__body">
+                                        <div class="portfolio-overview__heading">
+                                            <p class="has-text-white has-text-weight-semibold is-size-5 mb-2">
+                                                Portfolio Value by Sector
+                                            </p>
+                                            <p class="has-text-white-ter is-size-7">
+                                                Normalized to 100% of the Max Sharpe portfolio
+                                            </p>
+                                        </div>
+                                        <div v-if="sectorBreakdown.length" class="portfolio-overview__chart">
+                                            <div class="sector-bar" role="img" aria-label="Portfolio sector allocation">
+                                                <div
+                                                    v-for="sector in sectorBreakdown"
+                                                    :key="sector.sector"
+                                                    class="sector-bar__segment"
+                                                    :style="{ width: sector.percentage + '%', backgroundColor: sector.color }"
+                                                    :title="`${sector.sector}: ${sector.percentage.toFixed(1)}%`
+                                                    "
+                                                >
+                                                    <span class="sector-bar__label" v-if="sector.percentage >= 12">
+                                                        {{ sector.sector }}
+                                                        <span class="sector-bar__percentage">
+                                                            {{ sector.percentage.toFixed(1) }}%
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <ul class="sector-legend mt-3">
+                                                <li
+                                                    v-for="sector in sectorBreakdown"
+                                                    :key="`${sector.sector}-legend`"
+                                                    class="sector-legend__item"
+                                                >
+                                                    <span
+                                                        class="sector-legend__swatch"
+                                                        :style="{ backgroundColor: sector.color }"
+                                                    ></span>
+                                                    <span class="sector-legend__label has-text-white">
+                                                        {{ sector.sector }}
+                                                        <span class="sector-legend__percentage">
+                                                            {{ sector.percentage.toFixed(1) }}%
+                                                        </span>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <p v-else class="has-text-white">
+                                            Sector information is unavailable for this portfolio.
+                                        </p>
+                                        <div class="portfolio-overview__metrics columns is-variable is-4 mt-4">
+                                            <div class="column is-one-third-desktop is-half-tablet" v-if="largestHolding">
+                                                <p class="metric-label has-text-white-ter is-uppercase is-size-7">Largest Holding</p>
+                                                <p class="metric-value has-text-white is-size-5">
+                                                    {{ largestHolding.name }}
+                                                    <span class="metric-value__ticker">({{ largestHolding.ticker }})</span>
+                                                </p>
+                                                <p class="metric-subtext has-text-white">{{ largestHolding.percentage.toFixed(1) }}%</p>
+                                            </div>
+                                            <div class="column is-one-third-desktop is-half-tablet" v-if="annualReturnPct !== null">
+                                                <p class="metric-label has-text-white-ter is-uppercase is-size-7">Annualized Return</p>
+                                                <p class="metric-value has-text-white is-size-5">
+                                                    {{ annualReturnPct.toFixed(2) }}%
+                                                </p>
+                                                <p class="metric-subtext has-text-white">Max Sharpe Portfolio</p>
+                                            </div>
+                                            <div class="column is-one-third-desktop is-half-tablet" v-if="holdingsCount">
+                                                <p class="metric-label has-text-white-ter is-uppercase is-size-7">Holdings</p>
+                                                <p class="metric-value has-text-white is-size-5">
+                                                    {{ holdingsCount }}
+                                                </p>
+                                                <p class="metric-subtext has-text-white">With non-zero allocation</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Add the ApexCharts scatter plot here -->
                                 <div class="columns">
                                     <VueApexCharts
@@ -549,4 +755,115 @@ onMounted(() => {
     <!--  -->
 
 </template>
+
+<style scoped>
+.portfolio-overview {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.portfolio-overview__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.portfolio-overview__heading {
+    text-align: left;
+}
+
+.portfolio-overview__chart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.sector-bar {
+    display: flex;
+    height: 32px;
+    border-radius: 999px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sector-bar__segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0b1a33;
+    font-size: 0.75rem;
+    font-weight: 600;
+    position: relative;
+    min-width: 8px;
+}
+
+.sector-bar__label {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.sector-bar__percentage {
+    font-weight: 500;
+}
+
+.sector-legend {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.sector-legend__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sector-legend__swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(11, 26, 51, 0.15);
+}
+
+.sector-legend__percentage {
+    margin-left: 0.35rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.portfolio-overview__metrics {
+    margin-top: 0.25rem;
+}
+
+.metric-label {
+    letter-spacing: 0.05em;
+}
+
+.metric-value {
+    font-weight: 600;
+}
+
+.metric-value__ticker {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.metric-subtext {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+@media screen and (max-width: 768px) {
+    .sector-bar {
+        height: 40px;
+    }
+
+    .sector-bar__segment {
+        font-size: 0.7rem;
+    }
+}
+</style>
 
