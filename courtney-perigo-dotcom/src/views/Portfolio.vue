@@ -47,21 +47,42 @@ var modelLink = {
                 link: 'https://github.com/agentdanger/stock-portfolio-optimizer'
             }
 
-const sectorColorMap = {
-    'Basic Materials': '#7FB3D5',
-    'Communication Services': '#AF7AC5',
-    'Consumer Cyclical': '#F1948A',
-    'Consumer Defensive': '#73C6B6',
-    'Consumer Staples': '#73C6B6',
-    'Energy': '#F7DC6F',
-    'Financial Services': '#85C1E9',
-    'Financials': '#85C1E9',
-    'Healthcare': '#BB8FCE',
-    'Health Care': '#BB8FCE',
-    'Industrials': '#F0B27A',
-    'Real Estate': '#A2D9CE',
-    'Technology': '#76D7C4',
-    'Utilities': '#F9E79F'
+const brandColors = {
+    tangaroa: '#192532',
+    irisBlue: '#09A2CD',
+    teal: '#007D81',
+    alice: '#F5F9FF',
+    ochre: '#BE861F',
+    hunterGreen: '#305434',
+    tosca: '#704140',
+    grey: '#808080',
+    tuna: '#484E55'
+}
+
+const sectorColorOverrides = new Map([
+    ['Technology', brandColors.irisBlue],
+    ['Financials', brandColors.teal],
+    ['Healthcare', brandColors.hunterGreen],
+    ['Consumer Cyclical', brandColors.ochre],
+    ['Consumer Defensive', brandColors.tosca],
+    ['Communication Services', brandColors.tuna],
+    ['Energy', brandColors.tangaroa],
+    ['Industrials', brandColors.grey],
+    ['Real Estate', brandColors.alice],
+    ['Utilities', '#4AA7B5'],
+    ['Basic Materials', '#2F5168'],
+    ['Unknown', '#5A6B7A']
+])
+
+const sectorSynonyms = {
+    'Financial Services': 'Financials',
+    'Financial Service': 'Financials',
+    'Health Care': 'Healthcare',
+    'Consumer Staples': 'Consumer Defensive',
+    'Consumer Discretionary': 'Consumer Cyclical',
+    'Basic Materials': 'Basic Materials',
+    'Materials': 'Basic Materials',
+    'Unknown': 'Unknown'
 }
 
 const maxSharpeWeights = computed(() => {
@@ -74,9 +95,21 @@ const maxSharpeWeights = computed(() => {
     return weights.filter(weight => typeof weight?.weight === 'number' && weight.weight > 0)
 })
 
-function fallbackColor(sector) {
-    if (!sector) {
-        return '#6C7A89'
+function canonicalizeSector(rawSector) {
+    if (!rawSector) {
+        return 'Unknown'
+    }
+
+    const trimmed = rawSector.trim()
+    return sectorSynonyms[trimmed] || trimmed
+}
+
+function fallbackColor(sector, usedColors = new Set()) {
+    if (!sector || sector === 'Unknown') {
+        const neutral = '#5A6B7A'
+        if (!usedColors.has(neutral)) {
+            return neutral
+        }
     }
 
     let hash = 0
@@ -85,16 +118,38 @@ function fallbackColor(sector) {
         hash &= hash
     }
 
-    const hue = Math.abs(hash) % 360
-    return `hsl(${hue}, 55%, 55%)`
-}
+    let hue = Math.abs(hash) % 360
+    let color = `hsl(${hue}, 55%, 55%)`
+    let attempts = 0
 
-function getSectorColor(sector) {
-    if (!sector) {
-        return '#6C7A89'
+    while (usedColors.has(color) && attempts < 10) {
+        hue = (hue + 36) % 360
+        color = `hsl(${hue}, 55%, 55%)`
+        attempts += 1
     }
 
-    return sectorColorMap[sector] || fallbackColor(sector)
+    return color
+}
+
+function resolveSectorColor(sector, assignedColors, availableColors, usedColors) {
+    if (assignedColors.has(sector)) {
+        return assignedColors.get(sector)
+    }
+
+    let color
+
+    if (sectorColorOverrides.has(sector)) {
+        color = sectorColorOverrides.get(sector)
+    } else if (availableColors.length) {
+        color = availableColors.shift()
+    } else {
+        color = fallbackColor(sector, usedColors)
+    }
+
+    assignedColors.set(sector, color)
+    usedColors.add(color)
+
+    return color
 }
 
 const sectorBreakdown = computed(() => {
@@ -103,7 +158,7 @@ const sectorBreakdown = computed(() => {
     }
 
     const grouped = maxSharpeWeights.value.reduce((acc, stock) => {
-        const sector = stockSector(stock) || 'Unknown'
+        const sector = stockSector(stock)
         const total = acc[sector]?.weight ?? 0
         acc[sector] = {
             sector,
@@ -113,15 +168,11 @@ const sectorBreakdown = computed(() => {
     }, {})
 
     const sectors = Object.values(grouped)
-        .map(entry => {
-            const percentage = entry.weight * 100
-            return {
-                sector: entry.sector,
-                weight: entry.weight,
-                percentage,
-                color: getSectorColor(entry.sector)
-            }
-        })
+        .map(entry => ({
+            sector: entry.sector,
+            weight: entry.weight,
+            percentage: entry.weight * 100
+        }))
         .sort((a, b) => b.percentage - a.percentage)
 
     const totalPercentage = sectors.reduce((sum, sector) => sum + sector.percentage, 0)
@@ -131,10 +182,15 @@ const sectorBreakdown = computed(() => {
     }
 
     const normalizationFactor = 100 / totalPercentage
+    const overrideColors = new Set(sectorColorOverrides.values())
+    const availableColors = Object.values(brandColors).filter(color => !overrideColors.has(color))
+    const assignedColors = new Map()
+    const usedColors = new Set()
 
     return sectors.map(sector => ({
         ...sector,
-        percentage: sector.percentage * normalizationFactor
+        percentage: sector.percentage * normalizationFactor,
+        color: resolveSectorColor(sector.sector, assignedColors, availableColors, usedColors)
     }))
 })
 
@@ -244,12 +300,14 @@ function stockDisplayName(stock) {
 
 function stockSector(stock) {
     if (!stock || !stock.info) {
-        return null
+        return 'Unknown'
     }
 
-    return stock.info.sector
+    return canonicalizeSector(
+        stock.info.sector
         || stock.info.sectorDisp
         || null
+    )
 }
 
 function stockWebsite(stock) {
