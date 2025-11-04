@@ -138,6 +138,63 @@ const sectorBreakdown = computed(() => {
     }))
 })
 
+const sectorChartSeries = computed(() =>
+    sectorBreakdown.value.map(sector => Number(sector.percentage.toFixed(2)))
+)
+
+const sectorChartOptions = computed(() => ({
+    chart: {
+        type: 'donut',
+        background: 'transparent'
+    },
+    labels: sectorBreakdown.value.map(sector => sector.sector),
+    colors: sectorBreakdown.value.map(sector => sector.color),
+    legend: {
+        show: false
+    },
+    stroke: {
+        colors: ['#1F2933']
+    },
+    dataLabels: {
+        style: {
+            fontSize: '12px',
+            colors: ['#0B1F33']
+        }
+    },
+    plotOptions: {
+        pie: {
+            donut: {
+                size: '65%',
+                labels: {
+                    show: true,
+                    name: {
+                        color: '#F5F9FF',
+                        fontSize: '14px',
+                        fontWeight: 600
+                    },
+                    value: {
+                        color: '#F5F9FF',
+                        fontSize: '18px',
+                        formatter: value => `${Number(value).toFixed(1)}%`
+                    },
+                    total: {
+                        show: true,
+                        label: 'Holdings',
+                        color: '#F5F9FF',
+                        fontSize: '14px',
+                        formatter: () => holdingsCount.value || 0
+                    }
+                }
+            }
+        }
+    },
+    tooltip: {
+        y: {
+            formatter: value => `${value.toFixed(1)}%`
+        }
+    }
+}))
+
 const largestHolding = computed(() => {
     if (!maxSharpeWeights.value.length) {
         return null
@@ -603,77 +660,81 @@ onMounted(() => {
                                     class="box has-background-dark mb-5 portfolio-overview"
                                     v-if="sectorBreakdown.length || largestHolding || annualReturnPct !== null"
                                 >
-                                    <div class="portfolio-overview__body">
-                                        <div class="portfolio-overview__heading">
-                                            <p class="has-text-white has-text-weight-semibold is-size-5 mb-2">
-                                                Portfolio Value by Sector
-                                            </p>
-                                            <p class="has-text-white-ter is-size-7">
-                                                Normalized to 100% of the Max Sharpe portfolio
-                                            </p>
-                                        </div>
-                                        <div v-if="sectorBreakdown.length" class="portfolio-overview__chart">
-                                            <div class="sector-bar" role="img" aria-label="Portfolio sector allocation">
-                                                <div
-                                                    v-for="sector in sectorBreakdown"
-                                                    :key="sector.sector"
-                                                    class="sector-bar__segment"
-                                                    :style="{ width: sector.percentage + '%', backgroundColor: sector.color }"
-                                                    :title="`${sector.sector}: ${sector.percentage.toFixed(1)}%`"
-                                                >
-                                                    <span class="sector-bar__label" v-if="sector.percentage >= 12">
-                                                        {{ sector.sector }}
-                                                        <span class="sector-bar__percentage">
-                                                            {{ sector.percentage.toFixed(1) }}%
-                                                        </span>
-                                                    </span>
+                                    <div class="portfolio-overview__grid columns is-variable is-5 is-multiline">
+                                        <div
+                                            class="portfolio-overview__summary column is-12-mobile is-12-tablet is-7-desktop"
+                                        >
+                                            <div class="portfolio-overview__heading">
+                                                <p class="has-text-white has-text-weight-semibold is-size-5 mb-1">
+                                                    Portfolio Value by Sector
+                                                </p>
+                                                <p class="has-text-white-ter is-size-7">
+                                                    Normalized to 100% of the Max Sharpe portfolio
+                                                </p>
+                                            </div>
+                                            <div class="portfolio-overview__metrics" v-if="largestHolding || annualReturnPct !== null || holdingsCount">
+                                                <div class="portfolio-overview__metric" v-if="largestHolding">
+                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Largest Holding</p>
+                                                    <p class="metric-value has-text-white is-size-5">
+                                                        {{ largestHolding.name }}
+                                                        <span class="metric-value__ticker">({{ largestHolding.ticker }})</span>
+                                                    </p>
+                                                    <p class="metric-subtext has-text-white">{{ largestHolding.percentage.toFixed(1) }}%</p>
+                                                </div>
+                                                <div class="portfolio-overview__metric" v-if="annualReturnPct !== null">
+                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Annualized Return</p>
+                                                    <p class="metric-value has-text-white is-size-5">
+                                                        {{ annualReturnPct.toFixed(2) }}%
+                                                    </p>
+                                                    <p class="metric-subtext has-text-white">Max Sharpe Portfolio</p>
+                                                </div>
+                                                <div class="portfolio-overview__metric" v-if="holdingsCount">
+                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Holdings</p>
+                                                    <p class="metric-value has-text-white is-size-5">
+                                                        {{ holdingsCount }}
+                                                    </p>
+                                                    <p class="metric-subtext has-text-white">With non-zero allocation</p>
                                                 </div>
                                             </div>
-                                            <ul class="sector-legend mt-3">
-                                                <li
-                                                    v-for="sector in sectorBreakdown"
-                                                    :key="`${sector.sector}-legend`"
-                                                    class="sector-legend__item"
-                                                >
-                                                    <span
-                                                        class="sector-legend__swatch"
-                                                        :style="{ backgroundColor: sector.color }"
-                                                    ></span>
-                                                    <span class="sector-legend__label has-text-white">
-                                                        {{ sector.sector }}
-                                                        <span class="sector-legend__percentage">
-                                                            {{ sector.percentage.toFixed(1) }}%
+                                            <div v-if="sectorBreakdown.length" class="portfolio-overview__legend">
+                                                <ul class="sector-legend">
+                                                    <li
+                                                        v-for="sector in sectorBreakdown"
+                                                        :key="`${sector.sector}-legend`"
+                                                        class="sector-legend__item"
+                                                    >
+                                                        <span
+                                                            class="sector-legend__swatch"
+                                                            :style="{ backgroundColor: sector.color }"
+                                                        ></span>
+                                                        <span class="sector-legend__label has-text-white">
+                                                            {{ sector.sector }}
+                                                            <span class="sector-legend__percentage">
+                                                                {{ sector.percentage.toFixed(1) }}%
+                                                            </span>
                                                         </span>
-                                                    </span>
-                                                </li>
-                                            </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <p v-else class="has-text-white">
+                                                Sector information is unavailable for this portfolio.
+                                            </p>
                                         </div>
-                                        <p v-else class="has-text-white">
-                                            Sector information is unavailable for this portfolio.
-                                        </p>
-                                        <div class="portfolio-overview__metrics columns is-variable is-4 mt-4">
-                                            <div class="column is-one-third-desktop is-half-tablet" v-if="largestHolding">
-                                                <p class="metric-label has-text-white-ter is-uppercase is-size-7">Largest Holding</p>
-                                                <p class="metric-value has-text-white is-size-5">
-                                                    {{ largestHolding.name }}
-                                                    <span class="metric-value__ticker">({{ largestHolding.ticker }})</span>
-                                                </p>
-                                                <p class="metric-subtext has-text-white">{{ largestHolding.percentage.toFixed(1) }}%</p>
+                                        <div class="portfolio-overview__chart column is-12-mobile is-12-tablet is-5-desktop">
+                                            <div
+                                                v-if="sectorBreakdown.length"
+                                                class="portfolio-overview__chart-card"
+                                            >
+                                                <VueApexCharts
+                                                    type="donut"
+                                                    :options="sectorChartOptions"
+                                                    :series="sectorChartSeries"
+                                                    height="260"
+                                                />
                                             </div>
-                                            <div class="column is-one-third-desktop is-half-tablet" v-if="annualReturnPct !== null">
-                                                <p class="metric-label has-text-white-ter is-uppercase is-size-7">Annualized Return</p>
-                                                <p class="metric-value has-text-white is-size-5">
-                                                    {{ annualReturnPct.toFixed(2) }}%
-                                                </p>
-                                                <p class="metric-subtext has-text-white">Max Sharpe Portfolio</p>
-                                            </div>
-                                            <div class="column is-one-third-desktop is-half-tablet" v-if="holdingsCount">
-                                                <p class="metric-label has-text-white-ter is-uppercase is-size-7">Holdings</p>
-                                                <p class="metric-value has-text-white is-size-5">
-                                                    {{ holdingsCount }}
-                                                </p>
-                                                <p class="metric-subtext has-text-white">With non-zero allocation</p>
-                                            </div>
+                                            <p v-else class="has-text-white">
+                                                Add sector data to visualize the portfolio mix.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -761,55 +822,40 @@ onMounted(() => {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.portfolio-overview__body {
+.portfolio-overview__grid {
+    align-items: stretch;
+}
+
+.portfolio-overview__summary {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1.25rem;
 }
 
 .portfolio-overview__heading {
-    text-align: left;
+    margin-bottom: 0.5rem;
 }
 
-.portfolio-overview__chart {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+.portfolio-overview__metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
 }
 
-.sector-bar {
-    display: flex;
-    height: 32px;
-    border-radius: 999px;
-    overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.12);
+.portfolio-overview__metric {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
 }
 
-.sector-bar__segment {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 600;
-    position: relative;
-    min-width: 8px;
-}
-
-.sector-bar__label {
-    display: flex;
-    gap: 0.25rem;
-    align-items: center;
-}
-
-.sector-bar__percentage {
-    font-weight: 500;
+.portfolio-overview__legend {
+    margin-top: 0.5rem;
 }
 
 .sector-legend {
     list-style: none;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 0.75rem 1.5rem;
     padding: 0;
     margin: 0;
@@ -833,10 +879,6 @@ onMounted(() => {
     color: rgba(255, 255, 255, 0.8);
 }
 
-.portfolio-overview__metrics {
-    margin-top: 0.25rem;
-}
-
 .metric-label {
     letter-spacing: 0.05em;
 }
@@ -855,13 +897,25 @@ onMounted(() => {
     color: rgba(255, 255, 255, 0.75);
 }
 
+.portfolio-overview__chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.portfolio-overview__chart-card {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
 @media screen and (max-width: 768px) {
-    .sector-bar {
-        height: 40px;
+    .portfolio-overview__metrics {
+        grid-template-columns: 1fr;
     }
 
-    .sector-bar__segment {
-        font-size: 0.7rem;
+    .portfolio-overview__summary {
+        gap: 1rem;
     }
 }
 </style>
