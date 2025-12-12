@@ -262,6 +262,12 @@ export default {
             ],
             resume_experience: [
                 {
+                    title: 'SVP, Data Science and Analytics',
+                    company: 'Empower Media and Marketing',
+                    date: '2025 - Present',
+                    description: 'Lead the data science practice for Empower. Lead a team that builds data products that help clients make better marketing decisions.  Lead data science deliverables across retail clients including Sprouts Farmers Market, PetSmart, JD Sports, and Whataburger.'
+                },
+                {
                     title: 'CEO, Owner of Empire Sports Analytics (ESA)',
                     company: 'Empire Sports Analytics',
                     date: '2022 - Present',
@@ -270,14 +276,8 @@ export default {
                 {
                     title: 'SVP, Executive Director of Marketing and Data Sciences',
                     company: 'Cramer-Krasselt',
-                    date: '2021 - Present',
+                    date: '2018 - 2025',
                     description: 'Lead the agency\'s global data science and analytics capabilities with an integrated team across three offices. Build data products, architect analytics microservices, and develop data-driven models for marketing optimization and personalization - creating $5MM+ in annual recurring revenue for the agency. Won the Drum Digital Advertising Award for our novel curve-fit optimization model for marketing attribution.'
-                },
-                {
-                    title: 'SVP, Director of Data Strategy and Utilization',
-                    company: 'Cramer-Krasselt',
-                    date: '2018 - 2021',
-                    description: 'Re-aligned an analytics team, and the tech stack, for an agile analytics approach progressing the agency through a digital transformation for shared intelligence across finance, operations and delivery. Built a predictive benchmarking capability that automates analysis for C-K\'s performance marketing teams - generating a consistent 5-10% increase in paid marketing performance.'
                 },
                 {
                     title: 'VP, Director of Decision Sciences',
