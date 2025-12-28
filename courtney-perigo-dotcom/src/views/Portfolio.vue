@@ -32,12 +32,12 @@ const formattedLatestRunDate = computed(() => {
 })
 
 var aboutOptimalPortfolio = "This project uses optimal portfolio theory and Sharpe Ratio analysis " 
-+ "to identify the best investment portfolio from U.S. stocks over the past decade. " 
++ "to identify the best investment portfolio from low dividend yield U.S. stocks over the past decade. " 
 + "It showcases my data science skills in optimizing returns and analyzing complex datasets, " 
 + "and is purely academic, not financial advice.  The default budget is $10,000, but you can adjust it below."
 
 var aboutModel = "The optimal portfolio model uses Scipy's optimize function to maximize the Sharpe Ratio "
-+ "of a portfolio of U.S. stocks. The model uses historical stock data to calculate the optimal weights for each stock, " 
++ "of a portfolio of low dividend yield U.S. stocks. The model uses historical stock data to calculate the optimal weights for each stock, " 
 + "and suggests the portfolio that would've produced the maximum return given the volatility risk. "
 + "More information about the underlying model can be found on its repo."
 
