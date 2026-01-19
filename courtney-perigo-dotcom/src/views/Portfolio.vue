@@ -95,6 +95,150 @@ const maxSharpeWeights = computed(() => {
     return weights.filter(weight => typeof weight?.weight === 'number' && weight.weight > 0)
 })
 
+// Backtest data
+const backtest = computed(() => portfolio.value?.backtest ?? null)
+
+const hasBacktest = computed(() => backtest.value !== null)
+
+const backtestPeriod = computed(() => backtest.value?.period ?? null)
+
+const backtestMetrics = computed(() => {
+    if (!backtest.value) return null
+
+    return {
+        portfolioReturn: (backtest.value.portfolio_return * 100).toFixed(1),
+        benchmarkReturn: (backtest.value.benchmark_return * 100).toFixed(1),
+        outperformance: (backtest.value.outperformance * 100).toFixed(1),
+        portfolioSharpe: backtest.value.portfolio_sharpe.toFixed(2),
+        benchmarkSharpe: backtest.value.benchmark_sharpe.toFixed(2),
+        portfolioMaxDrawdown: (backtest.value.portfolio_max_drawdown * 100).toFixed(1),
+        benchmarkMaxDrawdown: (backtest.value.benchmark_max_drawdown * 100).toFixed(1)
+    }
+})
+
+const backtestChartOptions = ref({
+    chart: {
+        type: 'area',
+        height: 350,
+        fontFamily: 'Play, sans-serif',
+        background: 'transparent',
+        toolbar: {
+            show: false
+        },
+        zoom: {
+            enabled: false
+        }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        curve: 'smooth',
+        width: 2
+    },
+    fill: {
+        type: 'gradient',
+        gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.4,
+            opacityTo: 0.1,
+            stops: [0, 90, 100]
+        }
+    },
+    legend: {
+        show: true,
+        position: 'top',
+        horizontalAlign: 'center',
+        fontSize: '12px',
+        fontWeight: 'bold',
+        labels: {
+            colors: '#F5F9FF'
+        }
+    },
+    grid: {
+        borderColor: 'rgba(245, 249, 255, 0.2)'
+    },
+    xaxis: {
+        categories: [],
+        title: {
+            text: 'Quarter',
+            style: {
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: '#F5F9FF'
+            }
+        },
+        labels: {
+            style: {
+                colors: '#F5F9FF'
+            }
+        },
+        axisBorder: {
+            color: 'rgba(245, 249, 255, 0.2)'
+        },
+        axisTicks: {
+            color: 'rgba(245, 249, 255, 0.2)'
+        }
+    },
+    yaxis: {
+        title: {
+            text: 'Portfolio Value ($)',
+            style: {
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: '#F5F9FF'
+            }
+        },
+        labels: {
+            formatter: function(value) {
+                return '$' + value.toLocaleString('en-US', { maximumFractionDigits: 0 })
+            },
+            style: {
+                colors: '#F5F9FF'
+            }
+        }
+    },
+    colors: [brandColors.irisBlue, brandColors.ochre],
+    tooltip: {
+        theme: 'dark',
+        y: {
+            formatter: function(value) {
+                return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+            }
+        }
+    },
+    title: {
+        text: 'Backtest: Portfolio vs Benchmark Growth',
+        align: 'center',
+        style: {
+            fontSize: '20px',
+            fontWeight: 'bold',
+            color: '#F5F9FF'
+        }
+    },
+    series: []
+})
+
+function updateBacktestChart() {
+    if (!backtest.value?.quarterly_values?.length) return
+
+    const quarters = backtest.value.quarterly_values.map(q => q.date)
+    const portfolioValues = backtest.value.quarterly_values.map(q => q.portfolio)
+    const benchmarkValues = backtest.value.quarterly_values.map(q => q.benchmark)
+
+    backtestChartOptions.value.xaxis.categories = quarters
+    backtestChartOptions.value.series = [
+        {
+            name: 'Optimized Portfolio',
+            data: portfolioValues
+        },
+        {
+            name: 'Benchmark (S&P 500)',
+            data: benchmarkValues
+        }
+    ]
+}
+
 function canonicalizeSector(rawSector) {
     if (!rawSector) {
         return 'Unknown'
@@ -604,6 +748,7 @@ function getPortfolio() {
             latestRunDate.value = response?.latest_run_date ?? null
             updateChartSeries() // Update chart data after loading portfolio
             updateSharpeChartSeries() // Update Sharpe ratio chart data after loading portfolio
+            updateBacktestChart() // Update backtest chart data
             error.value = null
         })
         .catch(e => {
@@ -797,6 +942,89 @@ onMounted(() => {
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Backtest Results Section -->
+                                <div
+                                    class="box has-background-dark mb-5 backtest-section"
+                                    v-if="hasBacktest && backtestMetrics"
+                                >
+                                    <div class="backtest-section__header mb-4">
+                                        <p class="has-text-white has-text-weight-semibold is-size-5 mb-1">
+                                            Historical Backtest Performance
+                                        </p>
+                                        <p class="has-text-white-ter is-size-7" v-if="backtestPeriod">
+                                            {{ backtestPeriod }} · Starting value: $100,000
+                                        </p>
+                                    </div>
+                                    <div class="backtest-section__chart mb-5">
+                                        <VueApexCharts
+                                            type="area"
+                                            :options="backtestChartOptions"
+                                            :series="backtestChartOptions.series"
+                                            height="350"
+                                        />
+                                    </div>
+                                    <div class="backtest-section__metrics">
+                                        <div class="columns is-multiline is-variable is-4">
+                                            <div class="column is-12-mobile is-6-tablet is-4-desktop">
+                                                <div class="backtest-metric">
+                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Total Return</p>
+                                                    <div class="backtest-metric__comparison">
+                                                        <div class="backtest-metric__item">
+                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.portfolioReturn }}%</span>
+                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Portfolio</span>
+                                                        </div>
+                                                        <span class="backtest-metric__separator has-text-white-ter">vs</span>
+                                                        <div class="backtest-metric__item">
+                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.benchmarkReturn }}%</span>
+                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Benchmark</span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="metric-subtext has-text-white-ter is-size-7 mt-1">
+                                                        Outperformance: +{{ backtestMetrics.outperformance }}%
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="column is-12-mobile is-6-tablet is-4-desktop">
+                                                <div class="backtest-metric">
+                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Sharpe Ratio</p>
+                                                    <div class="backtest-metric__comparison">
+                                                        <div class="backtest-metric__item">
+                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.portfolioSharpe }}</span>
+                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Portfolio</span>
+                                                        </div>
+                                                        <span class="backtest-metric__separator has-text-white-ter">vs</span>
+                                                        <div class="backtest-metric__item">
+                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.benchmarkSharpe }}</span>
+                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Benchmark</span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="metric-subtext has-text-white-ter is-size-7 mt-1">
+                                                        Risk-adjusted return measure
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="column is-12-mobile is-6-tablet is-4-desktop">
+                                                <div class="backtest-metric">
+                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Max Drawdown</p>
+                                                    <div class="backtest-metric__comparison">
+                                                        <div class="backtest-metric__item">
+                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.portfolioMaxDrawdown }}%</span>
+                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Portfolio</span>
+                                                        </div>
+                                                        <span class="backtest-metric__separator has-text-white-ter">vs</span>
+                                                        <div class="backtest-metric__item">
+                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.benchmarkMaxDrawdown }}%</span>
+                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Benchmark</span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="metric-subtext has-text-white-ter is-size-7 mt-1">
+                                                        Largest peak-to-trough decline
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="field">
                                     <label class="label has-text-white">Max Sharpe Ratio | Portfolio Weights</label>
                                 </div>
@@ -975,6 +1203,64 @@ onMounted(() => {
 
     .portfolio-overview__summary {
         gap: 1rem;
+    }
+}
+
+/* Backtest Section Styles */
+.backtest-section {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.backtest-section__header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.backtest-section__chart {
+    margin: 0 -0.5rem;
+}
+
+.backtest-metric {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 1rem;
+    height: 100%;
+}
+
+.backtest-metric__comparison {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.backtest-metric__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.backtest-metric__value {
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.backtest-metric__label {
+    margin-top: 0.125rem;
+}
+
+.backtest-metric__separator {
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+
+@media screen and (max-width: 768px) {
+    .backtest-metric__comparison {
+        flex-direction: row;
+        gap: 0.5rem;
     }
 }
 </style>
