@@ -106,8 +106,8 @@ const backtestMetrics = computed(() => {
     if (!backtest.value) return null
 
     return {
-        portfolioReturn: (backtest.value.portfolio_return * 100).toFixed(1),
-        benchmarkReturn: (backtest.value.benchmark_return * 100).toFixed(1),
+        portfolioReturn: (backtest.value.portfolio_annualized_return * 100).toFixed(1),
+        benchmarkReturn: (backtest.value.benchmark_annualized_return * 100).toFixed(1),
         outperformance: (backtest.value.outperformance * 100).toFixed(1),
         portfolioSharpe: backtest.value.portfolio_sharpe.toFixed(2),
         benchmarkSharpe: backtest.value.benchmark_sharpe.toFixed(2),
