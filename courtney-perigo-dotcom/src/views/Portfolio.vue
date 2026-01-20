@@ -12,7 +12,7 @@ const optimalPortfolioServ = new optimalPortfolioService()
 const portfolio = ref([])
 const isLoading = ref(true)
 const error = ref(null)
-var budget = ref(10000)
+var budget = ref(50000)
 const latestRunDate = ref(null)
 const formattedLatestRunDate = computed(() => {
     if (!latestRunDate.value) return null
@@ -34,12 +34,17 @@ const formattedLatestRunDate = computed(() => {
 var aboutOptimalPortfolio = "This project uses optimal portfolio theory and Sharpe Ratio analysis " 
 + "to identify the best investment portfolio from low dividend yield U.S. stocks over the past decade. " 
 + "It showcases my data science skills in optimizing returns and analyzing complex datasets, " 
-+ "and is purely academic, not financial advice.  The default budget is $10,000, but you can adjust it below."
++ "and is purely academic, not financial advice.  The default budget is $50,000, but you can adjust it below."
 
 var aboutModel = "The optimal portfolio model uses Scipy's optimize function to maximize the Sharpe Ratio "
-+ "of a portfolio of low dividend yield U.S. stocks. The model uses historical stock data to calculate the optimal weights for each stock, " 
++ "of a portfolio of low & no dividend yield U.S. stocks. The model uses historical stock data to calculate the optimal weights for each stock, " 
 + "and suggests the portfolio that would've produced the maximum return given the volatility risk. "
 + "More information about the underlying model can be found on its repo."
+
+var aboutBacktesting = "For backtesting, the model simulates how the optimal portfolio strategy would have performed over a historical period. "
++ "In the backtesting simulation, the optimal portfolio is rebalanced quarterly based on updated stock data at the time of the rebalance to reflect realistic investment adjustments. "
++ "The backtest results include metrics like annualized return, Sharpe ratio, and maximum drawdown (downside risk), "
++ "providing insights into the portfolio's risk-adjusted performance over time."
 
 var modelLink = {
                 name: 'Optimal Portfolio Model: GitHub',
@@ -801,6 +806,9 @@ onMounted(() => {
                             <div class="content has-text-white">
                                 {{ aboutOptimalPortfolio }}
                             </div>
+                            <div class="content has-text-white">
+                                <p>{{ aboutBacktesting }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -834,7 +842,7 @@ onMounted(() => {
                     <div class="card has-background-primary">
                         <header class="card-header ">
                             <p class="card-header-title has-text-white is-size-4">
-                                Optimal Portfolio
+                                Today's Optimal Portfolio
                             </p>
                         </header>
                         <div class="card-content">
@@ -1083,6 +1091,7 @@ onMounted(() => {
                                 <p>{{ aboutModel }}</p>
                             </div>
                         </div>
+                        
                         <div class="card-content">
                             <div class="buttons is-centered ">
                                     <a :href="modelLink.link" target="_blank" rel="noopener noreferrer"
