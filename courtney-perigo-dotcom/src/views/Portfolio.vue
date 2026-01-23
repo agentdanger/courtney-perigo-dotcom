@@ -39,7 +39,8 @@ var aboutOptimalPortfolio = "This project uses optimal portfolio theory and Shar
 var aboutModel = "The optimal portfolio model uses Scipy's optimize function to maximize the Sharpe Ratio "
 + "of a portfolio of low & no dividend yield U.S. stocks. The model uses historical stock data to calculate the optimal weights for each stock, " 
 + "and suggests the portfolio that would've produced the maximum return given the volatility risk. "
-+ "More information about the underlying model can be found on its repo.  Covariance matrix estimation uses the Ledoit-Wolf shrinkage method for better stability."
++ "Covariance matrix estimation uses the Ledoit-Wolf shrinkage method for better stability. "
++ "More information about the underlying model can be found on its repo. "
 
 var aboutBacktesting = "For backtesting, the model simulates how the optimal portfolio strategy would have performed over a historical period. "
 + "In the backtesting simulation, the optimal portfolio is rebalanced quarterly based on updated stock data at the time of the rebalance to reflect realistic investment adjustments. "
