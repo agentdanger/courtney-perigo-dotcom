@@ -323,7 +323,7 @@ export default {
                     title: 'Get More Out of Your Data With Analytics Microservices',
                     publication: 'Towards Data Science',
                     date: '2022',
-                    link: 'https://towardsdatascience.com/get-more-out-of-your-data-with-analytics-microservices-9a5a34a3ad2f',
+                    link: 'https://medium.com/data-science/get-more-out-of-your-data-with-analytics-microservices-9a5a34a3ad2f',
                     image: '../assets/balloons_unsplash.jpg',
                     image_alt: 'Balloons Floating in the Sky, Credit to Kyle Hinkson @ Unsplash'
                 },
