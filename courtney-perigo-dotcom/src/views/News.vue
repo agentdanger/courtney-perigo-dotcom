@@ -45,7 +45,11 @@
                                 <div class="media">
                                     <div class="media-left">
                                         <figure class="image is-128x128">
-                                            <img :src="article.entry_image.url" alt="Placeholder image">
+                                            <img
+                                                :src="article.entry_image.url"
+                                                @error="(e) => { e.target.onerror = null; e.target.src = 'https://courtneyperigo.com/assets/brittany.png'; }"
+                                                alt="Placeholder image"
+                                            >
                                         </figure>
                                     </div>
                                     <div class="media-content">
