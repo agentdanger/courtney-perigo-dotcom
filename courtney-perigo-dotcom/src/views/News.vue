@@ -46,8 +46,9 @@
                                     <div class="media-left">
                                         <figure class="image is-128x128">
                                             <img
-                                                :src="article.entry_image.url"
-                                                @error="(e) => { e.target.onerror = null; e.target.src = 'https://courtneyperigo.com/assets/brittany.png'; }"
+                                                :src="article._useFallback ? fallbackImage : article.entry_image.url"
+                                                :style="{ height: '100%', objectFit: (article._useFallback || article.entry_image.url === fallbackImage) ? 'contain' : 'cover' }"
+                                                @error="() => { article._useFallback = true; }"
                                                 alt="Placeholder image"
                                             >
                                         </figure>
@@ -178,6 +179,7 @@ import { ref, computed, onMounted } from 'vue';
 import defaultNewsService from '../service/DefaultNewsService';
 import AppNavBar from '../components/AppNavBar.vue';
 
+const fallbackImage = 'https://courtneyperigo.com/assets/brittany.png';
 const queryValue = ref(null);
 const customNewsActive = ref(false);
 const defaultNewsServiceGet = ref(null);
@@ -300,10 +302,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.image.is-128x128 img {
-    height: 100%;
-    object-fit: cover;
-}
-</style>
 
