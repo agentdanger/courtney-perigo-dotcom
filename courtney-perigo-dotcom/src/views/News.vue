@@ -300,7 +300,10 @@ onMounted(() => {
 });
 </script>
 
-
-
-
+<style scoped>
+.image.is-128x128 img {
+    height: 100%;
+    object-fit: cover;
+}
+</style>
 
