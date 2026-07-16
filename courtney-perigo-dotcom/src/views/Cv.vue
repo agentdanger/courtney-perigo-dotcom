@@ -168,11 +168,11 @@ export default {
     },
     data() {
         return {
-            resume_profile: "Data science leader and practitioner with decades of experience \
-            turning data into insights that drive ROI. An innovator, building proprietary solutions \
-            that use machine learning and data engineering to generate millions in value for business. \
-            My goal is to affect operations, sales, and marketing through innovative, powerful, \
-            and scaled decision analytics product.",
+            resume_profile: "Data science executive with nearly 20 years of experience bridging \
+            advanced analytics and business strategy. Expert in leading high-performing teams to \
+            deploy scalable ML solutions, from hierarchical Bayesian media mix platforms to agentic \
+            AI workflows. Combines a rigorous academic foundation in Bayesian and frequentist \
+            inference with a practical focus on driving digital transformation and measurable ROI.",
             resume_education: [
                 {
                     name: 'Northwestern University',
@@ -185,6 +185,13 @@ export default {
                     name: 'University of South Florida',
                     degree: 'Master of Business Administration',
                     date: '2007 - 2009',
+                    image: '../assets/University_of_South_Florida_seal.svg',
+                    image_alt: 'University of South Florida Seal'
+                },
+                {
+                    name: 'University of South Florida',
+                    degree: 'Bachelor of Arts, Advertising',
+                    date: '1998 - 2003',
                     image: '../assets/University_of_South_Florida_seal.svg',
                     image_alt: 'University of South Florida Seal'
                 }
@@ -215,9 +222,17 @@ export default {
                     name: 'Data Engineering',
                     icon: 'fas fa-wrench'
                 },
-                { 
+                {
                     name: 'AI and ML Deployment',
                     icon: 'fas fa-robot'
+                },
+                {
+                    name: 'Bayesian Media Mix Modeling',
+                    icon: 'fas fa-chart-area'
+                },
+                {
+                    name: 'Agentic AI Workflows',
+                    icon: 'fas fa-brain'
                 },
                 { 
                     name: 'Business Intelligence Architecture',
@@ -262,10 +277,10 @@ export default {
             ],
             resume_experience: [
                 {
-                    title: 'SVP, Data Science and Analytics',
-                    company: 'Empower Media and Marketing',
+                    title: 'SVP, Director of Data Science and Analytics',
+                    company: 'Empower Ocean Media',
                     date: '2025 - Present',
-                    description: 'Lead the data science practice for Empower. Lead a team that builds data products that help clients make better marketing decisions.  Lead data science deliverables across retail clients including Sprouts Farmers Market, PetSmart, JD Sports, and Whataburger.'
+                    description: 'Lead Empower\'s data science and analytics practice and provide technical vision and mentorship for the agency\'s broader analytics organization. Built a production hierarchical Bayesian marketing mix modeling platform that guides media investment decisions across 50+ markets for clients including Whataburger, JD Sports, PetSmart, and Sprouts Farmers Market. Created an agentic AI operating practice built on version-controlled knowledge systems that AI agents read, maintain, and draft from, with human review at every step.'
                 },
                 {
                     title: 'CEO, Owner of Empire Sports Analytics (ESA)',
@@ -274,28 +289,28 @@ export default {
                     description: 'Founded ESA to provide data science and analytics to the sports industry. Developed a proprietary, full-stack data science platform that automates the collection, cleaning, and analysis of sports data. Created a suite of predictive models for player performance, game outcomes, and injury risk. Developed a data product, and subscription model, that provides real-time insights for organizations and individuals.'
                 },
                 {
-                    title: 'SVP, Executive Director of Marketing and Data Sciences',
+                    title: 'SVP, Executive Director of Data Sciences',
                     company: 'Cramer-Krasselt',
                     date: '2018 - 2025',
-                    description: 'Lead the agency\'s global data science and analytics capabilities with an integrated team across three offices. Build data products, architect analytics microservices, and develop data-driven models for marketing optimization and personalization - creating $5MM+ in annual recurring revenue for the agency. Won the Drum Digital Advertising Award for our novel curve-fit optimization model for marketing attribution.'
+                    description: 'Led a 15+ person analytics organization across three offices. Realigned the team and modernized the tech stack around agile ways of working. Launched a curve-fit attribution microservice adopted by 8 enterprise clients that added $5M in annual recurring revenue and won a 2023 Drum Digital Advertising Award. Led a turnaround in 2018 that expanded agency billable rates by 300%.'
                 },
                 {
                     title: 'VP, Director of Decision Sciences',
                     company: 'Publicis, Moxie',
                     date: '2014 - 2018',
-                    description: 'Recruited and developed top analytics and data science talent to serve the agency\'s largest accounts including eBay, Kohl\'s, and Verizon Wireless. Engineered a real-time Hidden Markov Model that estimates the position of a prospect in the sales funnel for Verizon Wireless. Won a Golden Echo Award for Best Use of Data.'
+                    description: 'Recruited and developed a 15+ person analytics and data science organization across two offices supporting eBay, Kohl\'s, and Verizon Wireless. Engineered a real-time Hidden Markov Model that scores millions of daily impressions to identify each Verizon prospect\'s funnel stage. Won the DMA Golden Echo Award for Best Use of Data.'
                 },
                 {
                     title: 'Director, Analytics',
                     company: 'Triad Retail Media, Walmart',
                     date: '2012 - 2014',
-                    description: 'Streamlined reporting and business intelligence, reducing report turnaround times from three days to on-demand by implementing Tableau and a PostgreSQL Data Warehouse in support of the sales department. Helped @WalmartLabs in the development of attribution solutions that link credit card transactions to omni-channel shopper marketing efforts - helping companies like P&G and Pepsi understand the ROI of their retail marketing efforts.'
+                    description: 'Built a PostgreSQL data warehouse and Tableau self-service dashboards that cut sales report turnaround from three days to on-demand. Co-developed an omnichannel attribution engine with @WalmartLabs that linked credit card transactions to shopper marketing touchpoints and gave CPG clients like P&G and Pepsi SKU-level ROI on retail media.'
                 },
                 {
                     title: 'Market Research Manager, Mobile Healthcare Solutions',
                     company: 'Sage Software',
                     date: '2010 - 2012',
-                    description: 'Developed the product roadmap for the company\'s first mobile electronic health records solution for ambulatory care practices. Curated the backlog of product features for software developers, helping the team focus on key features suggested from conjoint-analysis and pricing exercises in primary market research and survey analyses.'
+                    description: 'Authored the product roadmap for the company\'s first mobile electronic health records solution for ambulatory practices, grounded in provider surveys, conjoint analysis, and price elasticity studies. Managed the feature backlog so development focused on the capabilities research showed users valued.'
                 },
                 {
                     title: 'Manager, Analytics',
@@ -304,7 +319,7 @@ export default {
                     description: 'Built the processes for business intelligence for the start-up, helping the sales team achieve $200 million in annual billings.'
                 },
                 {
-                    title: 'Sr. Market Analyst',
+                    title: 'Sr. Marketing Analyst',
                     company: 'Media General, The Tampa Tribune',
                     date: '2005 - 2009',
                     description: 'Conducted statistical analysis, and developed data visualizations in support of news and sales teams with emphasis on geographic information systems and mapping.'
