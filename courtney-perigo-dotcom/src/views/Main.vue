@@ -24,7 +24,7 @@
                             {{ main_intro }}
                         </div>
                         <div class="content has-text-centered">
-                            <a href="#featured_projects" class="icon is-size-1 is-white is-large">
+                            <a href="#featured_projects" class="icon is-size-1 has-text-white is-large">
                                 <i class="fas fa-caret-down"></i>
                             </a>
                         </div>
@@ -48,7 +48,7 @@
                         <div class="card-content">
                             <div class="columns ">
                                 <div v-for="project in featured_projects" class="column is-flex">
-                                    <div class="card has-background-white">
+                                    <div class="card has-background-white is-flex is-flex-direction-column is-flex-grow-1">
                                         <div class="card-image ">
                                             <figure class="image is-3by2">
                                                 <img :src="project.image" alt="Placeholder image">
@@ -59,7 +59,7 @@
                                                 {{ project.title }}
                                             </p>
                                         </header>
-                                        <div class="card-content">
+                                        <div class="card-content is-flex-grow-1">
                                             <div class="content ">
                                                 {{ project.description }}
                                             </div>

@@ -7,19 +7,20 @@
     "build": "vite build",
     "create-env": "printenv > .env",
     "preview": "vite preview",
-    "css-build": "node-sass --omit-source-map-url src/sass/mystyles.scss css/mystyles.css",
+    "css-build": "sass --no-source-map --quiet-deps src/sass/mystyles.scss css/mystyles.css",
     "css-watch": "npm run css-build -- --watch",
     "start": "npm run css-watch"
   },
   "dependencies": {
     "apexcharts": "^6.6.1",
-    "bulma": "0.9.4",
+    "bulma": "^1.0.4",
     "vue": "^3.5.40",
     "vue-router": "^4.6.4",
     "vue3-apexcharts": "^1.11.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
+    "sass": "^1.102.0",
     "vite": "^8.2.0"
   }
 }

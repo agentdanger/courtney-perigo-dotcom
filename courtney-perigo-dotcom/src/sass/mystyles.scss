@@ -1,7 +1,7 @@
 @charset "utf-8";
 
-// Import a Google Font
-@import url('https://fonts.googleapis.com/css2?family=Play:wght@500;700&display=swap');
+// NOTE: the Play font is loaded via <link> in index.html - a plain CSS @import
+// cannot legally follow Bulma's @use output in the compiled stylesheet
 
 // Set your brand colors
 $tangaroa: #192532;
@@ -14,32 +14,55 @@ $tosca: #704140;
 $grey:   #808080;
 $tuna: #484E55;
 
+// Bulma 1.0, no-dark-mode build: the site is dark by design and must not
+// restyle itself based on the visitor's OS color scheme
+@use "../../node_modules/bulma/versions/bulma-no-dark-mode" with (
+  $family-sans-serif: ('Play', sans-serif),
+  $grey-dark: $tuna,
+  $grey-light: $grey,
+  $primary: $tangaroa,
+  $info: $iris_blue,
+  $link: $teal,
+  $success: $hunter_green,
+  $warning: $ochre,
+  $danger: $tosca,
+  $background: $grey,
+  $white: $alice,
+  $black: $tuna
+);
 
-// Update Bulma's global variables
-$family-sans-serif: 'Play', sans-serif;
-$grey-dark: $tuna;
-$grey-light: $grey;
-$primary: $tangaroa;
-$info: $iris_blue;
-$link: $teal;
-$success: $hunter_green;
-$warning: $ochre;
-$danger: $tosca;
-$background: $grey;
-$white: $alice;
-$black: $tuna;
+// Component-level overrides: in Bulma 1.0 these are CSS custom properties,
+// no longer configurable sass variables
+:root {
+  --bulma-body-background-color: #{$grey};
+  --bulma-control-border-width: 2px;
+  --bulma-input-border-color: transparent;
+  --bulma-dropdown-content-background-color: #{$tuna};
+  --bulma-navbar-background-color: #{$tuna};
 
+  // Bulma 1.0 gives colored elements a same-hue tinted foreground (e.g. light
+  // navy text on navy buttons). Restore 0.9's near-white foreground on all
+  // brand-colored elements (buttons, navbar, hero, tags)
+  --bulma-primary-invert-l: 98%;
+  --bulma-info-invert-l: 98%;
+  --bulma-link-invert-l: 98%;
+  --bulma-success-invert-l: 98%;
+  --bulma-warning-invert-l: 98%;
+  --bulma-danger-invert-l: 98%;
 
-$widescreen-enabled: true;
-$fullhd-enabled: true;
+  // Bulma 1.0 darkens link text for contrast on its light scheme; keep the
+  // brand teal exactly as it was under 0.9
+  --bulma-link-text: #{$teal};
+  --bulma-link-text-hover: #{$teal};
+}
 
-// Update some of Bulma's component variables
-$body-background-color: $grey;
-$control-border-width: 2px;
-$input-border-color: transparent;
-$dropdown-background-color: $tuna;
-$navbar-background-color: $tuna;
-// $input-shadow: none;
+// In Bulma 1.0 the ".content h1" color rule outranks the colored hero's title
+// variable; restore 0.9's behavior of inverted titles inside colored heroes
+// (the site uses the is-primary and is-black variants)
+.hero.is-primary .title,
+.hero.is-black .title {
+  color: hsl(var(--bulma-hero-h), var(--bulma-hero-s), var(--bulma-hero-color-l));
+}
 
 .navbar-item {
 
@@ -59,17 +82,5 @@ $navbar-background-color: $tuna;
     position: absolute;
     height: 100vh;
     z-index: 0;
-    background-color: $primary;
+    background-color: $tangaroa;
   }
-
-
-
-// Import only what you need from Bulma
-@import "../../node_modules/bulma/sass/utilities/_all.sass";
-@import "../../node_modules/bulma/sass/base/_all.sass";
-@import "../../node_modules/bulma/sass/elements/_all.sass";
-@import "../../node_modules/bulma/sass/form/_all.sass";
-@import "../../node_modules/bulma/sass/components/_all.sass";
-@import "../../node_modules/bulma/sass/layout/_all.sass";
-@import "../../node_modules/bulma/sass/grid/_all.sass";
-@import "../../node_modules/bulma/sass/helpers/_all.sass";
