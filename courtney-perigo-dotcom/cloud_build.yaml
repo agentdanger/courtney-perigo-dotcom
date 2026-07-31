@@ -1,16 +1,16 @@
 steps:
 #Create .env file from Google Cloud Build substitution variables
-- name: node
+- name: node:24
   dir: "courtney-perigo-dotcom"
   entrypoint: npm
   # auto create an environment file before deployment.  create-env is a custom script in package.json
   args: ["run", "create-env"]
-- name: node
+- name: node:24
   dir: "courtney-perigo-dotcom"
   entrypoint: npm
   # auto create an environment file before deployment.  create-env is a custom script in package.json
   args: ["install"]
-- name: node
+- name: node:24
   dir: "courtney-perigo-dotcom"
   entrypoint: npm
   # auto create an environment file before deployment.  create-env is a custom script in package.json
