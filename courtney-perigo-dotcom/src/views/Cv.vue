@@ -168,7 +168,7 @@ export default {
     },
     data() {
         return {
-            resume_profile: "Data science executive with nearly 20 years of experience bridging \
+            resume_profile: "Data, analytics, and AI executive with more than 20 years of experience bridging \
             advanced analytics and business strategy. Leads high-performing teams that ship \
             production ML platforms, agentic AI systems, and decision tools that executives trust. \
             Combines a rigorous academic foundation in Bayesian and frequentist \
@@ -237,6 +237,10 @@ export default {
                 {
                     name: 'ML Platform Engineering',
                     icon: 'fas fa-server'
+                },
+                {
+                    name: 'Analytics Governance & Data Quality',
+                    icon: 'fas fa-shield-alt'
                 },
                 {
                     name: 'Business Intelligence Architecture',
