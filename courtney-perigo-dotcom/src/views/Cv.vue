@@ -169,10 +169,10 @@ export default {
     data() {
         return {
             resume_profile: "Data science executive with nearly 20 years of experience bridging \
-            advanced analytics and business strategy. Expert in leading high-performing teams to \
-            deploy scalable ML solutions, from hierarchical Bayesian media mix platforms to agentic \
-            AI workflows. Combines a rigorous academic foundation in Bayesian and frequentist \
-            inference with a practical focus on driving digital transformation and measurable ROI.",
+            advanced analytics and business strategy. Leads high-performing teams that ship \
+            production ML platforms, agentic AI systems, and decision tools that executives trust. \
+            Combines a rigorous academic foundation in Bayesian and frequentist \
+            inference with a practical record of program turnarounds, digital transformation, and measurable ROI.",
             resume_education: [
                 {
                     name: 'Northwestern University',
@@ -231,10 +231,14 @@ export default {
                     icon: 'fas fa-chart-area'
                 },
                 {
-                    name: 'Agentic AI Workflows',
+                    name: 'Agentic AI Systems (MCP)',
                     icon: 'fas fa-brain'
                 },
-                { 
+                {
+                    name: 'ML Platform Engineering',
+                    icon: 'fas fa-server'
+                },
+                {
                     name: 'Business Intelligence Architecture',
                     icon: 'fas fa-chart-line'
                 },
@@ -280,7 +284,7 @@ export default {
                     title: 'SVP, Director of Data Science and Analytics',
                     company: 'Empower Ocean Media',
                     date: '2025 - Present',
-                    description: 'Lead Empower\'s data science and analytics practice and provide technical vision and mentorship for the agency\'s broader analytics organization. Built a production hierarchical Bayesian marketing mix modeling platform that guides media investment decisions across 50+ markets for clients including Whataburger, JD Sports, PetSmart, and Sprouts Farmers Market. Created an agentic AI operating practice built on version-controlled knowledge systems that AI agents read, maintain, and draft from, with human review at every step.'
+                    description: 'Lead Empower\'s data science and analytics practice and provide technical vision and mentorship for the agency\'s broader analytics organization. Built a production hierarchical Bayesian marketing mix modeling platform that guides media investment decisions across 50+ markets for clients including Whataburger, JD Sports, PetSmart, and Sprouts Farmers Market. Turned around a flagship measurement program under C-suite scrutiny and returned it from executive escalation to stable in nine weeks. Advanced the team\'s agentic AI practice into shipped infrastructure: a production MCP server gives data scientists and analysts AI-assistant access to production models, and an asynchronous scenario-execution service powers self-service budget optimization for planning teams.'
                 },
                 {
                     title: 'CEO, Owner of Empire Sports Analytics (ESA)',
