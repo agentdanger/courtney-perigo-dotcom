@@ -498,6 +498,9 @@ const chartOptions = ref({
       enabled: false,
       type: 'xy'
     },
+    toolbar: {
+      show: false
+    },
     fontFamily: 'Play, sans-serif',
     events: {
       dataPointMouseEnter: function(event, chartContext, config) {
@@ -593,6 +596,9 @@ const sharpeChartOptions = ref({
   chart: {
     type: 'scatter',
     height: 350,
+    toolbar: {
+      show: false
+    },
     fontFamily: 'Play, sans-serif',
     events: {
       dataPointMouseEnter: function(event, chartContext, config) {

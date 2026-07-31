@@ -177,6 +177,9 @@ export default {
                     type: 'line',
                     zoom: {
                         enabled: false
+                    },
+                    toolbar: {
+                        show: false
                     }
                 },
                 colors: ['#BE861F'],
@@ -229,6 +232,9 @@ export default {
                     type: 'line',
                     zoom: {
                         enabled: false
+                    },
+                    toolbar: {
+                        show: false
                     }
                 },
                 colors: ['#09A2CD'],

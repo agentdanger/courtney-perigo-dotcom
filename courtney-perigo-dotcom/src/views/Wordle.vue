@@ -3,7 +3,7 @@
 <script setup>
 import AppNavBar from '../components/AppNavBar.vue'
 import wordleService from '../service/WordleService.js'
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 
 const wordleSrv = new wordleService()
 
@@ -502,6 +502,9 @@ function processWord(word, greenLettersList, yellowLettersList1, yellowLettersLi
 }
 
 var recommendedWords = ref([])
+var bestOverall = ref([])
+var bestAnswers = ref([])
+var wordleStats = ref(null)
 
 var isLoading = ref(false)
 var isLoaded = ref(false)
@@ -510,11 +513,95 @@ function createWordle(greenLetters, yellowLetters, blackLettersList, doubleLette
     isLoading.value = true
     wordleSrv.getWordleData(greenLetters, yellowLetters, blackLettersList, doubleLettersList, tripleLettersList)
         .then(response => {
-            recommendedWords.value = response
+            if (Array.isArray(response)) {
+                // legacy API shape: a flat list of {word, bits}
+                recommendedWords.value = response
+                bestOverall.value = response.slice(0, 3)
+                bestAnswers.value = []
+                wordleStats.value = null
+            } else {
+                // upgraded API shape: {recommendations, best_overall, best_answers, stats}
+                recommendedWords.value = response.recommendations
+                bestOverall.value = response.best_overall
+                bestAnswers.value = response.best_answers
+                wordleStats.value = response.stats
+            }
             isLoading.value = false
             isLoaded.value = true
         })
 }
+
+// chart colors: validated 2-color categorical palette on the dark navy card surface
+const ANSWER_COLOR = '#09A2CD'   // iris blue - word can be the answer
+const OTHER_COLOR = '#BE861F'    // ochre - legal guess, not on the answer list
+
+// top 10 plays, charted as "extra bits left vs the best play" (zero baseline = best word)
+var topWords = computed(() => recommendedWords.value.slice(0, 10))
+
+var rankingSeries = computed(() => {
+    if (!topWords.value.length) return []
+    const bestBits = topWords.value[0].bits
+    return [{
+        name: 'Extra bits left vs best play',
+        data: topWords.value.map(word => ({
+            x: word.word.toUpperCase(),
+            y: Number((word.bits - bestBits).toFixed(3)),
+            fillColor: (wordleStats.value && !word.is_answer) ? OTHER_COLOR : ANSWER_COLOR
+        }))
+    }]
+})
+
+var rankingChartHeight = computed(() => 80 + topWords.value.length * 32)
+
+var rankingOptions = computed(() => ({
+    chart: {
+        type: 'bar',
+        background: 'transparent',
+        foreColor: '#F5F9FF',
+        fontFamily: 'Play, sans-serif',
+        toolbar: { show: false },
+        zoom: { enabled: false }
+    },
+    plotOptions: {
+        bar: {
+            horizontal: true,
+            barHeight: '55%',
+            borderRadius: 4,
+            borderRadiusApplication: 'end'
+        }
+    },
+    dataLabels: { enabled: false },
+    grid: {
+        borderColor: 'rgba(245, 249, 255, 0.15)',
+        xaxis: { lines: { show: true } },
+        yaxis: { lines: { show: false } }
+    },
+    xaxis: {
+        title: { text: 'Extra bits left vs best play (shorter is better)', style: { fontWeight: 400 } },
+        labels: { formatter: (val) => Number(val).toFixed(2) }
+    },
+    tooltip: {
+        custom: ({ dataPointIndex }) => {
+            const word = topWords.value[dataPointIndex]
+            if (!word) return ''
+            const bestBits = topWords.value[0].bits
+            const delta = (word.bits - bestBits).toFixed(2)
+            const tag = wordleStats.value
+                ? (word.is_answer ? ' &middot; possible answer' : ' &middot; not on answer list')
+                : ''
+            return '<div style="padding: 6px 10px; background: #192532; color: #F5F9FF;">'
+                + '<strong>' + word.word.toUpperCase() + '</strong>' + tag + '<br/>'
+                + word.bits.toFixed(2) + ' bits left (+' + delta + ' vs best play)'
+                + '</div>'
+        }
+    }
+}))
+
+// share of starting uncertainty already eliminated (needs the upgraded API)
+var uncertaintyPct = computed(() => {
+    if (!wordleStats.value || !wordleStats.value.starting_uncertainty_bits) return 0
+    return Math.round(100 * (1 - wordleStats.value.uncertainty_bits / wordleStats.value.starting_uncertainty_bits))
+})
 
 function activateNextWord() {
     if (!wordleWords.value.word2.active) {
@@ -644,6 +731,15 @@ function handleKeydown(event) {
 
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
+    // show the pre-game dictionary stats before the first word is played;
+    // ignore failures (the legacy API has no /wordle-stats/ endpoint)
+    wordleSrv.getInitialStats()
+        .then(stats => {
+            if (!isLoaded.value) {
+                wordleStats.value = stats
+            }
+        })
+        .catch(() => {});
 });
 
 onBeforeUnmount(() => {
@@ -666,7 +762,7 @@ onBeforeUnmount(() => {
                         </header>
                         <div class="card-content">
                             <div class="content has-text-white">
-                                <p><span class="is-underlined has-text-weight-bold">Directions:</span>
+                                <p><span class="is-underlined has-text-weight-bold">Directions:</span></p>
                                 <ol>
                                     <li>Enter your starting word from your Wordle using the keyboard.</li>
                                     <li>Click the letters to change the color of your letters based on your
@@ -675,12 +771,11 @@ onBeforeUnmount(() => {
                                         best words to play next.</li>
                                     <li>Continue adding words until you finish, and find your Wordle word.</li>
                                 </ol>
-                                <span class="is-underlined has-text-weight-bold">Note:</span>
                                 <p>
+                                    <span class="is-underlined has-text-weight-bold">Note:</span>
                                     You'll see a list of the best words to play next. Playing the #1 word
                                     reveals the most
                                     information about the game using information theory / entropy.
-                                </p>
                                 </p>
                             </div>
                         </div>
@@ -883,21 +978,86 @@ onBeforeUnmount(() => {
                                         </div>
                                     </div>
                                 </div>
+                                <!-- stats about the remaining words (needs the upgraded API);
+                                     shown pre-game too, seeded by the /wordle-stats/ endpoint -->
+                                <nav class="level" v-if="wordleStats">
+                                    <div class="level-item has-text-centered">
+                                        <div>
+                                            <p class="heading has-text-white">Words Remaining</p>
+                                            <p class="title has-text-white">{{ wordleStats.remaining_words }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="level-item has-text-centered">
+                                        <div>
+                                            <p class="heading has-text-white">Possible Answers</p>
+                                            <p class="title has-text-white">{{ wordleStats.remaining_answers }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="level-item has-text-centered">
+                                        <div>
+                                            <p class="heading has-text-white">Uncertainty (Bits)</p>
+                                            <p class="title has-text-white">{{ forceDecimal2(wordleStats.uncertainty_bits) }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="level-item has-text-centered" v-if="wordleStats.best_bits !== undefined">
+                                        <div>
+                                            <p class="heading has-text-white">Best Play (Bits Left)</p>
+                                            <p class="title has-text-white">{{ forceDecimal2(wordleStats.best_bits) }}</p>
+                                        </div>
+                                    </div>
+                                </nav>
+                                <!-- search progress meter (needs the upgraded API) -->
+                                <div class="columns is-centered" v-if="wordleStats">
+                                    <div class="column is-two-thirds">
+                                        <p class="is-size-7 has-text-weight-bold has-text-left mb-1">
+                                            UNCERTAINTY ELIMINATED: {{ uncertaintyPct }}%
+                                            ({{ forceDecimal2(wordleStats.starting_uncertainty_bits) }} bits at start &rarr;
+                                            {{ forceDecimal2(wordleStats.uncertainty_bits) }} bits now)
+                                        </p>
+                                        <progress class="progress is-info is-small" :value="uncertaintyPct" max="100"></progress>
+                                    </div>
+                                </div>
                                 <div v-if="isLoaded">
-                                    <div class="columns is-vcentered">
+                                    <!-- best three words overall, and best three on the NYT answer list -->
+                                    <div class="columns is-centered">
                                         <div class="column is-one-third">
-                                        </div>
-                                        <div class="column is-one-third">
-                                            <ol type="1">
-                                                <div v-for="word in recommendedWords">
-                                                    <li class="is-size-4">
-                                                        <span class="has-text-link">{{ word.word.toUpperCase() }}</span>
-                                                        -- Bits Remaining: {{ forceDecimal2(word.bits) }}
-                                                    </li>
+                                            <div class="reco-box">
+                                                <p class="is-size-4 has-text-weight-bold has-text-centered">Best Words</p>
+                                                <p class="is-size-7 mb-4 has-text-centered">Remove the most uncertainty (any legal guess)</p>
+                                                <div class="reco-row" v-for="(word, i) in bestOverall" :key="word.word">
+                                                    <span class="is-flex is-align-items-center">
+                                                        <span class="tag is-info mr-2">{{ i + 1 }}</span>
+                                                        <span class="is-size-5 has-text-weight-bold">{{ word.word.toUpperCase() }}</span>
+                                                        <span class="tag is-success ml-2" v-if="word.is_answer">possible answer</span>
+                                                    </span>
+                                                    <span class="is-size-7">{{ forceDecimal2(word.bits) }} bits left</span>
                                                 </div>
-                                            </ol>
+                                            </div>
                                         </div>
-                                        <div class="column is-one-third">
+                                        <div class="column is-one-third" v-if="bestAnswers.length">
+                                            <div class="reco-box">
+                                                <p class="is-size-4 has-text-weight-bold has-text-centered">Best Guesses</p>
+                                                <p class="is-size-7 mb-4 has-text-centered">Best words that can be the answer</p>
+                                                <div class="reco-row" v-for="(word, i) in bestAnswers" :key="word.word">
+                                                    <span class="is-flex is-align-items-center">
+                                                        <span class="tag is-info mr-2">{{ i + 1 }}</span>
+                                                        <span class="is-size-5 has-text-weight-bold">{{ word.word.toUpperCase() }}</span>
+                                                    </span>
+                                                    <span class="is-size-7">{{ forceDecimal2(word.bits) }} bits left</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- top plays chart: delta to the best play, zero baseline = best word -->
+                                    <div class="columns is-centered" v-if="topWords.length > 1">
+                                        <div class="column is-two-thirds">
+                                            <p class="is-size-4 has-text-weight-bold">Top {{ topWords.length }} Plays</p>
+                                            <p class="is-size-7 mb-2">How much more uncertainty each play leaves vs the best word</p>
+                                            <p class="is-size-7 mb-1" v-if="wordleStats">
+                                                <span :style="{ color: '#09A2CD' }">&#9632;</span> possible answer
+                                                <span class="ml-3" :style="{ color: '#BE861F' }">&#9632;</span> other legal word
+                                            </p>
+                                            <apexchart type="bar" :height="rankingChartHeight" :options="rankingOptions" :series="rankingSeries" />
                                         </div>
                                     </div>
                                 </div>
@@ -912,6 +1072,25 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.reco-box {
+    background-color: rgba(245, 249, 255, 0.07);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    height: 100%;
+}
+
+.reco-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+}
+
+.reco-row + .reco-row {
+    border-top: 1px solid rgba(245, 249, 255, 0.12);
+}
+
 .buttoncustom {
     width: 50px;
 }

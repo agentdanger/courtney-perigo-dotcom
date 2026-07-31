@@ -21,4 +21,12 @@ export default class wordleService {
     }
     return await response.json();
   }
+
+  async getInitialStats() {
+    const response = await fetch('https://nytimes-wordle.courtneyperigo.com/wordle-stats/');
+    if (!response.ok) {
+      throw new Error('Error in getInitialStats fetch.')
+    }
+    return await response.json();
+  }
 }
