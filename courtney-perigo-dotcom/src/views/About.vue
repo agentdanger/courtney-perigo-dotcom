@@ -104,8 +104,8 @@ export default {
                     interest: 'His family holiday displays are *definitely* not powered by a Raspberry Pi and a Python script.'
                 },
                 {
-                    interest: 'He would never over-engineer his home server with a Kubernetes cluster and a bunch of Docker containers handling way too much automation for his family.'
-                }   
+                    interest: 'He would never let a fleet of AI agents run his home server, keep version-controlled diaries of everything they do, and brief the family with a weekly executive update.'
+                }
             ],
             resume_resources: [
                 {
