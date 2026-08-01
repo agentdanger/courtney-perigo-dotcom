@@ -64,6 +64,43 @@ $tuna: #484E55;
   color: hsl(var(--bulma-hero-h), var(--bulma-hero-s), var(--bulma-hero-color-l));
 }
 
+// Pagination sits directly on the dark is-primary hero (News page); Bulma's
+// defaults assume a light background and the link text disappears there
+.hero.is-primary .pagination {
+  .pagination-previous,
+  .pagination-next,
+  .pagination-link {
+    color: $alice;
+    border-color: $alice;
+
+    &:hover:not(.is-current):not(.is-disabled) {
+      color: $iris_blue;
+      border-color: $iris_blue;
+    }
+
+    &.is-current {
+      background-color: $teal;
+      border-color: $teal;
+      color: $alice;
+    }
+
+    &.is-disabled {
+      color: rgba($alice, 0.45);
+      border-color: rgba($alice, 0.35);
+    }
+  }
+
+  .pagination-ellipsis {
+    color: $alice;
+  }
+}
+
+// Card children paint over the card's bottom radius (e.g. the colored
+// "Read More" footer on news cards renders square corners); clip them
+.card {
+  overflow: hidden;
+}
+
 .navbar-item {
 
     &.has-dropdown {
