@@ -79,9 +79,9 @@ export default {
     },
     data() {
         return {
-            about_me: "Courtney lives in Chicago, IL, USA with his beautiful wife, Emilie, and our cat, Roscoe. \
-            He's an avid runner, and always up for a challenge. He can be reached via his LinkedIn profile \
-            so feel free to send a note.",
+            about_me: "Courtney lives in Chicago, IL, USA with his beautiful wife Emilie, their son Whitman, \
+            their cat Roscoe, and their Brittany Spaniel, Oakley. He's an avid runner and tennis player, and \
+            always up for a challenge. He can be reached via his LinkedIn profile so feel free to send a note.",
             about_website: "This website runs on Google Cloud Platform leveraging their Google App Engine product. \
             The front-end is built with Vue.js and the back-end is built with Python or GoLang (depending on what you're looking at). \
             The source code is available on Github.",
