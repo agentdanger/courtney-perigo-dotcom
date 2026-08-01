@@ -101,6 +101,9 @@ export default {
                     interest: 'There is so much untapped potential for data in business. He wants to help organizations he works for realize that value and turn it into amazing, profitable experiences for their customers.'
                 },
                 {
+                    interest: 'He spends his weekends chasing a tennis ball, his son Whitman, and his Brittany Spaniel Oakley, in ascending order of difficulty.'
+                },
+                {
                     interest: 'His family holiday displays are *definitely* not powered by a Raspberry Pi and a Python script.'
                 },
                 {
