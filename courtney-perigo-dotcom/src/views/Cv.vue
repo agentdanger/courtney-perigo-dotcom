@@ -335,6 +335,14 @@ export default {
             ],
             resume_publications: [
                 {
+                    title: 'Your Analytics Microservices Have a New Customer',
+                    publication: 'Medium',
+                    date: '2026',
+                    link: 'https://courtney-perigo.medium.com/your-analytics-microservices-have-a-new-customer-6a97d8cc2cf2',
+                    image: '../assets/balloons_jesse_gardner_unsplash.jpg',
+                    image_alt: 'Hot air balloons in a blue sky, Credit to Jesse Gardner @ Unsplash'
+                },
+                {
                     title: 'Data Science at Home: Solving the Nanny Schedule Puzzle with Monte Carlo and Genetic Algorithms',
                     publication: 'Towards Data Science',
                     date: '2024',
