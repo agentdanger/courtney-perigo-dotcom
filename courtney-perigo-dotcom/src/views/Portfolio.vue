@@ -102,7 +102,25 @@ const maxSharpeWeights = computed(() => {
 })
 
 // Backtest data
-const backtest = computed(() => portfolio.value?.backtest ?? null)
+// The API returns either a full backtest object, or null (with a reason in
+// backtest_error). Older payloads returned {error: "..."} instead, so treat
+// anything without the numeric metrics as "no backtest" rather than crashing.
+const BACKTEST_METRIC_KEYS = [
+    'portfolio_annualized_return',
+    'benchmark_annualized_return',
+    'outperformance',
+    'portfolio_sharpe',
+    'benchmark_sharpe',
+    'portfolio_max_drawdown',
+    'benchmark_max_drawdown'
+]
+
+const backtest = computed(() => {
+    const raw = portfolio.value?.backtest
+    if (!raw || typeof raw !== 'object') return null
+    const complete = BACKTEST_METRIC_KEYS.every(key => typeof raw[key] === 'number' && Number.isFinite(raw[key]))
+    return complete ? raw : null
+})
 
 const hasBacktest = computed(() => backtest.value !== null)
 
