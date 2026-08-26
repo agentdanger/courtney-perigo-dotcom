@@ -91,7 +91,8 @@ const sectorSynonyms = {
     'Unknown': 'Unknown'
 }
 
-const maxSharpeWeights = computed(() => {
+// Raw optimizer output: every holding with a positive weight.
+const rawMaxSharpeWeights = computed(() => {
     const weights = portfolio.value?.max_sharpe?.weights
 
     if (!Array.isArray(weights)) {
@@ -100,6 +101,40 @@ const maxSharpeWeights = computed(() => {
 
     return weights.filter(weight => typeof weight?.weight === 'number' && weight.weight > 0)
 })
+
+// Minimum dollar allocation per holding. The optimizer works in weights and
+// doesn't know the budget, so the floor is applied here: any holding that would
+// receive less than this is dropped and its weight is spread proportionally
+// across the survivors, repeated until every remaining holding clears the floor.
+const MIN_ALLOCATION = 500
+
+const investablePlan = computed(() => {
+    const total = Number(budget.value)
+    let kept = rawMaxSharpeWeights.value.map(stock => ({ ...stock }))
+    const dropped = []
+
+    if (!Number.isFinite(total) || total <= 0 || !kept.length) {
+        return { holdings: kept, dropped }
+    }
+
+    // Loop: drop the smallest sub-floor holding, renormalize, repeat.
+    // Dropping one at a time (not all at once) matters: renormalizing can lift
+    // a borderline holding above the floor, so it shouldn't be pre-emptively cut.
+    while (kept.length > 1) {
+        const sum = kept.reduce((acc, stock) => acc + stock.weight, 0)
+        kept = kept.map(stock => ({ ...stock, weight: stock.weight / sum }))
+        const smallest = kept.reduce((min, stock) => (stock.weight < min.weight ? stock : min), kept[0])
+        if (smallest.weight * total >= MIN_ALLOCATION) break
+        dropped.push(smallest)
+        kept = kept.filter(stock => stock !== smallest)
+    }
+
+    return { holdings: kept, dropped }
+})
+
+const maxSharpeWeights = computed(() => investablePlan.value.holdings)
+
+const droppedHoldings = computed(() => investablePlan.value.dropped)
 
 // Backtest data
 // The API returns either a full backtest object, or null (with a reason in
@@ -1098,6 +1133,13 @@ onMounted(() => {
                                     <div class="control">
                                         <input class="input" type="number" v-model="budget" @change="updateBudget($event.target.value)">
                                     </div>
+                                    <p class="help has-text-white-ter">
+                                        Each holding gets at least ${{ MIN_ALLOCATION.toLocaleString() }}. Holdings the optimizer sized below that are dropped and their weight is spread across the rest.
+                                    </p>
+                                    <p class="help has-text-white-ter" v-if="droppedHoldings.length">
+                                        Dropped at this budget ({{ droppedHoldings.length }}):
+                                        {{ droppedHoldings.map(stock => stock.ticker).join(', ') }}
+                                    </p>
                                 </div>
                                 
                             </div>
