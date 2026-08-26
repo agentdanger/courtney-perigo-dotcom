@@ -1097,7 +1097,7 @@ onMounted(() => {
                                     <label class="label has-text-white">Max Sharpe Ratio | Portfolio Weights</label>
                                 </div>
                                 <div class="columns is-multiline is-centered">
-                                    <div v-for="stock in portfolio['max_sharpe']['weights']" :key="stock.ticker">
+                                    <div v-for="stock in maxSharpeWeights" :key="stock.ticker">
                                         <div class="column" v-if="stock.weight > 0">
                                             <div class="card ">
                                                 <header class="card-header">
