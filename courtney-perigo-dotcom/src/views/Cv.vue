@@ -170,7 +170,7 @@ export default {
         return {
             resume_profile: "Data, analytics, and AI executive with more than 20 years of experience bridging \
             advanced analytics and business strategy. Leads high-performing teams that ship \
-            production ML platforms, agentic AI systems, and decision tools that executives trust. \
+            production ML platforms, agentic AI systems, production LLM features built to a per-user cost budget, and decision tools that executives trust. \
             Combines a rigorous academic foundation in Bayesian and frequentist \
             inference with a practical record of program turnarounds, digital transformation, and measurable ROI.",
             resume_education: [
@@ -231,8 +231,12 @@ export default {
                     icon: 'fas fa-chart-area'
                 },
                 {
-                    name: 'Agentic AI Systems (MCP)',
+                    name: 'AI and LLM Systems (Agentic, MCP)',
                     icon: 'fas fa-brain'
+                },
+                {
+                    name: 'Grounded LLM Generation',
+                    icon: 'fas fa-newspaper'
                 },
                 {
                     name: 'ML Platform Engineering',
@@ -294,7 +298,7 @@ export default {
                     title: 'CEO, Owner of Empire Sports Analytics (ESA)',
                     company: 'Empire Sports Analytics',
                     date: '2022 - Present',
-                    description: 'Founded ESA to provide data science and analytics to the sports industry. Developed a proprietary, full-stack data science platform that automates the collection, cleaning, and analysis of sports data. Created a suite of predictive models for player performance, game outcomes, and injury risk. Developed a data product, and subscription model, that provides real-time insights for organizations and individuals.'
+                    description: 'Founded ESA to build data products for the sports industry. Empire Legends, its baseball simulation game, gives every subscribing club its own AI beat writer: four newspaper-style editions a week, every fact computed by code before the model writes, checked by a critic that must cite the record, delivered at $2.33 per club per month after a 50% cost reduction. I own the simulation engine, data pipeline, model prompts, product, and economics end to end. The architecture is written up on Medium.'
                 },
                 {
                     title: 'SVP, Executive Director of Data Sciences',
@@ -334,6 +338,14 @@ export default {
                 }
             ],
             resume_publications: [
+                {
+                    title: 'Move the Facts Out of the LLM: How a Beat Writer for 10,000 Ballclubs Costs Under $3 a Club',
+                    publication: 'Medium',
+                    date: '2026',
+                    link: 'https://courtney-perigo.medium.com/move-the-facts-out-of-the-llm-how-a-beat-writer-for-10-000-ballclubs-costs-under-3-a-club-503907dff454',
+                    image: '../assets/fig1_paper_desktop_top.jpg',
+                    image_alt: 'An Empire Legends newspaper edition written by the AI beat writer'
+                },
                 {
                     title: 'Your Analytics Microservices Have a New Customer',
                     publication: 'Medium',

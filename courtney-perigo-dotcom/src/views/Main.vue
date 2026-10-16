@@ -273,6 +273,13 @@ export default {
             },
             featured_projects: [
                 {
+                    title: "An AI Beat Writer for 10,000 Ballclubs",
+                    description: "A production LLM system that never computes a fact: deterministic pre-computation, \
+                    a critic that must cite the record, and a cost of $2.33 per club per month. Architecture write-up on Medium.",
+                    image: "../assets/fig1_paper_desktop_top.jpg",
+                    link: "https://courtney-perigo.medium.com/move-the-facts-out-of-the-llm-how-a-beat-writer-for-10-000-ballclubs-costs-under-3-a-club-503907dff454"
+                },
+                {
                     title: "Workforce Optimization with Genetic Algorithms",
                     description: "Optimizing a nanny schedule using simulation and genetic algorithms in Python.",
                     image: "../assets/optimal_nanny.png",
