@@ -134,7 +134,7 @@
                         </header>
                         <div class="card-content">
                             <div v-for="publication in resume_publications">
-                                <article class="media">
+                                <article class="media pub-media">
                                     <figure class="media-left">
                                         <figure class="image pub-thumb center-cropped">
                                             <img :src="publication.image" :alt="publication.image_alt">
@@ -385,8 +385,12 @@ export default {
 </script>
 <style>
 .pub-thumb {
-    width: 192px;
-    height: 128px;
+    width: 240px;
+    height: 160px;
+}
+.pub-media {
+    margin-bottom: 1.5rem;
+    align-items: center;
 }
 .center-cropped img {
     width: 100%;
