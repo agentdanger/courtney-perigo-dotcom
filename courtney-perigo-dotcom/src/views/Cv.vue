@@ -343,8 +343,8 @@ export default {
                     publication: 'Medium',
                     date: '2026',
                     link: 'https://courtney-perigo.medium.com/move-the-facts-out-of-the-llm-how-a-beat-writer-for-10-000-ballclubs-costs-under-3-a-club-503907dff454',
-                    image: '../assets/fig1_paper_desktop_top.jpg',
-                    image_alt: 'An Empire Legends newspaper edition written by the AI beat writer'
+                    image: '../assets/fig1_paper_thumb.jpg',
+                    image_alt: 'Masthead and headline of an Empire Legends newspaper edition written by the AI beat writer'
                 },
                 {
                     title: 'Your Analytics Microservices Have a New Customer',
@@ -383,3 +383,10 @@ export default {
     }
 }
 </script>
+<style>
+.center-cropped img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>
