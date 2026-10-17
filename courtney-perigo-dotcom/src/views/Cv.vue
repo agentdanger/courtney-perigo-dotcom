@@ -136,7 +136,7 @@
                             <div v-for="publication in resume_publications">
                                 <article class="media">
                                     <figure class="media-left">
-                                        <figure class="image is-128x128 center-cropped">
+                                        <figure class="image pub-thumb center-cropped">
                                             <img :src="publication.image" :alt="publication.image_alt">
                                         </figure>
                                     </figure>
@@ -384,6 +384,10 @@ export default {
 }
 </script>
 <style>
+.pub-thumb {
+    width: 192px;
+    height: 128px;
+}
 .center-cropped img {
     width: 100%;
     height: 100%;
