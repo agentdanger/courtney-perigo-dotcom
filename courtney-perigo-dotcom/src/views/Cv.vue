@@ -304,7 +304,7 @@ export default {
                     title: 'SVP, Executive Director of Data Sciences',
                     company: 'Cramer-Krasselt',
                     date: '2018 - 2025',
-                    description: 'Led a 15+ person analytics organization across three offices. Realigned the team and modernized the tech stack around agile ways of working. Launched a curve-fit attribution microservice adopted by 8 enterprise clients that added $5M in annual recurring revenue and won a 2023 Drum Digital Advertising Award. Led a turnaround in 2018 that expanded agency billable rates by 300%.'
+                    description: 'Led a 15+ person analytics organization across the Chicago, New York, and Milwaukee offices. Realigned the team and modernized the tech stack around agile ways of working. Launched a curve-fit attribution microservice adopted by 8 enterprise clients that added $5M in annual recurring revenue and won a 2023 Drum Digital Advertising Award. Owned the analytics P&L, including product development and new business sales, and led a 2018 turnaround that expanded agency billable rates by 300%.'
                 },
                 {
                     title: 'VP, Director of Decision Sciences',
