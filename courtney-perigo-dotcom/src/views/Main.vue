@@ -19,7 +19,7 @@
                         </div>
                         <div class="content has-text-centered">
                             <h1 class="title is-size-1 is-relative">
-                                Tranforming data into business value.
+                                Transforming data into business value.
                             </h1>
                             {{ main_intro }}
                         </div>
