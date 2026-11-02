@@ -26,7 +26,7 @@
 
       <div v-if="!customNewsActive" class="article-list">
         <article v-for="(article, index) in paginatedArticles" :key="index" class="card article">
-          <div class="article-thumb">
+          <div :class="['article-thumb', { 'is-fallback': article._useFallback || article.entry_image.url === fallbackImage }]">
             <img
               :src="article._useFallback ? fallbackImage : article.entry_image.url"
               :style="{ objectFit: (article._useFallback || article.entry_image.url === fallbackImage) ? 'contain' : 'cover' }"
@@ -40,7 +40,7 @@
             <h3>
               <a :href="article.entry_link" target="_blank" rel="noopener noreferrer">{{ article.entry_title }}</a>
             </h3>
-            <p>{{ article.entry_summary }}</p>
+            <p>{{ plainText(article.entry_summary) }}</p>
             <div class="tag-row">
               <button
                 v-for="(tag, i) in visibleTags(article)"
@@ -108,6 +108,14 @@ const visibleTags = (article) =>
     (article.entry_tags || []).filter(tag => !hiddenSchemes.includes(tag.scheme)).slice(0, 4);
 
 const shortTag = (term) => term.split('/').pop().split('|').pop().split('\\').pop();
+
+// Some feeds ship HTML in the summary; show it as text.
+const plainText = (html) => {
+    if (!html) return '';
+    const el = document.createElement('div');
+    el.innerHTML = html;
+    return (el.textContent || '').replace(/\s+/g, ' ').trim();
+};
 
 const toggleTagFilter = (tag) => {
     if (selectedTags.value.includes(tag)) {
@@ -236,6 +244,12 @@ onMounted(() => {
 .article-thumb img {
   width: 100%;
   height: 100%;
+}
+
+/* The fallback is a black silhouette on a transparent background; it needs white behind it in both modes. */
+.article-thumb.is-fallback {
+  background: #FFFFFF;
+  padding: var(--s-2);
 }
 
 .article-body {
