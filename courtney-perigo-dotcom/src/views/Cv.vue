@@ -20,8 +20,8 @@
         <h2>Experience</h2>
         <article v-for="e in resume_experience" :key="e.title + e.company" class="cv-entry">
           <div class="cv-entry-head">
+            <p class="cv-entry-company">{{ e.company }} <span class="muted">· {{ e.date }}</span></p>
             <h3>{{ e.title }}</h3>
-            <p class="muted small">{{ e.company }} · {{ e.date }}</p>
           </div>
           <p>{{ e.description }}</p>
         </article>
@@ -251,15 +251,43 @@ export default {
 
 .cv-entry {
   max-width: var(--measure);
-  margin-bottom: var(--s-5);
+  padding: var(--s-5) 0 var(--s-5) var(--s-4);
+  border-left: 2px solid var(--border);
+}
+
+.cv-entry + .cv-entry {
+  border-top: 1px solid var(--border);
+}
+
+.cv-entry-head {
+  position: relative;
+  margin-bottom: var(--s-3);
+}
+
+.cv-entry-head::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--s-4) - 2px);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+}
+
+.cv-entry-company {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 var(--s-1);
 }
 
 .cv-entry-head h3 {
-  margin-bottom: var(--s-1);
+  margin: 0;
 }
 
-.cv-entry-head p {
-  margin-bottom: var(--s-2);
+.cv-entry > p:last-child {
+  margin-bottom: 0;
+  color: var(--muted);
 }
 
 .cv-pub {
