@@ -1,0 +1,354 @@
+/* Components: nav, buttons, cards, hero, footer, tags, chart frame. */
+
+/* Nav */
+
+.nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-height: 64px;
+}
+
+.nav-brand {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-brand:hover {
+  color: var(--accent);
+}
+
+.nav-links {
+  display: none;
+  align-items: center;
+  gap: var(--s-5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  padding: var(--s-2) 0;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.nav-links a.router-link-active {
+  border-bottom-color: var(--accent);
+}
+
+.nav-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.nav-menu-btn {
+  display: inline-flex;
+}
+
+@media (min-width: 768px) {
+  .nav-links {
+    display: flex;
+  }
+
+  .nav-menu-btn {
+    display: none;
+  }
+}
+
+.nav-mobile {
+  border-top: 1px solid var(--border);
+  padding: var(--s-3) 0 var(--s-4);
+}
+
+.nav-mobile ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-mobile a {
+  display: block;
+  padding: var(--s-3) 0;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-mobile a.router-link-active {
+  color: var(--accent);
+}
+
+@media (min-width: 768px) {
+  .nav-mobile {
+    display: none;
+  }
+}
+
+/* Icon button (theme toggle, menu) */
+
+.icon-btn {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.icon-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-5);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--on-accent);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-sm {
+  padding: var(--s-2) var(--s-4);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-top: var(--s-5);
+}
+
+/* Cards */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--s-5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card h3 {
+  margin-bottom: var(--s-2);
+}
+
+.card p {
+  color: var(--muted);
+  margin-bottom: var(--s-3);
+}
+
+.card p:last-child {
+  margin-bottom: 0;
+}
+
+.card-link {
+  margin-top: auto;
+  padding-top: var(--s-3);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.card-media {
+  margin: calc(-1 * var(--s-5)) calc(-1 * var(--s-5)) var(--s-4);
+  aspect-ratio: 3 / 2;
+  background: var(--border);
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-meta {
+  font-size: var(--fs-small);
+  color: var(--muted);
+  margin-bottom: var(--s-2);
+}
+
+/* Hero: the first screen */
+
+.hero {
+  padding-top: var(--s-7);
+  padding-bottom: var(--s-6);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-5);
+  align-items: center;
+}
+
+.hero .display {
+  max-width: 22ch;
+  margin-bottom: var(--s-4);
+}
+
+.headshot {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding-top: var(--s-8);
+    padding-bottom: var(--s-7);
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr auto;
+    gap: var(--s-7);
+  }
+
+  .headshot {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+/* Footer */
+
+.footer {
+  border-top: 1px solid var(--border);
+  padding: var(--s-5) 0;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+}
+
+.footer a {
+  color: var(--muted);
+}
+
+.footer a:hover {
+  color: var(--accent);
+}
+
+/* Tag (the one allowed pill) */
+
+.tag {
+  display: inline-block;
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 10px;
+  line-height: 1.6;
+}
+
+/* Chart frame */
+
+.chart-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--s-5);
+}
+
+.chart-frame h3 {
+  margin-bottom: var(--s-1);
+}
+
+.chart-frame .chart-desc {
+  color: var(--muted);
+  font-size: var(--fs-small);
+  margin-bottom: var(--s-4);
+}
+
+.chart-frame .chart-source {
+  color: var(--muted);
+  font-size: var(--fs-eyebrow);
+  margin: var(--s-3) 0 0;
+}

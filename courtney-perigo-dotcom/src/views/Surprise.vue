@@ -26,7 +26,6 @@ function getGender() {
 </script>
 
 <template>
-    <AppNavBar />
     <div class="hero is-fullheight is-primary">
         <div class="hero-body">
             <div class="container">

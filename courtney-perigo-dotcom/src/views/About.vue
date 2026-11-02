@@ -1,5 +1,4 @@
 <template>
-    <AppNavBar />
 
     <div class="hero is-fullheight is-primary">
         <div class="hero-body">

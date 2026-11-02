@@ -1,11 +1,13 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import AppNavBar from './components/AppNavBar.vue'
+import AppFooter from './components/AppFooter.vue'
 </script>
 
 <template>
-  <RouterView />
+  <AppNavBar />
+  <main>
+    <RouterView />
+  </main>
+  <AppFooter />
 </template>
-
-<style>
-@import '../css/mystyles.css';
-</style>

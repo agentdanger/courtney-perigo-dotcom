@@ -1,340 +1,110 @@
-<template>
-    <AppNavBar />
+<script setup>
+import { RouterLink } from 'vue-router'
 
-    <div class="hero is-fullheight is-primary">
-        <div id="particles-js"></div>
-        <div class="hero-body" id="particles-js">
-            <div class="container">
-                <div class="columns">
-                    <div class="column"></div>
-                    <div class="column is-6">
-                        <div class="columns">
-                            <div class="column"></div>
-                            <div class="column is-6">
-                                <figure class="image">
-                                    <img class="is-rounded has-ratio" :src="main_image">
-                                </figure>
-                            </div>
-                            <div class="column"></div>
-                        </div>
-                        <div class="content has-text-centered">
-                            <h1 class="title is-size-1 is-relative">
-                                Transforming data into business value.
-                            </h1>
-                            {{ main_intro }}
-                        </div>
-                        <div class="content has-text-centered">
-                            <a href="#featured_projects" class="icon is-size-1 has-text-white is-large">
-                                <i class="fas fa-caret-down"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="column"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+const resume = '/assets/Perigo_James_Courtney_resume.pdf'
 
-    <section id="featured_projects" class="hero is-medium is-primary">
-        <div class="hero-body">
-            <div class="container">
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Featured Projects
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="columns ">
-                                <div v-for="project in featured_projects" class="column is-flex">
-                                    <div class="card has-background-white is-flex is-flex-direction-column is-flex-grow-1">
-                                        <div class="card-image ">
-                                            <figure class="image is-3by2">
-                                                <img :src="project.image" alt="Placeholder image">
-                                            </figure>
-                                        </div>
-                                        <header class="card-header ">
-                                            <p class="card-header-title is-size-6">
-                                                {{ project.title }}
-                                            </p>
-                                        </header>
-                                        <div class="card-content is-flex-grow-1">
-                                            <div class="content ">
-                                                {{ project.description }}
-                                            </div>
-                                        </div>
-                                        <footer class="card-footer">
-                                            <a :href="project.link" target="_blank" rel="noopener noreferrer"
-                                                class="card-footer-item ">
-                                                View
-                                            </a>
-                                        </footer>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+const proofs = [
+  {
+    title: 'Marketing mix platform',
+    text: 'A hierarchical Bayesian MMM platform that replaced quarterly studies with continuously refreshed reads across 50-plus markets.',
+    to: '/work',
+    label: 'Read the case study'
+  },
+  {
+    title: 'An AI beat writer for 10,000 ballclubs',
+    text: 'A production LLM system that writes four grounded editions a week per club for $2.33 per club per month. Every number is computed before the model writes.',
+    to: '/writing',
+    label: 'Read the article'
+  },
+  {
+    title: 'Turnaround and P&L',
+    text: 'Owned the analytics P&L at Cramer-Krasselt across three offices; a 2018 turnaround expanded billable rates by 300%, and an attribution product added $5M in annual recurring revenue.',
+    to: '/work',
+    label: 'Read the case study'
+  }
+]
 
-    <section id="featured_projects" class="hero is-medium is-black">
-        <div class="hero-body">
-            <div class="container">
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                My Running Stats | Last 30 Activities
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="columns">
-                                <div class="column is-8">
-                                    <div class="content">
-                                        <apexchart height="250" id='running-stats-pace' type="line" :options="options_pace" :series="this.chartSeries_pace" />
-                                        <apexchart height="250" id='running-stats-miles' type="area" :options="options_miles" :series="this.chartSeries_miles" />
-                                    </div>
-                                </div>
-                                <div class="column is-4">
-                                    <div class="content">
-                                        <h1 class="title is-size-4">
-                                            Total Distance Covered: {{ total_miles }} miles
-                                        </h1>
-                                        <h1 class="title is-size-4">
-                                            Longest Run: {{ longest_run }} miles
-                                        </h1>
-                                        <h1 class="title is-size-4">
-                                            Fastest Pace: {{ fastest_time }} min/mile
-                                        </h1>    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</template>
-
-<script>
-import stravaService from '../service/StravaService'
-import '../particles.js-master/particles.js'
-import AppNavBar from '../components/AppNavBar.vue'
-import VueApexCharts from 'vue3-apexcharts';
-
-export default {
-    
-    components: {
-        AppNavBar,
-        apexchart: VueApexCharts
-    },
-    data() {
-        return {
-            main_intro: "I'm a data science leader in Chicago, IL, USA.  \
-            I have significant experience leading teams working on applications \
-            of machine learning in retail, healthcare, financial, and consumer \
-            packaged goods industries.  I love working on challenging problems, \
-            working with creative people, using state-of-the-art technologies, \
-            and building amazing products.  Interested in working together?  \
-            Feel free to contact me.",
-            main_image: "../assets/lion_courtney.JPG",
-            longest_run: null,
-            fastest_time: null,
-            total_miles: null,
-            activities: null,
-            miles_list: [0, 0, 0],
-            dates_list: [1,2,3],
-            stravaServiceGet: null,
-            stravaDataLoading: false,
-            chartSeries_miles: [{
-                name: "Miles",
-                data: [[0,0]]
-            }],
-            chartSeries_pace: [{
-                name: "Pace (min/mile)",
-                data: [[0,0]]
-            }],
-            options_miles: {
-                title: {
-                    text: 'Miles',
-                    align: 'left',
-                    style: {
-                        fontSize: '14px',
-                        fontWeight: 'bold',
-                        fontFamily: undefined,
-                        color: '#F5F9FF'
-                    },
-                },
-                chart: {
-                    foreColor: '#F5F9FF',
-                    fontFamily: "'Play', sans-serif'",
-                    id: 'running-stats-miles',
-                    group: 'running-stats',
-                    type: 'line',
-                    zoom: {
-                        enabled: false
-                    },
-                    toolbar: {
-                        show: false
-                    }
-                },
-                colors: ['#BE861F'],
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth'
-                },
-                grid: {
-                    row: {
-                        colors: ['#F5F9FF', 'transparent'], // takes an array which will be repeated on columns
-                        opacity: 0.1
-                    },
-                },
-                xaxis: {
-                    type: 'datetime',
-                    tickAmount: 'dataPoints'
-                },
-                yaxis: {
-                    type: 'numeric',
-                    forceNiceScale: true,
-                    title: [{
-                        text: 'Pace (min/mile)'
-                    }
-                ],
-                    min: 0,
-                    decimalsInFloat: 1,
-                    formatter: function (value) {
-                            return value.toFixed(1)
-                    }
-                }
-            },
-            options_pace: {
-                title: {
-                    text: 'Pace (min/mile)',
-                    align: 'left',
-                    style: {
-                        fontSize: '14px',
-                        fontWeight: 'bold',
-                        fontFamily: undefined,
-                        color: '#F5F9FF'
-                    },
-                },
-                chart: {
-                    foreColor: '#F5F9FF',
-                    fontFamily: "'Play', sans-serif'",
-                    id: 'running-stats-pace',
-                    group: 'running-stats',
-                    type: 'line',
-                    zoom: {
-                        enabled: false
-                    },
-                    toolbar: {
-                        show: false
-                    }
-                },
-                colors: ['#09A2CD'],
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth'
-                },
-                grid: {
-                    row: {
-                        colors: ['#F5F9FF', 'transparent'], // takes an array which will be repeated on columns
-                        opacity: 0.1
-                    },
-                },
-                xaxis: {
-                    type: 'datetime',
-                    tickAmount: 'dataPoints',
-                    tooltip: {
-                        enabled: false
-                    }
-                },
-                yaxis: {
-                    type: 'numeric',
-                    forceNiceScale: true,
-                    title: [{
-                        text: 'Miles'
-                    }
-                ],
-                    min: 0,
-                    decimalsInFloat: 1,
-                    formatter: function (value) {
-                            return value.toFixed(1)
-                    }
-                }
-            },
-            featured_projects: [
-                {
-                    title: "An AI Beat Writer for 10,000 Ballclubs",
-                    description: "A production LLM system that never computes a fact: deterministic pre-computation, \
-                    a critic that must cite the record, and a cost of $2.33 per club per month. Architecture write-up on Medium.",
-                    image: "../assets/fig1_paper_desktop_top.jpg",
-                    link: "https://courtney-perigo.medium.com/move-the-facts-out-of-the-llm-how-a-beat-writer-for-10-000-ballclubs-costs-under-3-a-club-503907dff454"
-                },
-                {
-                    title: "Workforce Optimization with Genetic Algorithms",
-                    description: "Optimizing a nanny schedule using simulation and genetic algorithms in Python.",
-                    image: "../assets/optimal_nanny.png",
-                    link: "https://github.com/agentdanger/nanny-simulation"
-                },
-                {
-                    title: "Chicago Data Portal Analyst Microservices",
-                    description: "A collection of Chicago Data Portal microservices \
-                    using GoLang, Kubernetes, Docker, and Amazon Web Services.",
-                    image: "../assets/chicago_crime.png",
-                    link: "https://github.com/agentdanger/chicago-data-public"
-                },
-                {
-                    title: "Advertising Forecasts in Google Cloud Platform",
-                    description: "A demonstration of a forecasting pipeline in \
-                    Google Cloud Platform using BigQuery ML, Cloud Storage, \
-                    and Google App Engine",
-                    image: "../assets/gcp_diagram.png",
-                    link: "https://github.com/agentdanger/ad-forecasting-gcp"
-                },
-                {
-                    title: "Predicting Top MLB Batters of All Time",
-                    description: "A demonstration of a statistical analysis using R of \
-                    Major League Baseball players looking for the best batters of all time.",
-                    image: "../assets/ops_corr.jpeg",
-                    link: "https://github.com/agentdanger/project_peanutsandcrackerjack"
-                }
-            ]
-        }
-    },
-    mounted() {
-        this.initParticles(),
-        this.stravaServiceGet = new stravaService(),
-        this.stravaServiceGet.getStravaData().then((response) => {
-            this.stravaDataLoading = true
-            this.longest_run = response.longest_run_string
-            this.fastest_time = response.fastest_time_string
-            this.total_miles = response.total_miles
-            this.activities = response.data
-            this.options_miles.xaxis.categories = Array.from(response.dates_list)
-            this.options_pace.xaxis.categories = Array.from(response.dates_list)
-            this.chartSeries_miles[0].data = response.graph_data
-            this.chartSeries_pace[0].data = response.graph_data_pace
-        }).catch((error) => {
-            console.log(error)
-        }).finally(() => {
-            this.stravaDataLoading = false
-        })
-    },
-    methods: { 
-        initParticles() {
-            particlesJS('particles-js')
-        },
-    }
-}
+const articles = [
+  {
+    title: 'Move the Facts Out of the LLM',
+    meta: 'Medium, 2026',
+    text: 'How a beat writer for 10,000 ballclubs costs under $3 a club: deterministic pre-computation, a critic that must cite the record, and a repair loop.',
+    image: '/assets/fig1_paper_thumb.jpg',
+    alt: 'Front page of an Empire Legends edition',
+    link: 'https://courtney-perigo.medium.com/move-the-facts-out-of-the-llm-how-a-beat-writer-for-10-000-ballclubs-costs-under-3-a-club-503907dff454'
+  },
+  {
+    title: 'Your Analytics Microservices Have a New Customer',
+    meta: 'Medium, 2026',
+    text: 'The highest-volume consumer of a well-built analytics service is now an AI agent. An MCP server for production analytics, with an open-source demo.',
+    image: '/assets/balloons_jesse_gardner_unsplash.jpg',
+    alt: 'Hot air balloons',
+    link: 'https://courtney-perigo.medium.com/your-analytics-microservices-have-a-new-customer-6a97d8cc2cf2'
+  }
+]
 </script>
 
-<style></style>
+<template>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Data, Analytics &amp; AI Executive</p>
+        <h1 class="display">Analytics and AI systems that executives trust, and the teams that ship them.</h1>
+        <p class="lede">
+          Transforming data into business value for more than twenty years: Courtney Perigo leads
+          data science and analytics organizations in agencies and in-house, from Bayesian marketing
+          mix platforms to production LLM systems built to a cost budget. Chicago.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" :href="resume" download>Download resume</a>
+          <RouterLink class="btn btn-secondary" to="/work">See the work</RouterLink>
+        </div>
+      </div>
+      <img class="headshot" src="/assets/lion_courtney.JPG" alt="Courtney Perigo" width="160" height="160">
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Proof</p>
+      <div class="grid grid-3">
+        <article v-for="p in proofs" :key="p.title" class="card">
+          <h3>{{ p.title }}</h3>
+          <p>{{ p.text }}</p>
+          <RouterLink class="card-link" :to="p.to">{{ p.label }}</RouterLink>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Writing</h2>
+        <RouterLink class="small" to="/writing">All writing</RouterLink>
+      </div>
+      <div class="grid grid-2">
+        <article v-for="a in articles" :key="a.link" class="card">
+          <div class="card-media">
+            <img :src="a.image" :alt="a.alt" loading="lazy">
+          </div>
+          <p class="card-meta">{{ a.meta }}</p>
+          <h3>{{ a.title }}</h3>
+          <p>{{ a.text }}</p>
+          <a class="card-link" :href="a.link" target="_blank" rel="noopener noreferrer">Read on Medium</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container prose">
+      <h2>Working with me</h2>
+      <p>
+        Fractional CDAO, marketing mix and measurement, and AI and LLM systems, through Called Shot
+        Advisory. Short engagements with a stated outcome.
+      </p>
+      <RouterLink class="btn btn-secondary btn-sm" to="/working-with-me">How an engagement starts</RouterLink>
+    </div>
+  </section>
+</template>
