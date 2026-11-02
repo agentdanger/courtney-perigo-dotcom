@@ -1,10 +1,11 @@
 <!-- An app that helps users understand the optimal portfolio of U.S. stocks. -->
 
 <script setup>
-import AppNavBar from '../components/AppNavBar.vue'
 import optimalPortfolioService from '../service/PortfolioService.js'
 import { computed, onMounted, ref } from 'vue'
 import VueApexCharts from 'vue3-apexcharts';
+import { baseChartOptions, chartTokens } from '../chartTheme.js'
+import { theme } from '../theme.js'
 
 const optimalPortfolioServ = new optimalPortfolioService()
 
@@ -31,13 +32,13 @@ const formattedLatestRunDate = computed(() => {
     })
 })
 
-var aboutOptimalPortfolio = "This project uses optimal portfolio theory and Sharpe Ratio analysis " 
-+ "to identify the best investment portfolio from low dividend yield U.S. stocks over the past decade. " 
-+ "It showcases my data science skills in optimizing returns and analyzing complex datasets, " 
+var aboutOptimalPortfolio = "This project uses optimal portfolio theory and Sharpe Ratio analysis "
++ "to identify the best investment portfolio from low dividend yield U.S. stocks over the past decade. "
++ "It showcases my data science skills in optimizing returns and analyzing complex datasets, "
 + "and is purely academic, not financial advice.  The default budget is $50,000, but you can adjust it below."
 
 var aboutModel = "The optimal portfolio model uses Scipy's optimize function to maximize the Sharpe Ratio "
-+ "of a portfolio of low & no dividend yield U.S. stocks. The model uses historical stock data to calculate the optimal weights for each stock, " 
++ "of a portfolio of low & no dividend yield U.S. stocks. The model uses historical stock data to calculate the optimal weights for each stock, "
 + "and suggests the portfolio that would've produced the maximum return given the volatility risk. "
 + "Covariance matrix estimation uses the Ledoit-Wolf shrinkage method for better stability. "
 + "More information about the underlying model can be found on its repo. "
@@ -49,36 +50,31 @@ var aboutBacktesting = "For backtesting, the model simulates how the optimal por
 
 var modelLink = {
                 name: 'Optimal Portfolio Model: GitHub',
-                icon: 'fab fa-github',
                 link: 'https://github.com/agentdanger/stock-portfolio-optimizer'
             }
 
-const brandColors = {
-    tangaroa: '#192532',
-    irisBlue: '#09A2CD',
-    teal: '#007D81',
-    alice: '#F5F9FF',
-    ochre: '#BE861F',
-    hunterGreen: '#305434',
-    tosca: '#704140',
-    grey: '#808080',
-    tuna: '#484E55'
-}
-
-const sectorColorOverrides = new Map([
-    ['Technology', brandColors.irisBlue],
-    ['Financials', brandColors.teal],
-    ['Healthcare', brandColors.hunterGreen],
-    ['Consumer Cyclical', brandColors.ochre],
-    ['Consumer Defensive', brandColors.tosca],
-    ['Communication Services', brandColors.tuna],
-    ['Energy', brandColors.tangaroa],
-    ['Industrials', brandColors.grey],
-    ['Real Estate', brandColors.alice],
-    ['Utilities', '#4AA7B5'],
-    ['Basic Materials', '#2F5168'],
-    ['Unknown', '#5A6B7A']
-])
+// Sector palette from the design tokens; re-read on theme toggle.
+const sectorPalette = computed(() => {
+    theme.value
+    const t = chartTokens()
+    return {
+        overrides: new Map([
+            ['Technology', t.series[4]],
+            ['Financials', t.series[0]],
+            ['Healthcare', t.series[2]],
+            ['Consumer Cyclical', t.series[1]],
+            ['Consumer Defensive', t.series[3]],
+            ['Communication Services', t.series[5]],
+            ['Energy', t.accent],
+            ['Industrials', t.muted],
+            ['Real Estate', t.warning],
+            ['Utilities', t.success],
+            ['Basic Materials', t.danger],
+            ['Unknown', t.border]
+        ]),
+        pool: [...t.series, t.accent, t.muted, t.success, t.warning, t.danger]
+    }
+})
 
 const sectorSynonyms = {
     'Financial Services': 'Financials',
@@ -175,107 +171,72 @@ const backtestMetrics = computed(() => {
     }
 })
 
-const backtestChartOptions = ref({
-    chart: {
-        type: 'area',
-        height: 350,
-        fontFamily: 'Play, sans-serif',
-        background: 'transparent',
-        toolbar: {
-            show: false
+const backtestCategories = ref([])
+const backtestSeries = ref([])
+
+const backtestChartOptions = computed(() => {
+    theme.value
+    const b = baseChartOptions()
+    const t = chartTokens()
+    return {
+        ...b,
+        chart: {
+            ...b.chart,
+            type: 'area',
+            height: 350
         },
-        zoom: {
-            enabled: false
-        }
-    },
-    dataLabels: {
-        enabled: false
-    },
-    stroke: {
-        curve: 'smooth',
-        width: 2
-    },
-    fill: {
-        type: 'gradient',
-        gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.4,
-            opacityTo: 0.1,
-            stops: [0, 90, 100]
-        }
-    },
-    legend: {
-        show: true,
-        position: 'top',
-        horizontalAlign: 'center',
-        fontSize: '12px',
-        fontWeight: 'bold',
-        labels: {
-            colors: '#F5F9FF'
-        }
-    },
-    grid: {
-        borderColor: 'rgba(245, 249, 255, 0.2)'
-    },
-    xaxis: {
-        categories: [],
-        title: {
-            text: 'Quarter',
-            style: {
-                fontSize: '14px',
-                fontWeight: 'bold',
-                color: '#F5F9FF'
+        stroke: {
+            curve: 'smooth',
+            width: 2
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.4,
+                opacityTo: 0.1,
+                stops: [0, 90, 100]
             }
         },
-        labels: {
-            style: {
-                colors: '#F5F9FF'
+        legend: {
+            ...b.legend,
+            show: true,
+            position: 'top',
+            horizontalAlign: 'center',
+            fontSize: '12px',
+            fontWeight: 600
+        },
+        xaxis: {
+            ...b.xaxis,
+            categories: backtestCategories.value,
+            title: {
+                text: 'Quarter',
+                style: { fontSize: '12px', fontWeight: 600, color: t.muted }
             }
         },
-        axisBorder: {
-            color: 'rgba(245, 249, 255, 0.2)'
-        },
-        axisTicks: {
-            color: 'rgba(245, 249, 255, 0.2)'
-        }
-    },
-    yaxis: {
-        title: {
-            text: 'Portfolio Value ($)',
-            style: {
-                fontSize: '14px',
-                fontWeight: 'bold',
-                color: '#F5F9FF'
-            }
-        },
-        labels: {
-            formatter: function(value) {
-                return '$' + value.toLocaleString('en-US', { maximumFractionDigits: 0 })
+        yaxis: {
+            ...b.yaxis,
+            title: {
+                text: 'Portfolio Value ($)',
+                style: { fontSize: '12px', fontWeight: 600, color: t.muted }
             },
-            style: {
-                colors: '#F5F9FF'
+            labels: {
+                ...b.yaxis.labels,
+                formatter: function(value) {
+                    return '$' + value.toLocaleString('en-US', { maximumFractionDigits: 0 })
+                }
+            }
+        },
+        colors: [t.series[0], t.series[1]],
+        tooltip: {
+            ...b.tooltip,
+            y: {
+                formatter: function(value) {
+                    return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                }
             }
         }
-    },
-    colors: [brandColors.irisBlue, brandColors.ochre],
-    tooltip: {
-        theme: 'dark',
-        y: {
-            formatter: function(value) {
-                return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-            }
-        }
-    },
-    title: {
-        text: 'Backtest: Portfolio vs Benchmark Growth',
-        align: 'center',
-        style: {
-            fontSize: '20px',
-            fontWeight: 'bold',
-            color: '#F5F9FF'
-        }
-    },
-    series: []
+    }
 })
 
 function updateBacktestChart() {
@@ -285,8 +246,8 @@ function updateBacktestChart() {
     const portfolioValues = backtest.value.quarterly_values.map(q => q.portfolio)
     const benchmarkValues = backtest.value.quarterly_values.map(q => q.benchmark)
 
-    backtestChartOptions.value.xaxis.categories = quarters
-    backtestChartOptions.value.series = [
+    backtestCategories.value = quarters
+    backtestSeries.value = [
         {
             name: 'Optimized Portfolio',
             data: portfolioValues
@@ -309,7 +270,7 @@ function canonicalizeSector(rawSector) {
 
 function fallbackColor(sector, usedColors = new Set()) {
     if (!sector || sector === 'Unknown') {
-        const neutral = '#5A6B7A'
+        const neutral = chartTokens().border
         if (!usedColors.has(neutral)) {
             return neutral
         }
@@ -334,15 +295,15 @@ function fallbackColor(sector, usedColors = new Set()) {
     return color
 }
 
-function resolveSectorColor(sector, assignedColors, availableColors, usedColors) {
+function resolveSectorColor(sector, assignedColors, availableColors, usedColors, overrides) {
     if (assignedColors.has(sector)) {
         return assignedColors.get(sector)
     }
 
     let color
 
-    if (sectorColorOverrides.has(sector)) {
-        color = sectorColorOverrides.get(sector)
+    if (overrides.has(sector)) {
+        color = overrides.get(sector)
     } else if (availableColors.length) {
         color = availableColors.shift()
     } else {
@@ -385,15 +346,16 @@ const sectorBreakdown = computed(() => {
     }
 
     const normalizationFactor = 100 / totalPercentage
-    const overrideColors = new Set(sectorColorOverrides.values())
-    const availableColors = Object.values(brandColors).filter(color => !overrideColors.has(color))
+    const { overrides, pool } = sectorPalette.value
+    const overrideColors = new Set(overrides.values())
+    const availableColors = pool.filter(color => !overrideColors.has(color))
     const assignedColors = new Map()
     const usedColors = new Set()
 
     return sectors.map(sector => ({
         ...sector,
         percentage: sector.percentage * normalizationFactor,
-        color: resolveSectorColor(sector.sector, assignedColors, availableColors, usedColors)
+        color: resolveSectorColor(sector.sector, assignedColors, availableColors, usedColors, overrides)
     }))
 })
 
@@ -401,59 +363,64 @@ const sectorChartSeries = computed(() =>
     sectorBreakdown.value.map(sector => Number(sector.percentage.toFixed(2)))
 )
 
-const sectorChartOptions = computed(() => ({
-    chart: {
-        type: 'donut',
-        background: 'transparent'
-    },
-    labels: sectorBreakdown.value.map(sector => sector.sector),
-    colors: sectorBreakdown.value.map(sector => sector.color),
-    legend: {
-        show: false
-    },
-    stroke: {
-        colors: ['#F5F9FF'],
-        show: false
-    },
-    dataLabels: {
-        style: {
-            fontSize: '12px',
-            colors: ['#F5F9FF']
-        }
-    },
-    plotOptions: {
-        pie: {
-            donut: {
-                size: '65%',
-                labels: {
-                    show: true,
-                    name: {
-                        color: '#F5F9FF',
-                        fontSize: '14px',
-                        fontWeight: 600
-                    },
-                    value: {
-                        color: '#F5F9FF',
-                        fontSize: '18px',
-                        formatter: value => `${Number(value).toFixed(1)}%`
-                    },
-                    total: {
+const sectorChartOptions = computed(() => {
+    theme.value
+    const b = baseChartOptions()
+    const t = chartTokens()
+    return {
+        ...b,
+        chart: {
+            ...b.chart,
+            type: 'donut'
+        },
+        labels: sectorBreakdown.value.map(sector => sector.sector),
+        colors: sectorBreakdown.value.map(sector => sector.color),
+        legend: {
+            show: false
+        },
+        stroke: {
+            colors: [t.surface],
+            show: true,
+            width: 2
+        },
+        dataLabels: {
+            enabled: false
+        },
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '65%',
+                    labels: {
                         show: true,
-                        label: 'Holdings',
-                        color: '#F5F9FF',
-                        fontSize: '14px',
-                        formatter: () => holdingsCount.value || 0
+                        name: {
+                            color: t.muted,
+                            fontSize: '14px',
+                            fontWeight: 600
+                        },
+                        value: {
+                            color: t.text,
+                            fontSize: '18px',
+                            formatter: value => `${Number(value).toFixed(1)}%`
+                        },
+                        total: {
+                            show: true,
+                            label: 'Holdings',
+                            color: t.muted,
+                            fontSize: '14px',
+                            formatter: () => holdingsCount.value || 0
+                        }
                     }
                 }
             }
-        }
-    },
-    tooltip: {
-        y: {
-            formatter: value => `${value.toFixed(1)}%`
+        },
+        tooltip: {
+            ...b.tooltip,
+            y: {
+                formatter: value => `${value.toFixed(1)}%`
+            }
         }
     }
-}))
+})
 
 const largestHolding = computed(() => {
     if (!maxSharpeWeights.value.length) {
@@ -542,159 +509,137 @@ function stockWebsiteDisplay(stock) {
     }
 }
 
-// Initialize chart options
-const chartOptions = ref({
-  chart: {
-    type: 'scatter',
-    height: 350,
-    zoom: {
-      enabled: false,
-      type: 'xy'
-    },
-    toolbar: {
-      show: false
-    },
-    fontFamily: 'Play, sans-serif',
-    events: {
-      dataPointMouseEnter: function(event, chartContext, config) {
-        highlightDataPoint(config.dataPointIndex);
-      },
-      dataPointMouseLeave: function(event, chartContext, config) {
-        resetHighlight();
-      }
-    }
-  },
-  legend: {
-    show: true,
-    position: 'top',
-    horizontalAlign: 'center',
-    fontSize: '12px',
-    fontWeight: 'bold',
-    labels: {
-      colors: '#F5F9FF', // Set the legend label color
-    },
-  },
-  grid: {
-    borderColor: '#F5F9FF', // Set the gridline color
-  },
-  xaxis: {
-    title: {
-      text: 'Volatility (Standard Deviation)',
-      style: {
-        fontSize: '14px',
-        fontWeight: 'bold',
-        color: '#F5F9FF', // Set the x-axis title color
-      },
-    },
-    labels: {
-      formatter: function(value) {
-        return value.toFixed(2);  // Format x-axis values to 2 decimal places
-      },
-      style: {
-        colors: '#F5F9FF', // Set the x-axis label color
-      }
-    }
-  },
-  yaxis: {
-    title: {
-      text: 'Expected Return',
-      style: {
-        fontSize: '14px',
-        fontWeight: 'bold',
-        color: '#F5F9FF', // Set the y-axis title color
-      },
-    },
-    labels: {
-      formatter: function(value) {
-        return value.toFixed(2);  // Format y-axis values to 2 decimal places
-      },
-      style: {
-        colors: '#F5F9FF', // Set the y-axis label color
-      }
-    },
-  },
-  series: [],
-  title: {
-    text: 'Efficient Frontier and Max Sharpe Ratio Portfolios',
-    align: 'center',
-    style: {
-      fontSize: '20px',
-      fontWeight: 'bold',
-      color: '#F5F9FF', // Set the title color
-    },
-  },
-  colors: ['#BE861F', '#09A2CD'],
-  tooltip: {
-    custom: function({ series, seriesIndex, dataPointIndex, w }) {
-      const dataPoint = w.config.series[seriesIndex].data[dataPointIndex];
-      const sharpeRatio = dataPoint.name === 'Max Sharpe Ratio' 
-          ? portfolio.value['max_sharpe'].sharpe.toFixed(2)
-          : (dataPoint.y / dataPoint.x).toFixed(2); // Calculate Sharpe Ratio for other points
+// Efficient frontier chart: series live in a ref (the highlight functions
+// mutate point markers); options are a computed that follows the theme.
+const frontierSeries = ref([])
 
-      // Construct the tooltip HTML
-      return `
-          <div style="padding:10px; font-family:Play, sans-serif;">
-              <strong>${dataPoint.name}</strong><br>
-              Expected Return: ${(dataPoint.y * 100).toFixed(2)}%<br>
-              Volatility: ${(dataPoint.x * 100).toFixed(2)}%<br>
-              Sharpe Ratio: ${sharpeRatio}<br>
-          </div>
-      `;
+const chartOptions = computed(() => {
+    theme.value
+    const b = baseChartOptions()
+    const t = chartTokens()
+    return {
+        ...b,
+        chart: {
+            ...b.chart,
+            type: 'scatter',
+            height: 350,
+            zoom: {
+                enabled: false,
+                type: 'xy'
+            },
+            events: {
+                dataPointMouseEnter: function(event, chartContext, config) {
+                    highlightDataPoint(config.dataPointIndex);
+                },
+                dataPointMouseLeave: function(event, chartContext, config) {
+                    resetHighlight();
+                }
+            }
+        },
+        legend: {
+            ...b.legend,
+            show: true,
+            position: 'top',
+            horizontalAlign: 'center',
+            fontSize: '12px',
+            fontWeight: 600
+        },
+        xaxis: {
+            ...b.xaxis,
+            title: {
+                text: 'Volatility (Standard Deviation)',
+                style: { fontSize: '12px', fontWeight: 600, color: t.muted }
+            },
+            labels: {
+                ...b.xaxis.labels,
+                formatter: function(value) {
+                    return value.toFixed(2);  // Format x-axis values to 2 decimal places
+                }
+            }
+        },
+        yaxis: {
+            ...b.yaxis,
+            title: {
+                text: 'Expected Return',
+                style: { fontSize: '12px', fontWeight: 600, color: t.muted }
+            },
+            labels: {
+                ...b.yaxis.labels,
+                formatter: function(value) {
+                    return value.toFixed(2);  // Format y-axis values to 2 decimal places
+                }
+            }
+        },
+        colors: [t.series[1], t.series[0]],
+        tooltip: {
+            ...b.tooltip,
+            custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                const dataPoint = w.config.series[seriesIndex].data[dataPointIndex];
+                const sharpeRatio = dataPoint.name === 'Max Sharpe Ratio'
+                    ? portfolio.value['max_sharpe'].sharpe.toFixed(2)
+                    : (dataPoint.y / dataPoint.x).toFixed(2); // Calculate Sharpe Ratio for other points
+
+                // Construct the tooltip HTML
+                return `
+                    <div style="padding:10px; font-family:Inter, system-ui, sans-serif;">
+                        <strong>${dataPoint.name}</strong><br>
+                        Expected Return: ${(dataPoint.y * 100).toFixed(2)}%<br>
+                        Volatility: ${(dataPoint.x * 100).toFixed(2)}%<br>
+                        Sharpe Ratio: ${sharpeRatio}<br>
+                    </div>
+                `;
+            }
+        }
     }
-  }
 });
 
-// Initialize Sharpe ratio chart options
-const sharpeChartOptions = ref({
-  chart: {
-    type: 'scatter',
-    height: 350,
-    toolbar: {
-      show: false
-    },
-    fontFamily: 'Play, sans-serif',
-    events: {
-      dataPointMouseEnter: function(event, chartContext, config) {
-        highlightDataPoint(config.dataPointIndex);
-      },
-      dataPointMouseLeave: function(event, chartContext, config) {
-        resetHighlight();
-      }
+// Sharpe ratio chart (not currently rendered; kept for parity)
+const sharpeSeries = ref([])
+
+const sharpeChartOptions = computed(() => {
+    theme.value
+    const b = baseChartOptions()
+    const t = chartTokens()
+    return {
+        ...b,
+        chart: {
+            ...b.chart,
+            type: 'scatter',
+            height: 350,
+            events: {
+                dataPointMouseEnter: function(event, chartContext, config) {
+                    highlightDataPoint(config.dataPointIndex);
+                },
+                dataPointMouseLeave: function(event, chartContext, config) {
+                    resetHighlight();
+                }
+            }
+        },
+        xaxis: {
+            ...b.xaxis,
+            title: {
+                text: 'Portfolio',
+                style: { fontSize: '12px', fontWeight: 600, color: t.muted }
+            },
+            labels: {
+                show: false
+            }
+        },
+        yaxis: {
+            ...b.yaxis,
+            title: {
+                text: 'Sharpe Ratio',
+                style: { fontSize: '12px', fontWeight: 600, color: t.muted }
+            },
+            labels: {
+                ...b.yaxis.labels,
+                formatter: function(value) {
+                    return value.toFixed(2);  // Format y-axis values to 2 decimal places
+                }
+            }
+        },
+        colors: [t.series[0], t.series[1]]
     }
-  },
-  xaxis: {
-    title: {
-      text: 'Portfolio',
-      style: {
-        fontSize: '14px',
-        fontWeight: 'bold',
-        color: '#F5F9FF', // Set the x-axis title color
-      },
-    },
-    labels: {
-      show: false
-    }
-  },
-  yaxis: {
-    title: {
-      text: 'Sharpe Ratio',
-      style: {
-        fontSize: '14px',
-        fontWeight: 'bold',
-        color: '#F5F9FF', // Set the y-axis title color
-      },
-    },
-    labels: {
-      formatter: function(value) {
-        return value.toFixed(2);  // Format y-axis values to 2 decimal places
-      },
-      style: {
-        colors: '#F5F9FF', // Set the y-axis label color
-      }
-    },
-  },
-  colors: ['#09A2CD', '#BE861F'],
-  series: []
 });
 
 
@@ -715,7 +660,7 @@ function updateChartSeries() {
   }));
 
   // Set the series for the main chart
-  chartOptions.value.series = [
+  frontierSeries.value = [
     {
       name: 'Max Sharpe Ratio Portfolio',
       data: max_sharpe
@@ -743,7 +688,7 @@ function updateSharpeChartSeries() {
   ];
 
   // Update Sharpe ratio chart series
-  sharpeChartOptions.value.series = [
+  sharpeSeries.value = [
     {
       name: 'Sharpe Ratio',
       data: sharpeData
@@ -753,28 +698,27 @@ function updateSharpeChartSeries() {
 
 // Function to highlight corresponding data point
 function highlightDataPoint(index) {
-  const efficientChart = chartOptions.value;
-  const sharpeChart = sharpeChartOptions.value;
+  const t = chartTokens();
 
   // Reset markers
   resetHighlight();
 
   // Highlight the data point in the main chart
-  efficientChart.series.forEach((series, seriesIndex) => {
+  frontierSeries.value.forEach((series, seriesIndex) => {
     if (series.data[index]) {
       series.data[index].marker = {
         size: 10,
-        fillColor: '#FFFFFF'
+        fillColor: t.text
       };
     }
   });
 
   // Highlight the data point in the Sharpe ratio chart
-  sharpeChart.series.forEach((series, seriesIndex) => {
+  sharpeSeries.value.forEach((series, seriesIndex) => {
     if (series.data[index]) {
       series.data[index].marker = {
         size: 10,
-        fillColor: '#FFFFFF'
+        fillColor: t.text
       };
     }
   });
@@ -782,25 +726,25 @@ function highlightDataPoint(index) {
 
 // Function to reset highlight
 function resetHighlight() {
-  const efficientChart = chartOptions.value;
-  const sharpeChart = sharpeChartOptions.value;
+  const t = chartTokens();
+  const frontierColors = [t.series[1], t.series[0]];
 
   // Reset markers in the main chart
-  efficientChart.series.forEach(series => {
+  frontierSeries.value.forEach((series, seriesIndex) => {
     series.data.forEach(point => {
       point.marker = {
         size: 6,
-        fillColor: series.color
+        fillColor: frontierColors[seriesIndex] || t.series[0]
       };
     });
   });
 
   // Reset markers in the Sharpe ratio chart
-  sharpeChart.series.forEach(series => {
+  sharpeSeries.value.forEach(series => {
     series.data.forEach(point => {
       point.marker = {
         size: 6,
-        fillColor: '#09A2CD'
+        fillColor: t.series[0]
       };
     });
   });
@@ -851,492 +795,515 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="hero is-fullheight is-primary">
-        <div class="hero-body">
+    <section class="section">
+        <div class="container">
+            <p class="eyebrow">Lab</p>
+            <h1>Optimal portfolio</h1>
+            <p class="lede">
+                A Monte Carlo portfolio optimizer over low-dividend U.S. stocks, refreshed daily by the
+                stock-portfolio-optimizer service on App Engine. It maximizes the Sharpe ratio, screens
+                out broken price histories, backtests the strategy with quarterly rebalancing, and applies
+                a $500 minimum allocation per holding. Academic only, not financial advice.
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="card prose">
+                <h3>Optimal Portfolio: Select U.S. Stocks (past decade-ish)</h3>
+                <p>{{ aboutOptimalPortfolio }}</p>
+                <p>{{ aboutBacktesting }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- show message when data is loading -->
+    <section class="section" v-if="isLoading">
+        <div class="container">
+            <div class="card">
+                <h3>Loading Optimal Portfolio...</h3>
+                <p>Fetching today's run from the optimizer service.</p>
+                <div class="progress" role="progressbar" aria-label="Loading"><span></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- show error message when data fails to load -->
+    <section class="section" v-if="error">
+        <div class="container">
+            <div class="card notice notice-danger">
+                <h3>{{ error }}</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- show portfolio data -->
+    <template v-if="isLoading === false && error === null">
+        <section class="section">
             <div class="container">
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Optimal Portfolio: Select U.S. Stocks (past decade-ish)
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                {{ aboutOptimalPortfolio }}
-                            </div>
-                            <div class="content has-text-white">
-                                <p>{{ aboutBacktesting }}</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="section-head">
+                    <h2>Today's Optimal Portfolio</h2>
+                    <span v-if="formattedLatestRunDate" class="muted small">Latest run: {{ formattedLatestRunDate }}</span>
                 </div>
-                    <!-- show message when articles are loading -->
-                <div class="box p-1 mt-6" v-if="isLoading">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Loading Optimal Portfolio...
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                <progress class="progress is-primary" max="100">15%</progress>
+
+                <div class="chart-frame">
+                    <h3>Efficient Frontier and Max Sharpe Ratio Portfolios</h3>
+                    <p class="chart-desc">Expected return against volatility for each target portfolio; the max Sharpe portfolio is the highlighted point.</p>
+                    <VueApexCharts
+                        type="scatter"
+                        :options="chartOptions"
+                        :series="frontierSeries"
+                        height="350"
+                        />
+                    <p class="chart-source">Source: daily optimizer run; returns and volatility are annualized from historical prices.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" v-if="sectorBreakdown.length || largestHolding || annualReturnPct !== null">
+            <div class="container">
+                <div class="card">
+                    <div class="overview-grid">
+                        <div class="overview-summary">
+                            <div>
+                                <h3>Portfolio Value by Sector</h3>
+                                <p class="small">Normalized to 100% of the Max Sharpe portfolio</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- show error message when articles fail to load -->
-                <div class="box p-1 mt-6" v-if="error">
-                    <div class="card has-background-danger">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                {{ error }}
-                            </p>
-                        </header>
-                    </div>
-                </div>
-                <!-- show portfolio data -->
-                <div class="box p-1 mt-6" v-if="isLoading === false && error === null">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Today's Optimal Portfolio
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content">
-                                <p
-                                    v-if="formattedLatestRunDate"
-                                    class="has-text-white is-italic mb-4"
-                                >
-                                    Latest run: {{ formattedLatestRunDate }}
-                                </p>
-                                <!-- Add the ApexCharts scatter plot here -->
-                                <div class="columns">
-                                    <VueApexCharts
-                                        type="scatter"
-                                        :options="chartOptions"
-                                        :series="chartOptions.series"
-                                        height="350px" class="column"
-                                        />
-<!--                                     <VueApexCharts
-                                        type="scatter"
-                                        :options="sharpeChartOptions"
-                                        :series="sharpeChartOptions.series"
-                                        height="350px" class="column is-4"
-                                        /> -->
-                                </div>
-                                <div
-                                    class="box has-background-dark mb-5 portfolio-overview"
-                                    v-if="sectorBreakdown.length || largestHolding || annualReturnPct !== null"
-                                >
-                                    <div class="portfolio-overview__grid columns is-variable is-5 is-multiline">
-                                        <div
-                                            class="portfolio-overview__summary column is-12-mobile is-12-tablet is-7-desktop"
-                                        >
-                                            <div class="portfolio-overview__heading">
-                                                <p class="has-text-white has-text-weight-semibold is-size-5 mb-1">
-                                                    Portfolio Value by Sector
-                                                </p>
-                                                <p class="has-text-white-ter is-size-7">
-                                                    Normalized to 100% of the Max Sharpe portfolio
-                                                </p>
-                                            </div>
-                                            <div class="portfolio-overview__metrics" v-if="largestHolding || annualReturnPct !== null || holdingsCount">
-                                                <div class="portfolio-overview__metric" v-if="largestHolding">
-                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Largest Holding</p>
-                                                    <p class="metric-value has-text-white is-size-5">
-                                                        {{ largestHolding.name }}
-                                                        <span class="metric-value__ticker">({{ largestHolding.ticker }})</span>
-                                                    </p>
-                                                    <p class="metric-subtext has-text-white">{{ largestHolding.percentage.toFixed(1) }}%</p>
-                                                </div>
-                                                <div class="portfolio-overview__metric" v-if="annualReturnPct !== null">
-                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Annualized Return</p>
-                                                    <p class="metric-value has-text-white is-size-5">
-                                                        {{ annualReturnPct.toFixed(2) }}%
-                                                    </p>
-                                                    <p class="metric-subtext has-text-white">Max Sharpe Portfolio</p>
-                                                </div>
-                                                <div class="portfolio-overview__metric" v-if="holdingsCount">
-                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Holdings</p>
-                                                    <p class="metric-value has-text-white is-size-5">
-                                                        {{ holdingsCount }}
-                                                    </p>
-                                                    <p class="metric-subtext has-text-white">With non-zero allocation</p>
-                                                </div>
-                                            </div>
-                                            <div v-if="sectorBreakdown.length" class="portfolio-overview__legend">
-                                                <ul class="sector-legend">
-                                                    <li
-                                                        v-for="sector in sectorBreakdown"
-                                                        :key="`${sector.sector}-legend`"
-                                                        class="sector-legend__item"
-                                                    >
-                                                        <span
-                                                            class="sector-legend__swatch"
-                                                            :style="{ backgroundColor: sector.color }"
-                                                        ></span>
-                                                        <span class="sector-legend__label has-text-white is-size-7">
-                                                            {{ sector.sector }}
-                                                            <span class="sector-legend__percentage">
-                                                                {{ sector.percentage.toFixed(1) }}%
-                                                            </span>
-                                                        </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <p v-else class="has-text-white">
-                                                Sector information is unavailable for this portfolio.
-                                            </p>
-                                        </div>
-                                        <div class="portfolio-overview__chart column is-12-mobile is-12-tablet is-5-desktop">
-                                            <div
-                                                v-if="sectorBreakdown.length"
-                                                class="portfolio-overview__chart-card"
-                                            >
-                                                <VueApexCharts
-                                                    type="donut"
-                                                    :options="sectorChartOptions"
-                                                    :series="sectorChartSeries"
-                                                    height="260"
-                                                />
-                                            </div>
-                                            <p v-else class="has-text-white">
-                                                Add sector data to visualize the portfolio mix.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Backtest Results Section -->
-                                <div
-                                    class="box has-background-dark mb-5 backtest-section"
-                                    v-if="hasBacktest && backtestMetrics"
-                                >
-                                    <div class="backtest-section__header mb-4">
-                                        <p class="has-text-white has-text-weight-semibold is-size-5 mb-1">
-                                            Historical Backtest Performance
-                                        </p>
-                                        <p class="has-text-white-ter is-size-7" v-if="backtestPeriod">
-                                            {{ backtestPeriod }} · Starting value: $100,000
-                                        </p>
-                                    </div>
-                                    <div class="backtest-section__chart mb-5">
-                                        <VueApexCharts
-                                            type="area"
-                                            :options="backtestChartOptions"
-                                            :series="backtestChartOptions.series"
-                                            height="350"
-                                        />
-                                    </div>
-                                    <div class="backtest-section__metrics">
-                                        <div class="columns is-multiline is-variable is-4">
-                                            <div class="column is-12-mobile is-6-tablet is-4-desktop">
-                                                <div class="backtest-metric">
-                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Annualized Return</p>
-                                                    <div class="backtest-metric__comparison">
-                                                        <div class="backtest-metric__item">
-                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.portfolioReturn }}%</span>
-                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Portfolio</span>
-                                                        </div>
-                                                        <span class="backtest-metric__separator has-text-white-ter">vs</span>
-                                                        <div class="backtest-metric__item">
-                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.benchmarkReturn }}%</span>
-                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Benchmark</span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="metric-subtext has-text-white-ter is-size-7 mt-1">
-                                                        Outperformance: +{{ backtestMetrics.outperformance }}%
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="column is-12-mobile is-6-tablet is-4-desktop">
-                                                <div class="backtest-metric">
-                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Sharpe Ratio</p>
-                                                    <div class="backtest-metric__comparison">
-                                                        <div class="backtest-metric__item">
-                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.portfolioSharpe }}</span>
-                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Portfolio</span>
-                                                        </div>
-                                                        <span class="backtest-metric__separator has-text-white-ter">vs</span>
-                                                        <div class="backtest-metric__item">
-                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.benchmarkSharpe }}</span>
-                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Benchmark</span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="metric-subtext has-text-white-ter is-size-7 mt-1">
-                                                        Risk-adjusted return measure
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="column is-12-mobile is-6-tablet is-4-desktop">
-                                                <div class="backtest-metric">
-                                                    <p class="metric-label has-text-white-ter is-uppercase is-size-7">Max Drawdown</p>
-                                                    <div class="backtest-metric__comparison">
-                                                        <div class="backtest-metric__item">
-                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.portfolioMaxDrawdown }}%</span>
-                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Portfolio</span>
-                                                        </div>
-                                                        <span class="backtest-metric__separator has-text-white-ter">vs</span>
-                                                        <div class="backtest-metric__item">
-                                                            <span class="backtest-metric__value has-text-white is-size-5">{{ backtestMetrics.benchmarkMaxDrawdown }}%</span>
-                                                            <span class="backtest-metric__label has-text-white-ter is-size-7">Benchmark</span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="metric-subtext has-text-white-ter is-size-7 mt-1">
-                                                        Largest peak-to-trough decline
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label class="label has-text-white">Max Sharpe Ratio | Portfolio Weights</label>
-                                </div>
-                                <div class="columns is-multiline is-centered">
-                                    <div v-for="stock in maxSharpeWeights" :key="stock.ticker">
-                                        <div class="column" v-if="stock.weight > 0">
-                                            <div class="card ">
-                                                <header class="card-header">
-                                                    <p class="card-header-title is-size-5">
-                                                        Symbol: {{ stock.ticker }}
-                                                    </p>
-                                                </header>
-                                                <div class="card-content">
-                                                    <div class="content">
-                                                        <p v-if="stockDisplayName(stock)">Name: {{ stockDisplayName(stock) }}</p>
-                                                        <p v-if="stockSector(stock)">Sector: {{ stockSector(stock) }}</p>
-                                                        <p>Weight: {{ weightPercentage(stock.weight) }}</p>
-                                                        <p>Budget: ${{ getStockSpendAmount(stock) }}</p>
-                                                        <p>Shares to Hold: {{ getSharesToBuy(stock) }}</p>
-                                                        <p v-if="stockWebsite(stock)">
-                                                            Website:
-                                                            <a
-                                                                :href="stockWebsite(stock)"
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-                                                                {{ stockWebsiteDisplay(stock) }}
-                                                            </a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label class="label has-text-white">Budget</label>
-                                    <div class="control">
-                                        <input class="input" type="number" v-model="budget" @change="updateBudget($event.target.value)">
-                                    </div>
-                                    <p class="help has-text-white-ter">
-                                        Each holding gets at least ${{ MIN_ALLOCATION.toLocaleString() }}. Holdings the optimizer sized below that are dropped and their weight is spread across the rest.
+                            <div class="metrics" v-if="largestHolding || annualReturnPct !== null || holdingsCount">
+                                <div class="metric" v-if="largestHolding">
+                                    <p class="metric-label">Largest Holding</p>
+                                    <p class="metric-value">
+                                        {{ largestHolding.name }}
+                                        <span class="metric-ticker">({{ largestHolding.ticker }})</span>
                                     </p>
-                                    <p class="help has-text-white-ter" v-if="droppedHoldings.length">
-                                        Dropped at this budget ({{ droppedHoldings.length }}):
-                                        {{ droppedHoldings.map(stock => stock.ticker).join(', ') }}
-                                    </p>
+                                    <p class="metric-subtext">{{ largestHolding.percentage.toFixed(1) }}%</p>
                                 </div>
-                                
+                                <div class="metric" v-if="annualReturnPct !== null">
+                                    <p class="metric-label">Annualized Return</p>
+                                    <p class="metric-value">{{ annualReturnPct.toFixed(2) }}%</p>
+                                    <p class="metric-subtext">Max Sharpe Portfolio</p>
+                                </div>
+                                <div class="metric" v-if="holdingsCount">
+                                    <p class="metric-label">Holdings</p>
+                                    <p class="metric-value">{{ holdingsCount }}</p>
+                                    <p class="metric-subtext">With non-zero allocation</p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                About The Portfolio Optimizer
+                            <ul v-if="sectorBreakdown.length" class="sector-legend">
+                                <li
+                                    v-for="sector in sectorBreakdown"
+                                    :key="`${sector.sector}-legend`"
+                                    class="sector-legend-item"
+                                >
+                                    <span
+                                        class="sector-swatch"
+                                        :style="{ backgroundColor: sector.color }"
+                                    ></span>
+                                    <span class="small">
+                                        {{ sector.sector }}
+                                        <span class="muted">{{ sector.percentage.toFixed(1) }}%</span>
+                                    </span>
+                                </li>
+                            </ul>
+                            <p v-else class="muted">
+                                Sector information is unavailable for this portfolio.
                             </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                <p>{{ aboutModel }}</p>
-                            </div>
                         </div>
-                        
-                        <div class="card-content">
-                            <div class="buttons is-centered ">
-                                    <a :href="modelLink.link" target="_blank" rel="noopener noreferrer"
-                                        class="button is-link">
-                                        <span class="icon">
-                                            <i :class="modelLink.icon"></i>
-                                        </span>
-                                        <span>{{ modelLink.name }}</span>
-                                    </a>
+                        <div class="overview-chart">
+                            <div v-if="sectorBreakdown.length" class="overview-chart-inner">
+                                <VueApexCharts
+                                    type="donut"
+                                    :options="sectorChartOptions"
+                                    :series="sectorChartSeries"
+                                    height="260"
+                                />
                             </div>
+                            <p v-else class="muted">
+                                Add sector data to visualize the portfolio mix.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!--  -->
+        </section>
 
+        <!-- Backtest Results Section -->
+        <section class="section" v-if="hasBacktest && backtestMetrics">
+            <div class="container">
+                <div class="chart-frame">
+                    <h3>Historical Backtest Performance</h3>
+                    <p class="chart-desc" v-if="backtestPeriod">{{ backtestPeriod }} · Starting value: $100,000</p>
+                    <p class="chart-desc" v-else>Portfolio against the S&amp;P 500, rebalanced quarterly.</p>
+                    <VueApexCharts
+                        type="area"
+                        :options="backtestChartOptions"
+                        :series="backtestSeries"
+                        height="350"
+                    />
+                    <div class="metrics metrics-backtest">
+                        <div class="metric">
+                            <p class="metric-label">Annualized Return</p>
+                            <div class="compare">
+                                <div class="compare-item">
+                                    <span class="metric-value">{{ backtestMetrics.portfolioReturn }}%</span>
+                                    <span class="compare-label">Portfolio</span>
+                                </div>
+                                <span class="compare-sep">vs</span>
+                                <div class="compare-item">
+                                    <span class="metric-value">{{ backtestMetrics.benchmarkReturn }}%</span>
+                                    <span class="compare-label">Benchmark</span>
+                                </div>
+                            </div>
+                            <p class="metric-subtext">Outperformance: +{{ backtestMetrics.outperformance }}%</p>
+                        </div>
+                        <div class="metric">
+                            <p class="metric-label">Sharpe Ratio</p>
+                            <div class="compare">
+                                <div class="compare-item">
+                                    <span class="metric-value">{{ backtestMetrics.portfolioSharpe }}</span>
+                                    <span class="compare-label">Portfolio</span>
+                                </div>
+                                <span class="compare-sep">vs</span>
+                                <div class="compare-item">
+                                    <span class="metric-value">{{ backtestMetrics.benchmarkSharpe }}</span>
+                                    <span class="compare-label">Benchmark</span>
+                                </div>
+                            </div>
+                            <p class="metric-subtext">Risk-adjusted return measure</p>
+                        </div>
+                        <div class="metric">
+                            <p class="metric-label">Max Drawdown</p>
+                            <div class="compare">
+                                <div class="compare-item">
+                                    <span class="metric-value">{{ backtestMetrics.portfolioMaxDrawdown }}%</span>
+                                    <span class="compare-label">Portfolio</span>
+                                </div>
+                                <span class="compare-sep">vs</span>
+                                <div class="compare-item">
+                                    <span class="metric-value">{{ backtestMetrics.benchmarkMaxDrawdown }}%</span>
+                                    <span class="compare-label">Benchmark</span>
+                                </div>
+                            </div>
+                            <p class="metric-subtext">Largest peak-to-trough decline</p>
+                        </div>
+                    </div>
+                    <p class="chart-source">Source: quarterly rebalanced simulation from the optimizer service.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="card">
+                    <h3>Max Sharpe Ratio | Portfolio Weights</h3>
+                    <div class="field">
+                        <label class="field-label" for="budget">Budget</label>
+                        <input id="budget" class="field-input" type="number" v-model="budget" @change="updateBudget($event.target.value)">
+                        <p class="small muted">
+                            Each holding gets at least ${{ MIN_ALLOCATION.toLocaleString() }}. Holdings the optimizer sized below that are dropped and their weight is spread across the rest.
+                        </p>
+                        <p class="small notice-text" v-if="droppedHoldings.length">
+                            Dropped at this budget ({{ droppedHoldings.length }}):
+                            {{ droppedHoldings.map(stock => stock.ticker).join(', ') }}
+                        </p>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="holdings">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Name</th>
+                                    <th>Sector</th>
+                                    <th class="num">Weight</th>
+                                    <th class="num">Budget</th>
+                                    <th class="num">Shares to Hold</th>
+                                    <th>Website</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template v-for="stock in maxSharpeWeights" :key="stock.ticker">
+                                    <tr v-if="stock.weight > 0">
+                                        <td><strong>{{ stock.ticker }}</strong></td>
+                                        <td>{{ stockDisplayName(stock) || '' }}</td>
+                                        <td>{{ stockSector(stock) }}</td>
+                                        <td class="num">{{ weightPercentage(stock.weight) }}</td>
+                                        <td class="num">${{ getStockSpendAmount(stock) }}</td>
+                                        <td class="num">{{ getSharesToBuy(stock) }}</td>
+                                        <td>
+                                            <a
+                                                v-if="stockWebsite(stock)"
+                                                :href="stockWebsite(stock)"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {{ stockWebsiteDisplay(stock) }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <section class="section">
+        <div class="container">
+            <div class="card prose">
+                <h3>About The Portfolio Optimizer</h3>
+                <p>{{ aboutModel }}</p>
+                <p>
+                    <a :href="modelLink.link" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+                        {{ modelLink.name }}
+                    </a>
+                </p>
+            </div>
+        </div>
+    </section>
 </template>
 
 <style scoped>
-.portfolio-overview {
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.card.prose {
+    max-width: none;
 }
 
-.portfolio-overview__grid {
-    align-items: stretch;
+.card.prose p {
+    max-width: var(--measure);
 }
 
-.portfolio-overview__summary {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+/* Loading bar */
+.progress {
+    height: 4px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
 }
 
-.portfolio-overview__heading {
-    margin-bottom: 0.5rem;
+.progress span {
+    display: block;
+    width: 30%;
+    height: 100%;
+    background: var(--accent);
+    animation: slide 1.2s ease-in-out infinite;
 }
 
-.portfolio-overview__metrics {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
+@keyframes slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
 }
 
-.portfolio-overview__metric {
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
+/* Notices (status colors only here) */
+.notice-danger {
+    border-color: var(--danger);
 }
 
-.portfolio-overview__legend {
-    margin-top: 0.5rem;
-}
-
-.sector-legend {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.75rem 1.5rem;
-    padding: 0;
+.notice-danger h3 {
+    color: var(--danger);
     margin: 0;
 }
 
-.sector-legend__item {
-    display: flex;
+.notice-text {
+    color: var(--warning);
+}
+
+/* Overview */
+.overview-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
     align-items: center;
-    gap: 0.5rem;
 }
 
-.sector-legend__swatch {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+@media (min-width: 900px) {
+    .overview-grid {
+        grid-template-columns: 1.4fr 1fr;
+    }
 }
 
-.sector-legend__percentage {
-    margin-left: 0.35rem;
-    color: rgba(255, 255, 255, 0.8);
+.overview-summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
 }
 
-.metric-label {
-    letter-spacing: 0.05em;
+.overview-summary h3 {
+    margin-bottom: var(--s-1);
 }
 
-.metric-value {
-    font-weight: 600;
-}
-
-.metric-value__ticker {
-    font-size: 0.85em;
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.metric-subtext {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.portfolio-overview__chart {
+.overview-chart {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.portfolio-overview__chart-card {
+.overview-chart-inner {
     width: 100%;
     max-width: 320px;
     margin: 0 auto;
 }
 
-@media screen and (max-width: 768px) {
-    .portfolio-overview__metrics {
-        grid-template-columns: 1fr;
-    }
-
-    .portfolio-overview__summary {
-        gap: 1rem;
-    }
+/* Metrics */
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--s-3);
 }
 
-/* Backtest Section Styles */
-.backtest-section {
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.metrics-backtest {
+    margin-top: var(--s-4);
 }
 
-.backtest-section__header {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 1rem;
+.metric {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--s-3) var(--s-4);
 }
 
-.backtest-section__chart {
-    margin: 0 -0.5rem;
+.metric p {
+    margin: 0;
 }
 
-.backtest-metric {
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 10px;
-    padding: 1rem;
-    height: 100%;
+.metric-label {
+    font-size: var(--fs-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: var(--muted);
 }
 
-.backtest-metric__comparison {
+.metric-value {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-top: var(--s-1);
+}
+
+.metric-ticker {
+    font-size: 0.85em;
+    color: var(--muted);
+}
+
+.metric-subtext {
+    font-size: var(--fs-small);
+    color: var(--muted);
+    margin-top: var(--s-1);
+}
+
+.compare {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    gap: var(--s-3);
+    margin-top: var(--s-2);
 }
 
-.backtest-metric__item {
+.compare-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex: 1;
 }
 
-.backtest-metric__value {
+.compare-label {
+    font-size: var(--fs-eyebrow);
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+.compare-sep {
+    font-size: var(--fs-eyebrow);
+    color: var(--muted);
+}
+
+/* Sector legend */
+.sector-legend {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--s-2) var(--s-5);
+    padding: 0;
+    margin: 0;
+}
+
+.sector-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+}
+
+.sector-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex: 0 0 auto;
+    box-shadow: 0 0 0 1px var(--border);
+}
+
+/* Form */
+.field {
+    margin-bottom: var(--s-4);
+}
+
+.field-label {
+    display: block;
+    font-size: var(--fs-small);
     font-weight: 600;
-    line-height: 1.2;
+    margin-bottom: var(--s-1);
 }
 
-.backtest-metric__label {
-    margin-top: 0.125rem;
+.field-input {
+    width: 100%;
+    max-width: 240px;
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--s-2) var(--s-3);
+    margin-bottom: var(--s-2);
 }
 
-.backtest-metric__separator {
-    font-size: 0.75rem;
-    opacity: 0.6;
+.field-input:focus {
+    border-color: var(--accent);
+    outline: none;
 }
 
-@media screen and (max-width: 768px) {
-    .backtest-metric__comparison {
-        flex-direction: row;
-        gap: 0.5rem;
-    }
+/* Holdings table */
+.table-wrap {
+    overflow-x: auto;
+}
+
+.holdings {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-small);
+    font-variant-numeric: tabular-nums;
+}
+
+.holdings th,
+.holdings td {
+    text-align: left;
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+.holdings th {
+    font-size: var(--fs-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.holdings .num {
+    text-align: right;
+    white-space: nowrap;
 }
 </style>
-

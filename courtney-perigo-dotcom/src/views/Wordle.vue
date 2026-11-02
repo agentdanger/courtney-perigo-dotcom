@@ -1,7 +1,9 @@
 <!-- An app that helps users play Wordle -->
 
 <script setup>
-import AppNavBar from '../components/AppNavBar.vue'
+import VueApexCharts from 'vue3-apexcharts'
+import { baseChartOptions, chartTokens } from '../chartTheme.js'
+import { theme } from '../theme.js'
 import wordleService from '../service/WordleService.js'
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 
@@ -255,14 +257,12 @@ function rotateLetterStatus(status) {
 }
 
 function returnButtonFormat(status) {
-    if (status == 'inactive') {
-        return 'button is-black mr-1 ml-1 buttoncustom'
-    } else if (status == 'yellow') {
-        return 'button is-warning mr-1 ml-1 buttoncustom'
+    if (status == 'yellow') {
+        return 'tile tile-yellow'
     } else if (status == 'green') {
-        return 'button is-link mr-1 ml-1 buttoncustom'
+        return 'tile tile-green'
     } else {
-        return 'button is-black mr-1 ml-1 buttoncustom'
+        return 'tile'
     }
 }
 
@@ -531,9 +531,13 @@ function createWordle(greenLetters, yellowLetters, blackLettersList, doubleLette
         })
 }
 
-// chart colors: validated 2-color categorical palette on the dark navy card surface
-const ANSWER_COLOR = '#09A2CD'   // iris blue - word can be the answer
-const OTHER_COLOR = '#BE861F'    // ochre - legal guess, not on the answer list
+// chart colors from the design tokens: series 5 (blue) marks a word that can be the
+// answer, series 2 (ochre) a legal guess not on the answer list. Re-read on theme toggle.
+const chartColors = computed(() => {
+    theme.value
+    const t = chartTokens()
+    return { answer: t.series[4], other: t.series[1] }
+})
 
 // top 10 plays, charted as "extra bits left vs the best play" (zero baseline = best word)
 var topWords = computed(() => recommendedWords.value.slice(0, 10))
@@ -546,56 +550,56 @@ var rankingSeries = computed(() => {
         data: topWords.value.map(word => ({
             x: word.word.toUpperCase(),
             y: Number((word.bits - bestBits).toFixed(3)),
-            fillColor: (wordleStats.value && !word.is_answer) ? OTHER_COLOR : ANSWER_COLOR
+            fillColor: (wordleStats.value && !word.is_answer) ? chartColors.value.other : chartColors.value.answer
         }))
     }]
 })
 
 var rankingChartHeight = computed(() => 80 + topWords.value.length * 32)
 
-var rankingOptions = computed(() => ({
-    chart: {
-        type: 'bar',
-        background: 'transparent',
-        foreColor: '#F5F9FF',
-        fontFamily: 'Play, sans-serif',
-        toolbar: { show: false },
-        zoom: { enabled: false }
-    },
-    plotOptions: {
-        bar: {
-            horizontal: true,
-            barHeight: '55%',
-            borderRadius: 4,
-            borderRadiusApplication: 'end'
-        }
-    },
-    dataLabels: { enabled: false },
-    grid: {
-        borderColor: 'rgba(245, 249, 255, 0.15)',
-        xaxis: { lines: { show: true } },
-        yaxis: { lines: { show: false } }
-    },
-    xaxis: {
-        title: { text: 'Extra bits left vs best play (shorter is better)', style: { fontWeight: 400 } },
-        labels: { formatter: (val) => Number(val).toFixed(2) }
-    },
-    tooltip: {
-        custom: ({ dataPointIndex }) => {
-            const word = topWords.value[dataPointIndex]
-            if (!word) return ''
-            const bestBits = topWords.value[0].bits
-            const delta = (word.bits - bestBits).toFixed(2)
-            const tag = wordleStats.value
-                ? (word.is_answer ? ' &middot; possible answer' : ' &middot; not on answer list')
-                : ''
-            return '<div style="padding: 6px 10px; background: #192532; color: #F5F9FF;">'
-                + '<strong>' + word.word.toUpperCase() + '</strong>' + tag + '<br/>'
-                + word.bits.toFixed(2) + ' bits left (+' + delta + ' vs best play)'
-                + '</div>'
+var rankingOptions = computed(() => {
+    theme.value
+    const b = baseChartOptions()
+    const t = chartTokens()
+    return {
+        ...b,
+        chart: { ...b.chart, type: 'bar' },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                barHeight: '55%',
+                borderRadius: 4,
+                borderRadiusApplication: 'end'
+            }
+        },
+        grid: {
+            ...b.grid,
+            xaxis: { lines: { show: true } },
+            yaxis: { lines: { show: false } }
+        },
+        xaxis: {
+            ...b.xaxis,
+            title: { text: 'Extra bits left vs best play (shorter is better)', style: { fontWeight: 400, color: t.muted } },
+            labels: { ...b.xaxis.labels, formatter: (val) => Number(val).toFixed(2) }
+        },
+        tooltip: {
+            ...b.tooltip,
+            custom: ({ dataPointIndex }) => {
+                const word = topWords.value[dataPointIndex]
+                if (!word) return ''
+                const bestBits = topWords.value[0].bits
+                const delta = (word.bits - bestBits).toFixed(2)
+                const tag = wordleStats.value
+                    ? (word.is_answer ? ' &middot; possible answer' : ' &middot; not on answer list')
+                    : ''
+                return '<div style="padding: 6px 10px; background: ' + t.surface + '; color: ' + t.text + '; border: 1px solid ' + t.border + ';">'
+                    + '<strong>' + word.word.toUpperCase() + '</strong>' + tag + '<br/>'
+                    + word.bits.toFixed(2) + ' bits left (+' + delta + ' vs best play)'
+                    + '</div>'
+            }
         }
     }
-}))
+})
 
 // share of starting uncertainty already eliminated (needs the upgraded API)
 var uncertaintyPct = computed(() => {
@@ -749,354 +753,367 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="hero is-fullheight is-primary">
-        <div class="hero-body">
-            <div class="container">
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Beating Wordle Using Entropy.
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                <p><span class="is-underlined has-text-weight-bold">Directions:</span></p>
-                                <ol>
-                                    <li>Enter your starting word from your Wordle using the keyboard.</li>
-                                    <li>Click the letters to change the color of your letters based on your
-                                        Wordle game.</li>
-                                    <li>Click "Enter" on the keyboard to submit your word, and get a list of the
-                                        best words to play next.</li>
-                                    <li>Continue adding words until you finish, and find your Wordle word.</li>
-                                </ol>
-                                <p>
-                                    <span class="is-underlined has-text-weight-bold">Note:</span>
-                                    You'll see a list of the best words to play next. Playing the #1 word
-                                    reveals the most
-                                    information about the game using information theory / entropy.
-                                </p>
+    <section class="section">
+        <div class="container">
+            <p class="eyebrow">Lab</p>
+            <h1>Beating Wordle with entropy</h1>
+            <p class="lede">
+                An entropy-based Wordle solver. Enter what you have played, and the solver ranks every legal
+                next guess by how much uncertainty it removes from the remaining answers. It runs over the
+                public nytimes-games API, a Python service on App Engine; the same API is exposed to AI
+                assistants through the open-source Wordle MCP server from the article
+                "Your Analytics Microservices Have a New Customer."
+            </p>
+            <p class="small">
+                <a href="https://github.com/agentdanger/nytimes-games" target="_blank" rel="noopener noreferrer">Solver and API source</a>
+                ·
+                <a href="https://github.com/agentdanger/wordle-mcp-server" target="_blank" rel="noopener noreferrer">Wordle MCP server</a>
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="grid wordle-grid">
+                <div class="card">
+                    <h3>Directions</h3>
+                    <ol class="directions">
+                        <li>Enter your starting word from your Wordle using the keyboard.</li>
+                        <li>Click the letters to change the color of your letters based on your Wordle game.</li>
+                        <li>Click "Enter" on the keyboard to submit your word, and get a list of the best words to play next.</li>
+                        <li>Continue adding words until you finish, and find your Wordle word.</li>
+                    </ol>
+                    <p>
+                        <strong>Note:</strong>
+                        You'll see a list of the best words to play next. Playing the #1 word reveals the most
+                        information about the game using information theory / entropy.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>Your board</h3>
+                    <div class="board">
+                        <template v-for="w in 5" :key="w">
+                            <div v-if="wordleWords['word' + w].active" class="board-row">
+                                <button v-for="l in 5" :key="l" type="button"
+                                    :class="returnButtonFormat(wordleWords['word' + w]['status' + l])"
+                                    @click="changeLetterStatus(w, l)">
+                                    {{ wordleWords['word' + w]['value' + l] }}
+                                </button>
                             </div>
+                        </template>
+                    </div>
+                    <p v-if="warnWordle" class="warn">
+                        <strong>Warning: please enter a valid word.</strong>
+                        Fill in all the letters in the word before submitting. Refresh the page to start over.
+                    </p>
+                    <div class="keyboard" aria-label="On-screen keyboard">
+                        <div class="key-row">
+                            <button v-for="k in 'qwertyuiop'" :key="k" type="button" class="key" @click="keyboardInput(k)">{{ k.toUpperCase() }}</button>
                         </div>
-                        <div class="card-content">
-                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word1.active">
-                                <button :class="returnButtonFormat(wordleWords.word1.status1)"
-                                    @click="changeLetterStatus(1, 1)">
-                                    <span class="is-size-5">{{ wordleWords.word1.value1 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word1.status2)"
-                                    @click="changeLetterStatus(1, 2)">
-                                    <span class="is-size-5">{{ wordleWords.word1.value2 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word1.status3)"
-                                    @click="changeLetterStatus(1, 3)">
-                                    <span class="is-size-5">{{ wordleWords.word1.value3 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word1.status4)"
-                                    @click="changeLetterStatus(1, 4)">
-                                    <span class="is-size-5">{{ wordleWords.word1.value4 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word1.status5)"
-                                    @click="changeLetterStatus(1, 5)">
-                                    <span class="is-size-5">{{ wordleWords.word1.value5 }}</span>
-                                </button>
-                            </div>
-                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word2.active">
-                                <button :class="returnButtonFormat(wordleWords.word2.status1)"
-                                    @click="changeLetterStatus(2, 1)">
-                                    <span class="is-size-5">{{ wordleWords.word2.value1 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word2.status2)"
-                                    @click="changeLetterStatus(2, 2)">
-                                    <span class="is-size-5">{{ wordleWords.word2.value2 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word2.status3)"
-                                    @click="changeLetterStatus(2, 3)">
-                                    <span class="is-size-5">{{ wordleWords.word2.value3 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word2.status4)"
-                                    @click="changeLetterStatus(2, 4)">
-                                    <span class="is-size-5">{{ wordleWords.word2.value4 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word2.status5)"
-                                    @click="changeLetterStatus(2, 5)">
-                                    <span class="is-size-5">{{ wordleWords.word2.value5 }}</span>
-                                </button>
-                            </div>
-                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word3.active">
-                                <button :class="returnButtonFormat(wordleWords.word3.status1)"
-                                    @click="changeLetterStatus(3, 1)">
-                                    <span class="is-size-5">{{ wordleWords.word3.value1 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word3.status2)"
-                                    @click="changeLetterStatus(3, 2)">
-                                    <span class="is-size-5">{{ wordleWords.word3.value2 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word3.status3)"
-                                    @click="changeLetterStatus(3, 3)">
-                                    <span class="is-size-5">{{ wordleWords.word3.value3 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word3.status4)"
-                                    @click="changeLetterStatus(3, 4)">
-                                    <span class="is-size-5">{{ wordleWords.word3.value4 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word3.status5)"
-                                    @click="changeLetterStatus(3, 5)">
-                                    <span class="is-size-5">{{ wordleWords.word3.value5 }}</span>
-                                </button>
-                            </div>
-                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word4.active">
-                                <button :class="returnButtonFormat(wordleWords.word4.status1)"
-                                    @click="changeLetterStatus(4, 1)">
-                                    <span class="is-size-5">{{ wordleWords.word4.value1 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word4.status2)"
-                                    @click="changeLetterStatus(4, 2)">
-                                    <span class="is-size-5">{{ wordleWords.word4.value2 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word4.status3)"
-                                    @click="changeLetterStatus(4, 3)">
-                                    <span class="is-size-5">{{ wordleWords.word4.value3 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word4.status4)"
-                                    @click="changeLetterStatus(4, 4)">
-                                    <span class="is-size-5">{{ wordleWords.word4.value4 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word4.status5)"
-                                    @click="changeLetterStatus(4, 5)">
-                                    <span class="is-size-5">{{ wordleWords.word4.value5 }}</span>
-                                </button>
-                            </div>
-                            <div class="field is-grouped is-grouped-centered" v-if="wordleWords.word5.active">
-                                <button :class="returnButtonFormat(wordleWords.word5.status1)"
-                                    @click="changeLetterStatus(5, 1)">
-                                    <span class="is-size-5">{{ wordleWords.word5.value1 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word5.status2)"
-                                    @click="changeLetterStatus(5, 2)">
-                                    <span class="is-size-5">{{ wordleWords.word5.value2 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word5.status3)"
-                                    @click="changeLetterStatus(5, 3)">
-                                    <span class="is-size-5">{{ wordleWords.word5.value3 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word5.status4)"
-                                    @click="changeLetterStatus(5, 4)">
-                                    <span class="is-size-5">{{ wordleWords.word5.value4 }}</span>
-                                </button>
-                                <button :class="returnButtonFormat(wordleWords.word5.status5)"
-                                    @click="changeLetterStatus(5, 5)">
-                                    <span class="is-size-5">{{ wordleWords.word5.value5 }}</span>
-                                </button>
-                            </div>
+                        <div class="key-row">
+                            <button v-for="k in 'asdfghjkl'" :key="k" type="button" class="key" @click="keyboardInput(k)">{{ k.toUpperCase() }}</button>
                         </div>
-                        <div class="card-content" v-if="warnWordle">
-                            <!-- Add Warning Message if word has "_" -->
-                            <div class="box p-1 mt-6">
-                                <div class="card has-background-danger">
-                                    <header class="card-header ">
-                                        <p class="card-header-title has-text-white is-size-4">
-                                            Warning: Please enter a valid word. Refresh the page to start over.
-                                        </p>
-                                    </header>
-                                    <div class="card-content">
-                                        <div class="content has-text-white">
-                                            <p>
-                                                Please fill in all the letters in the word before submitting.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <!-- Add a keyboard here -->
-                            <div class="field is-grouped is-grouped-centered">
-                                <div class="buttons are-small">
-                                    <!--Add first row of qwerty keyboard here-->
-                                    <button class="button is-black keyboard" @click="keyboardInput('q')">Q</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('w')">W</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('e')">E</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('r')">R</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('t')">T</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('y')">Y</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('u')">U</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('i')">I</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('o')">O</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('p')">P</button>
-                                </div>
-                            </div>
-                            <div class="field is-grouped is-grouped-centered">
-                                <div class="buttons are-small">
-                                    <!--Add first row of qwerty keyboard here-->
-                                    <button class="button is-black keyboard" @click="keyboardInput('a')">A</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('s')">S</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('d')">D</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('f')">F</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('g')">G</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('h')">H</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('j')">J</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('k')">K</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('l')">L</button>
-                                </div>
-                            </div>
-                            <div class="field is-grouped is-grouped-centered">
-                                <div class="buttons are-small">
-                                    <!--Add first row of qwerty keyboard here-->
-                                    <button class="button is-black actionbuttons" @click="enterWordle()">
-                                        <span>Enter</span>
-                                    </button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('z')">Z</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('x')">X</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('c')">C</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('v')">V</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('b')">B</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('n')">N</button>
-                                    <button class="button is-black keyboard" @click="keyboardInput('m')">M</button>
-                                    <!--Backspace icon fontawesome-->
-                                    <button class="button is-black actionbuttons" @click="backspaceInput()">
-                                        <span>Del</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="content has-text-white has-text-centered">
-                                <!-- show message when articles are loading -->
-                                <div class="box p-1 mt-6" v-if="isLoading">
-                                    <div class="card has-background-primary">
-                                        <header class="card-header ">
-                                            <p class="card-header-title has-text-white is-size-4">
-                                                Loading Recommendations...
-                                            </p>
-                                        </header>
-                                        <div class="card-content">
-                                            <div class="content has-text-white">
-                                                <progress class="progress is-primary" max="100">15%</progress>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- stats about the remaining words (needs the upgraded API);
-                                     shown pre-game too, seeded by the /wordle-stats/ endpoint -->
-                                <nav class="level" v-if="wordleStats">
-                                    <div class="level-item has-text-centered">
-                                        <div>
-                                            <p class="heading has-text-white">Words Remaining</p>
-                                            <p class="title has-text-white">{{ wordleStats.remaining_words }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="level-item has-text-centered">
-                                        <div>
-                                            <p class="heading has-text-white">Possible Answers</p>
-                                            <p class="title has-text-white">{{ wordleStats.remaining_answers }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="level-item has-text-centered">
-                                        <div>
-                                            <p class="heading has-text-white">Uncertainty (Bits)</p>
-                                            <p class="title has-text-white">{{ forceDecimal2(wordleStats.uncertainty_bits) }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="level-item has-text-centered" v-if="wordleStats.best_bits !== undefined">
-                                        <div>
-                                            <p class="heading has-text-white">Best Play (Bits Left)</p>
-                                            <p class="title has-text-white">{{ forceDecimal2(wordleStats.best_bits) }}</p>
-                                        </div>
-                                    </div>
-                                </nav>
-                                <!-- search progress meter (needs the upgraded API) -->
-                                <div class="columns is-centered" v-if="wordleStats">
-                                    <div class="column is-two-thirds">
-                                        <p class="is-size-7 has-text-weight-bold has-text-left mb-1">
-                                            UNCERTAINTY ELIMINATED: {{ uncertaintyPct }}%
-                                            ({{ forceDecimal2(wordleStats.starting_uncertainty_bits) }} bits at start &rarr;
-                                            {{ forceDecimal2(wordleStats.uncertainty_bits) }} bits now)
-                                        </p>
-                                        <progress class="progress is-info is-small" :value="uncertaintyPct" max="100"></progress>
-                                    </div>
-                                </div>
-                                <div v-if="isLoaded">
-                                    <!-- best three words overall, and best three on the NYT answer list -->
-                                    <div class="columns is-centered">
-                                        <div class="column is-one-third">
-                                            <div class="reco-box">
-                                                <p class="is-size-4 has-text-weight-bold has-text-centered">Best Words</p>
-                                                <p class="is-size-7 mb-4 has-text-centered">Remove the most uncertainty (any legal guess)</p>
-                                                <div class="reco-row" v-for="(word, i) in bestOverall" :key="word.word">
-                                                    <span class="is-flex is-align-items-center">
-                                                        <span class="tag is-info mr-2">{{ i + 1 }}</span>
-                                                        <span class="is-size-5 has-text-weight-bold">{{ word.word.toUpperCase() }}</span>
-                                                        <span class="tag is-success ml-2" v-if="word.is_answer">possible answer</span>
-                                                    </span>
-                                                    <span class="is-size-7">{{ forceDecimal2(word.bits) }} bits left</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="column is-one-third" v-if="bestAnswers.length">
-                                            <div class="reco-box">
-                                                <p class="is-size-4 has-text-weight-bold has-text-centered">Best Guesses</p>
-                                                <p class="is-size-7 mb-4 has-text-centered">Best words that can be the answer</p>
-                                                <div class="reco-row" v-for="(word, i) in bestAnswers" :key="word.word">
-                                                    <span class="is-flex is-align-items-center">
-                                                        <span class="tag is-info mr-2">{{ i + 1 }}</span>
-                                                        <span class="is-size-5 has-text-weight-bold">{{ word.word.toUpperCase() }}</span>
-                                                    </span>
-                                                    <span class="is-size-7">{{ forceDecimal2(word.bits) }} bits left</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- top plays chart: delta to the best play, zero baseline = best word -->
-                                    <div class="columns is-centered" v-if="topWords.length > 1">
-                                        <div class="column is-two-thirds">
-                                            <p class="is-size-4 has-text-weight-bold">Top {{ topWords.length }} Plays</p>
-                                            <p class="is-size-7 mb-2">How much more uncertainty each play leaves vs the best word</p>
-                                            <p class="is-size-7 mb-1" v-if="wordleStats">
-                                                <span :style="{ color: '#09A2CD' }">&#9632;</span> possible answer
-                                                <span class="ml-3" :style="{ color: '#BE861F' }">&#9632;</span> other legal word
-                                            </p>
-                                            <apexchart type="bar" :height="rankingChartHeight" :options="rankingOptions" :series="rankingSeries" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="key-row">
+                            <button type="button" class="key key-wide" @click="enterWordle()">Enter</button>
+                            <button v-for="k in 'zxcvbnm'" :key="k" type="button" class="key" @click="keyboardInput(k)">{{ k.toUpperCase() }}</button>
+                            <button type="button" class="key key-wide" @click="backspaceInput()">Del</button>
                         </div>
                     </div>
+                    <p class="small muted keyboard-note">Your physical keyboard works too: letters, Enter, and Backspace.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
+    <section class="section" v-if="isLoading || wordleStats || isLoaded">
+        <div class="container">
+            <div v-if="isLoading" class="card loading">
+                <p class="muted">Loading recommendations...</p>
+                <progress class="meter" max="100"></progress>
+            </div>
+
+            <!-- stats about the remaining words (needs the upgraded API);
+                 shown pre-game too, seeded by the /wordle-stats/ endpoint -->
+            <div v-if="wordleStats" class="stats">
+                <div class="stat">
+                    <p class="eyebrow">Words remaining</p>
+                    <p class="stat-value">{{ wordleStats.remaining_words }}</p>
+                </div>
+                <div class="stat">
+                    <p class="eyebrow">Possible answers</p>
+                    <p class="stat-value">{{ wordleStats.remaining_answers }}</p>
+                </div>
+                <div class="stat">
+                    <p class="eyebrow">Uncertainty (bits)</p>
+                    <p class="stat-value">{{ forceDecimal2(wordleStats.uncertainty_bits) }}</p>
+                </div>
+                <div class="stat" v-if="wordleStats.best_bits !== undefined">
+                    <p class="eyebrow">Best play (bits left)</p>
+                    <p class="stat-value">{{ forceDecimal2(wordleStats.best_bits) }}</p>
+                </div>
+            </div>
+
+            <!-- search progress meter (needs the upgraded API) -->
+            <div v-if="wordleStats" class="progress-block">
+                <p class="eyebrow">
+                    Uncertainty eliminated: {{ uncertaintyPct }}%
+                    ({{ forceDecimal2(wordleStats.starting_uncertainty_bits) }} bits at start,
+                    {{ forceDecimal2(wordleStats.uncertainty_bits) }} bits now)
+                </p>
+                <progress class="meter" :value="uncertaintyPct" max="100"></progress>
+            </div>
+
+            <div v-if="isLoaded">
+                <!-- best three words overall, and best three on the NYT answer list -->
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3>Best words</h3>
+                        <p class="small">Remove the most uncertainty (any legal guess)</p>
+                        <div class="reco-row" v-for="(word, i) in bestOverall" :key="word.word">
+                            <span class="reco-word">
+                                <span class="tag">{{ i + 1 }}</span>
+                                <strong>{{ word.word.toUpperCase() }}</strong>
+                                <span class="tag tag-answer" v-if="word.is_answer">possible answer</span>
+                            </span>
+                            <span class="small muted">{{ forceDecimal2(word.bits) }} bits left</span>
+                        </div>
+                    </div>
+                    <div class="card" v-if="bestAnswers.length">
+                        <h3>Best guesses</h3>
+                        <p class="small">Best words that can be the answer</p>
+                        <div class="reco-row" v-for="(word, i) in bestAnswers" :key="word.word">
+                            <span class="reco-word">
+                                <span class="tag">{{ i + 1 }}</span>
+                                <strong>{{ word.word.toUpperCase() }}</strong>
+                            </span>
+                            <span class="small muted">{{ forceDecimal2(word.bits) }} bits left</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- top plays, charted as extra bits left vs the best play -->
+                <div class="chart-frame" v-if="topWords.length > 1">
+                    <h3>Top {{ topWords.length }} plays</h3>
+                    <p class="chart-desc">How much more uncertainty each play leaves vs the best word. Shorter is better.</p>
+                    <p class="small legend" v-if="wordleStats">
+                        <span class="swatch" :style="{ background: chartColors.answer }"></span> possible answer
+                        <span class="swatch legend-gap" :style="{ background: chartColors.other }"></span> other legal word
+                    </p>
+                    <VueApexCharts type="bar" :height="rankingChartHeight" :options="rankingOptions" :series="rankingSeries" />
+                    <p class="chart-source">Source: the nytimes-games solver API. Bits are Shannon entropy over the remaining answer list.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 
 <style scoped>
-.reco-box {
-    background-color: rgba(245, 249, 255, 0.07);
-    border-radius: 8px;
-    padding: 1.25rem 1.5rem;
-    height: 100%;
+.wordle-grid {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+    .wordle-grid {
+        grid-template-columns: 1fr 1.4fr;
+    }
+}
+
+.directions {
+    padding-left: 1.25em;
+    margin: 0 0 var(--s-4);
+    color: var(--muted);
+}
+
+.directions li + li {
+    margin-top: var(--s-2);
+}
+
+/* Board */
+
+.board {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin-bottom: var(--s-4);
+}
+
+.board-row {
+    display: flex;
+    justify-content: center;
+    gap: var(--s-2);
+}
+
+.tile {
+    width: 50px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition);
+}
+
+.tile:hover {
+    border-color: var(--accent);
+}
+
+.tile-yellow {
+    background: var(--warning);
+    border-color: var(--warning);
+    color: var(--on-accent);
+}
+
+.tile-green {
+    background: var(--success);
+    border-color: var(--success);
+    color: var(--on-accent);
+}
+
+.warn {
+    color: var(--danger);
+    font-size: var(--fs-small);
+}
+
+/* Keyboard */
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+}
+
+.key-row {
+    display: flex;
+    justify-content: center;
+    gap: var(--s-1);
+}
+
+.key {
+    min-width: 30px;
+    height: 38px;
+    padding: 0 var(--s-2);
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color var(--transition), color var(--transition);
+}
+
+.key:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.key-wide {
+    min-width: 50px;
+}
+
+.keyboard-note {
+    margin: var(--s-3) 0 0;
+}
+
+/* Results */
+
+.loading {
+    margin-bottom: var(--s-5);
+}
+
+.meter {
+    width: 100%;
+    height: 8px;
+    accent-color: var(--accent);
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--s-4);
+    margin-bottom: var(--s-5);
+}
+
+@media (min-width: 768px) {
+    .stats {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--s-4);
+}
+
+.stat .eyebrow {
+    margin-bottom: var(--s-1);
+}
+
+.stat-value {
+    font-family: var(--font-heading);
+    font-size: var(--fs-h2);
+    line-height: 1.2;
+    margin: 0;
+}
+
+.progress-block {
+    margin-bottom: var(--s-5);
 }
 
 .reco-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.4rem 0;
+    gap: var(--s-3);
+    padding: var(--s-2) 0;
 }
 
 .reco-row + .reco-row {
-    border-top: 1px solid rgba(245, 249, 255, 0.12);
+    border-top: 1px solid var(--border);
 }
 
-.buttoncustom {
-    width: 50px;
+.reco-word {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: 1.125rem;
 }
-.keyboard {
-    width: 30px;
+
+.tag-answer {
+    color: var(--success);
+    border-color: var(--success);
 }
-.actionbuttons {
-    width: 50px;
+
+.chart-frame {
+    margin-top: var(--s-5);
+}
+
+.legend {
+    color: var(--muted);
+    margin-bottom: var(--s-2);
+}
+
+.swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: var(--s-1);
+}
+
+.legend-gap {
+    margin-left: var(--s-3);
 }
 </style>

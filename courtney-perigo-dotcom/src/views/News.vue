@@ -1,182 +1,89 @@
 <template>
-    <div class="hero is-fullheight is-primary" ref="articleContainer">
-        <div class="hero-body">
-            <div class="container">
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header">
-                            <p class="card-header-title has-text-white is-size-4">
-                                MachinaNova: An AI News Recommender
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                {{ aboutMachinaNova }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- show message when articles are loading -->
-                <div class="box p-1 mt-6" v-if="newsServiceLoading">
-                    <div class="card has-background-primary">
-                        <header class="card-header">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Loading Articles...
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                <progress class="progress is-primary" max="100">15%</progress>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- show paginated articles -->
-                <span v-for="(article, index) in paginatedArticles" :key="index" v-if="!customNewsActive">
-                    <div class="box p-1 mt-6">
-                        <div class="card has-background-white">
-                            <header class="card-header has-background-primary">
-                                <p class="card-header-title is-size-4 has-text-white">
-                                    {{ article.entry_title }}
-                                </p>
-                            </header>
-                            <div class="card-content">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <figure class="image is-128x128">
-                                            <img
-                                                :src="article._useFallback ? fallbackImage : article.entry_image.url"
-                                                :style="{ height: '100%', objectFit: (article._useFallback || article.entry_image.url === fallbackImage) ? 'contain' : 'cover' }"
-                                                @error="() => { article._useFallback = true; }"
-                                                alt="Placeholder image"
-                                            >
-                                        </figure>
-                                    </div>
-                                    <div class="media-content">
-                                        <p class="title is-size-5 has-text-grey-dark">{{ article.feed_title }}</p>
-                                        <p class="subtitle is-size-6 has-text-grey-dark">{{ article.entry_summary }}</p>
-                                        <div class="tags">
-                                            <span 
-                                                v-for="(tag, index) in article.entry_tags.filter(tag => tag.scheme !== 'foxnews.com/metadata/dc.identifier' && tag.scheme !== 'foxnews.com/metadata/prism.channel' && tag.scheme !== 'foxnews.com/metadata/dc.source').slice(0, 4)" 
-                                                :key="index" 
-                                                :class="['tag', selectedTags.includes(tag.term) ? 'is-black' : 'is-info']"
-                                                @click="toggleTagFilter(tag.term)">
-                                                {{ tag.term.split('\/').pop().split('|').pop().split('\\').pop() }}
-                                            </span>
-                                        </div>                                   
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                    <a :href="article.entry_link" target="_blank" rel="noopener noreferrer"
-                                        class="card-footer-item has-background-link has-text-white">
-                                        <span>Read More</span>
-                                    </a>
-                            </div>
-                        </div>
-                    </div>
-                </span>
-
-                <!-- Pagination Controls -->
-                <div class="pagination is-centered" v-if="totalPages > 1">
-                    <a 
-                        class="pagination-previous" 
-                        @click="prevPage" 
-                        :class="{ 'is-disabled': currentPage === 1 }"
-                        :style="{ pointerEvents: currentPage === 1 ? 'none' : 'auto' }"
-                    >Previous</a>
-                    <ul class="pagination-list">
-                        <!-- Always show the first page -->
-                        <li>
-                            <a 
-                                class="pagination-link" 
-                                @click="setPage(1)" 
-                                :class="{ 'is-current': currentPage === 1 }"
-                            >1</a>
-                        </li>
-
-                        <!-- Show ellipses if there are pages between the first and the current - 2 -->
-                        <li v-if="currentPage > 4"><span class="pagination-ellipsis">&hellip;</span></li>
-
-                        <!-- Show 2 pages before the current page -->
-                        <li v-for="page in pagesBeforeCurrent" :key="page">
-                            <a 
-                                class="pagination-link" 
-                                @click="setPage(page)" 
-                                :class="{ 'is-current': currentPage === page }"
-                            >{{ page }}</a>
-                        </li>
-
-                        <!-- Show the current page -->
-                        <li v-if="currentPage !== 1 && currentPage !== totalPages">
-                            <a 
-                                class="pagination-link is-current" 
-                            >{{ currentPage }}</a>
-                        </li>
-
-                        <!-- Show 2 pages after the current page -->
-                        <li v-for="page in pagesAfterCurrent" :key="page">
-                            <a 
-                                class="pagination-link" 
-                                @click="setPage(page)" 
-                                :class="{ 'is-current': currentPage === page }"
-                            >{{ page }}</a>
-                        </li>
-
-                        <!-- Show ellipses if there are pages between the current + 2 and the last -->
-                        <li v-if="currentPage < totalPages - 3"><span class="pagination-ellipsis">&hellip;</span></li>
-
-                        <!-- Always show the last page -->
-                        <li>
-                            <a 
-                                class="pagination-link" 
-                                @click="setPage(totalPages)" 
-                                :class="{ 'is-current': currentPage === totalPages }"
-                            >{{ totalPages }}</a>
-                        </li>
-                    </ul>
-                    <a 
-                        class="pagination-next" 
-                        @click="nextPage" 
-                        :class="{ 'is-disabled': currentPage === totalPages }"
-                        :style="{ pointerEvents: currentPage === totalPages ? 'none' : 'auto' }"
-                    >Next</a>
-                </div>
-
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header">
-                            <p class="card-header-title has-text-white is-size-4">
-                                About The Model
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                <p>{{ aboutModel }}</p>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="buttons is-centered">
-                                <a :href="modelLink.link" target="_blank" rel="noopener noreferrer"
-                                    class="button is-link">
-                                    <span class="icon">
-                                        <i :class="modelLink.icon"></i>
-                                    </span>
-                                    <span>{{ modelLink.name }}</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Lab</p>
+      <h1>MachinaNova: a news recommender</h1>
+      <p class="lede">
+        Recent data science and analytics articles from RSS feeds, ranked by a recommendation
+        model. A pre-built sentence transformer embeds each article and the service returns the
+        nearest recent pieces by Euclidean distance. The front end is Vue; the back end is Python
+        and Go on App Engine.
+        <a href="https://github.com/agentdanger/news-retriever" target="_blank" rel="noopener noreferrer">Source on GitHub</a>.
+      </p>
     </div>
+  </section>
+
+  <section class="section">
+    <div class="container" ref="articleContainer">
+      <p v-if="newsServiceLoading" class="muted" aria-live="polite">Loading articles…</p>
+
+      <p v-if="selectedTags.length" class="small muted filter-line">
+        Filtering by
+        <button v-for="t in selectedTags" :key="t" type="button" class="tag tag-btn is-on" @click="toggleTagFilter(t)">
+          {{ shortTag(t) }} ×
+        </button>
+      </p>
+
+      <div v-if="!customNewsActive" class="article-list">
+        <article v-for="(article, index) in paginatedArticles" :key="index" class="card article">
+          <div class="article-thumb">
+            <img
+              :src="article._useFallback ? fallbackImage : article.entry_image.url"
+              :style="{ objectFit: (article._useFallback || article.entry_image.url === fallbackImage) ? 'contain' : 'cover' }"
+              @error="() => { article._useFallback = true; }"
+              alt=""
+              loading="lazy"
+            >
+          </div>
+          <div class="article-body">
+            <p class="card-meta">{{ article.feed_title }}</p>
+            <h3>
+              <a :href="article.entry_link" target="_blank" rel="noopener noreferrer">{{ article.entry_title }}</a>
+            </h3>
+            <p>{{ article.entry_summary }}</p>
+            <div class="tag-row">
+              <button
+                v-for="(tag, i) in visibleTags(article)"
+                :key="i"
+                type="button"
+                :class="['tag', 'tag-btn', { 'is-on': selectedTags.includes(tag.term) }]"
+                @click="toggleTagFilter(tag.term)"
+              >
+                {{ shortTag(tag.term) }}
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <nav v-if="totalPages > 1" class="pager" aria-label="Pagination">
+        <button type="button" class="btn btn-secondary btn-sm" :disabled="currentPage === 1" @click="prevPage">Previous</button>
+        <ul>
+          <li><button type="button" class="page" :class="{ current: currentPage === 1 }" @click="setPage(1)">1</button></li>
+          <li v-if="currentPage > 4"><span class="muted">…</span></li>
+          <li v-for="page in pagesBeforeCurrent" :key="page">
+            <button type="button" class="page" @click="setPage(page)">{{ page }}</button>
+          </li>
+          <li v-if="currentPage !== 1 && currentPage !== totalPages">
+            <button type="button" class="page current" aria-current="page">{{ currentPage }}</button>
+          </li>
+          <li v-for="page in pagesAfterCurrent" :key="page">
+            <button type="button" class="page" @click="setPage(page)">{{ page }}</button>
+          </li>
+          <li v-if="currentPage < totalPages - 3"><span class="muted">…</span></li>
+          <li v-if="totalPages > 1">
+            <button type="button" class="page" :class="{ current: currentPage === totalPages }" @click="setPage(totalPages)">{{ totalPages }}</button>
+          </li>
+        </ul>
+        <button type="button" class="btn btn-secondary btn-sm" :disabled="currentPage === totalPages" @click="nextPage">Next</button>
+      </nav>
+    </div>
+  </section>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import defaultNewsService from '../service/DefaultNewsService';
-import AppNavBar from '../components/AppNavBar.vue';
 
 const fallbackImage = 'https://courtneyperigo.com/assets/brittany.png';
 const queryValue = ref(null);
@@ -185,18 +92,22 @@ const defaultNewsServiceGet = ref(null);
 const allArticles = ref([]);
 const customArticlesToDisplay = ref([]);
 const newsServiceLoading = ref(true);
-const aboutMachinaNova = ref("This is a simple application that fetches recommended, recent data science and analytics news.");
-const aboutModel = ref("The News Fetcher Machine Learning Model leverages a pre-built sentence transformer to create embeddings for news articles. The embeddings are then used to find recent articles using euclidean distance. More information about the underlying model can be found on its repo.");
-const modelLink = ref({
-    name: 'MachinaNova: A news retriever service',
-    icon: 'fab fa-github',
-    link: 'https://github.com/agentdanger/news-retriever'
-});
 
 const selectedTags = ref([]);
 const currentPage = ref(1);
 const articlesPerPage = 25;
 const articleContainer = ref(null);
+
+const hiddenSchemes = [
+    'foxnews.com/metadata/dc.identifier',
+    'foxnews.com/metadata/prism.channel',
+    'foxnews.com/metadata/dc.source'
+];
+
+const visibleTags = (article) =>
+    (article.entry_tags || []).filter(tag => !hiddenSchemes.includes(tag.scheme)).slice(0, 4);
+
+const shortTag = (term) => term.split('/').pop().split('|').pop().split('\\').pop();
 
 const toggleTagFilter = (tag) => {
     if (selectedTags.value.includes(tag)) {
@@ -264,7 +175,6 @@ const nextPage = () => {
 };
 
 const findNews = (query) => {
-    console.log(query);
     customNewsActive.value = true;
     newsServiceLoading.value = true;
     defaultNewsServiceGet.value.getCustomNews(query)
@@ -301,4 +211,141 @@ onMounted(() => {
 });
 </script>
 
+<style scoped>
+.article-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
 
+.article {
+  flex-direction: row;
+  gap: var(--s-5);
+  padding: var(--s-4);
+}
+
+.article-thumb {
+  flex: 0 0 112px;
+  width: 112px;
+  height: 112px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--border);
+}
+
+.article-thumb img {
+  width: 100%;
+  height: 100%;
+}
+
+.article-body {
+  min-width: 0;
+}
+
+.article-body h3 {
+  margin-bottom: var(--s-2);
+}
+
+.article-body h3 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.article-body h3 a:hover {
+  color: var(--accent);
+}
+
+.article-body p {
+  margin-bottom: var(--s-2);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+}
+
+.tag-btn {
+  cursor: pointer;
+  background: transparent;
+  font-family: var(--font-body);
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.tag-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tag-btn.is-on {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+}
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+}
+
+.pager ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--s-1);
+}
+
+.page {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--s-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  cursor: pointer;
+}
+
+.page:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.page.current {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+@media (max-width: 600px) {
+  .article {
+    flex-direction: column;
+  }
+
+  .article-thumb {
+    width: 100%;
+    height: 160px;
+    flex-basis: auto;
+  }
+}
+</style>

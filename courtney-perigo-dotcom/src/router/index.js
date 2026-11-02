@@ -70,7 +70,7 @@ const routes = [
     }
   },
   {
-    path: '/wordle',
+    path: '/lab/wordle',
     name: 'wordle',
     component: () => import('../views/Wordle.vue'),
     meta: {
@@ -79,7 +79,7 @@ const routes = [
     }
   },
   {
-    path: '/optimal-portfolio',
+    path: '/lab/optimal-portfolio',
     name: 'optimal-portfolio',
     component: () => import('../views/Portfolio.vue'),
     meta: {
@@ -88,7 +88,7 @@ const routes = [
     }
   },
   {
-    path: '/news-recommender',
+    path: '/lab/news-recommender',
     name: 'news-recommender',
     component: () => import('../views/News.vue'),
     meta: {
@@ -96,6 +96,10 @@ const routes = [
       description: 'Data science articles ranked by a recommendation model.'
     }
   },
+  // Old tool URLs, linked from the articles and LinkedIn.
+  { path: '/wordle', redirect: '/lab/wordle' },
+  { path: '/optimal-portfolio', redirect: '/lab/optimal-portfolio' },
+  { path: '/news-recommender', redirect: '/lab/news-recommender' },
   {
     path: '/surprise',
     name: 'surprise',

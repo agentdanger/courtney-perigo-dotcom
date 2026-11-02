@@ -1,94 +1,39 @@
 <template>
+  <section class="section">
+    <div class="container prose">
+      <p class="eyebrow">About</p>
+      <h1>About Courtney</h1>
+      <p class="lede">{{ about_me }}</p>
+      <ul>
+        <li v-for="(item, i) in about_me_interests_list" :key="i">{{ item.interest }}</li>
+      </ul>
+      <div class="actions">
+        <a v-for="r in resume_resources" :key="r.link" class="btn btn-secondary btn-sm" :href="r.link" target="_blank" rel="noopener noreferrer">{{ r.name }}</a>
+      </div>
 
-    <div class="hero is-fullheight is-primary">
-        <div class="hero-body">
-            <div class="container">
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                About Me
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                {{ about_me }}
-                                <div v-for="interest in about_me_interests_list">
-                                    <ul>
-                                        <li class="has-text-white">
-                                        {{ interest.interest }}
-                                        </li>
-                                </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="buttons is-centered ">
-                                <div v-for="resource in resume_resources">
-                                    <a :href="resource.link" target="_blank" rel="noopener noreferrer"
-                                        class="button is-link">
-                                        <span class="icon">
-                                            <i :class="resource.icon"></i>
-                                        </span>
-                                        <span>{{ resource.name }}</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                About This Website
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                <p>{{ about_website }}</p>
-                                <p>{{ about_running }}</p>
-                                <p>{{ about_news }}</p>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="buttons is-centered ">
-                                    <a :href="website_github_link.link" target="_blank" rel="noopener noreferrer"
-                                        class="button is-link">
-                                        <span class="icon">
-                                            <i :class="website_github_link.icon"></i>
-                                        </span>
-                                        <span>{{ website_github_link.name }}</span>
-                                    </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <h2>About this website</h2>
+      <p>{{ about_website }}</p>
+      <p>{{ about_lab }}</p>
+      <p>
+        <a :href="website_github_link.link" target="_blank" rel="noopener noreferrer">{{ website_github_link.name }}</a>
+      </p>
     </div>
+  </section>
 </template>
 
 <script>
-import AppNavBar from '../components/AppNavBar.vue'
-
 export default {
-    components: {
-        AppNavBar
-    },
     data() {
         return {
             about_me: "Courtney lives in Chicago, IL, USA with his beautiful wife Emilie, their son Whitman, \
             their cat Roscoe, and their Brittany Spaniel, Oakley. He's an avid runner and tennis player, and \
             always up for a challenge. He can be reached via his LinkedIn profile so feel free to send a note.",
-            about_website: "This website runs on Google Cloud Platform leveraging their Google App Engine product. \
-            The front-end is built with Vue.js and the back-end is built with Python or GoLang (depending on what you're looking at). \
-            The source code is available on Github.",
-            about_running: "The running data visualization leverages a GoLang microservice app to refresh keys and pull data from Strava's API \
-            formatting it for ingestion into this website upon request.  The VueJS website calls the GoLang microservice API for updated data. \
-            This data pipeline is completely automated using Google App Engine.",
-            about_news: "The news page is a work in progress. It leverages a pre-trained recommendation model based on my data science news preferences \
-            and pulls interesting data science articles from an RSS feed. The front-end is built with Vue.js and the back-end is built with Python and GoLang.",
+            about_website: "This website runs on Google Cloud Platform on App Engine. The front end is Vue, built with Vite, \
+            and served as static files. Each Lab tool is backed by its own small service in Python or Go, also on App Engine. \
+            The source code is on GitHub.",
+            about_lab: "The Lab pages are real systems rather than demos: the Wordle solver runs against a public API with its own stats, \
+            the portfolio optimizer refreshes daily, and the news recommender ranks articles with a sentence-transformer model. \
+            Each has its own repository linked from its page.",
             about_me_interests_list: [
                 {
                     interest: 'He has deep experience in marketing and product management - creating and executing on strategies to drive growth and profitability through product and business plans.'
@@ -111,24 +56,24 @@ export default {
             ],
             resume_resources: [
                 {
-                    name: 'Github',
-                    icon: 'fab fa-github',
+                    name: 'LinkedIn',
+                    link: 'https://www.linkedin.com/in/courtneyperigo/'
+                },
+                {
+                    name: 'GitHub',
                     link: 'https://github.com/agentdanger'
                 },
                 {
                     name: 'Medium',
-                    icon: 'fab fa-medium',
                     link: 'https://courtney-perigo.medium.com/'
                 },
                 {
-                    name: 'LinkedIn',
-                    icon: 'fab fa-linkedin',
-                    link: 'https://www.linkedin.com/in/courtneyperigo/'
+                    name: 'Called Shot',
+                    link: 'https://calledshotadvisory.com'
                 }
             ],
             website_github_link: {
-                name: 'CourtneyPerigo.com on Github',
-                icon: 'fab fa-github',
+                name: 'CourtneyPerigo.com on GitHub',
                 link: 'https://github.com/agentdanger/courtney-perigo-dotcom'
             }
         }

@@ -1,170 +1,64 @@
 <template>
-    <section class="hero is-fullheight is-primary">
-        <div class="hero-body">
-            <div class="container">
-                <div class="box p-1 mt-6">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Profile
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                {{ resume_profile }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box p-1 mt-1">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Resources
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="buttons is-centered ">
-                                <div v-for="resource in resume_resources">
-                                    <a :href="resource.link" target="_blank" rel="noopener noreferrer"
-                                        class="button is-link">
-                                        <span class="icon">
-                                            <i :class="resource.icon"></i>
-                                        </span>
-                                        <span>{{ resource.name }}</span>
-                                    </a>
-                                </div>
-                                <a href="../assets/Perigo_James_Courtney_resume.pdf" download class="button is-link">
-                                    <span class="icon">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </span>
-                                    <span>Download Resume</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box p-1 mt-1 ">
-                    <div class="card has-background-primary ">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Skills
-                            </p>
-                        </header>
-                        <div class="card-content ">
-                            <div class="content">
-                                <div class="buttons is-centered ">
-                                    <div v-for="skill in resume_skills">
-                                        <button class="button is-primary">
-                                            <span class="icon">
-                                                <i :class="skill.icon"></i>
-                                            </span>
-                                            <span>{{ skill.name }}</span>
-                                        </button>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">CV</p>
+      <h1>James "Courtney" Perigo</h1>
+      <p class="lede">Data, Analytics &amp; AI Executive. Chicago.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="/assets/Perigo_James_Courtney_resume.pdf" download>Download resume (PDF)</a>
+        <a v-for="r in resume_resources" :key="r.link" class="btn btn-secondary" :href="r.link" target="_blank" rel="noopener noreferrer">{{ r.name }}</a>
+      </div>
+    </div>
+  </section>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box p-1 mt-1">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Education
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div class="content has-text-white">
-                                <div class="columns">
-                                    <div v-for="education in resume_education">
-                                        <div class="column">
-                                            <article class="media">
-                                                <figure class="media-left">
-                                                    <figure class="image is-96x96">
-                                                        <img :src="education.image" :alt="education.image_alt">
-                                                    </figure>
-                                                </figure>
-                                                <div class="media-content">
-                                                    <div class="content">
-                                                        <p class="title is-4 has-text-white">{{ education.degree }}</p>
-                                                        <p class="subtitle is-6 has-text-white">{{ education.name }}
-                                                        </p>
-                                                        <p class="subtitle is-6 has-text-white">{{ education.date }}</p>
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box p-1 mt-1">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Experience
-                            </p>
-                        </header>
-                        <div v-for="experience in resume_experience">
-                            <header class="card-header">
-                                <p class="card-header-title has-text-white">
-                                    <span class="has-text-info mr-1">{{ experience.title }}</span> | {{ experience.company }}
-                                    | {{ experience.date }}
-                                </p>
-                            </header>
-                            <div class="card-content">
-                                <div class="content has-text-white">
-                                    {{ experience.description }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box p-1 mt-1">
-                    <div class="card has-background-primary">
-                        <header class="card-header ">
-                            <p class="card-header-title has-text-white is-size-4">
-                                Publications
-                            </p>
-                        </header>
-                        <div class="card-content">
-                            <div v-for="publication in resume_publications">
-                                <article class="media pub-media">
-                                    <figure class="media-left">
-                                        <figure class="image pub-thumb center-cropped">
-                                            <img :src="publication.image" :alt="publication.image_alt">
-                                        </figure>
-                                    </figure>
-                                    <div class="media-content">
-                                        <div class="content">
-                                            <p class="title is-4 has-text-white">{{ publication.title }}</p>
-                                            <p class="subtitle is-6 has-text-white">{{ publication.publication }} |
-                                                {{ publication.date }}</p>
-                                            <a :href="publication.link" target="_blank" rel="noopener noreferrer"
-                                                class="subtitle is-6 has-text-white has-text-link">Read Article</a>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>
-                        </div>
-                    </div>  
-                </div>
-            </div>
+  <section class="section">
+    <div class="container cv-grid">
+      <div class="cv-main">
+        <h2>Profile</h2>
+        <p class="prose">{{ resume_profile }}</p>
+
+        <h2>Experience</h2>
+        <article v-for="e in resume_experience" :key="e.title + e.company" class="cv-entry">
+          <div class="cv-entry-head">
+            <h3>{{ e.title }}</h3>
+            <p class="muted small">{{ e.company }} · {{ e.date }}</p>
+          </div>
+          <p>{{ e.description }}</p>
+        </article>
+
+        <h2>Publications</h2>
+        <article v-for="p in resume_publications" :key="p.link" class="cv-pub">
+          <div class="cv-pub-thumb">
+            <img :src="p.image" :alt="p.image_alt" loading="lazy">
+          </div>
+          <div>
+            <h3><a :href="p.link" target="_blank" rel="noopener noreferrer">{{ p.title }}</a></h3>
+            <p class="muted small">{{ p.publication }} · {{ p.date }}</p>
+          </div>
+        </article>
+      </div>
+
+      <aside class="cv-side">
+        <h2>Skills</h2>
+        <div class="tag-row">
+          <span v-for="s in resume_skills" :key="s.name" class="tag">{{ s.name }}</span>
         </div>
-    </section>
+
+        <h2>Education</h2>
+        <div v-for="ed in resume_education" :key="ed.degree + ed.date" class="cv-edu">
+          <img :src="ed.image" :alt="ed.image_alt" width="48" height="48" loading="lazy">
+          <div>
+            <p class="cv-edu-degree">{{ ed.degree }}</p>
+            <p class="muted small">{{ ed.name }} · {{ ed.date }}</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
 </template>
 
 <script>
-import AppNavBar from '../components/AppNavBar.vue'
-
 export default {
-    components: {
-        AppNavBar
-    },
     data() {
         return {
             resume_profile: "Data, analytics, and AI executive with more than 20 years of experience bridging \
@@ -197,94 +91,37 @@ export default {
             ],
             resume_resources: [
                 {
-                    name: 'Github',
-                    icon: 'fab fa-github',
+                    name: 'LinkedIn',
+                    link: 'https://www.linkedin.com/in/courtneyperigo/'
+                },
+                {
+                    name: 'GitHub',
                     link: 'https://github.com/agentdanger'
                 },
                 {
                     name: 'Medium',
-                    icon: 'fab fa-medium',
                     link: 'https://courtney-perigo.medium.com/'
-                },
-                {
-                    name: 'LinkedIn',
-                    icon: 'fab fa-linkedin',
-                    link: 'https://www.linkedin.com/in/courtneyperigo/'
                 }
             ],
             resume_skills: [
-                { 
-                    name: 'Applied Data Science',
-                    icon: 'fas fa-flask'
-                },
-                { 
-                    name: 'Data Engineering',
-                    icon: 'fas fa-wrench'
-                },
-                {
-                    name: 'AI and ML Deployment',
-                    icon: 'fas fa-robot'
-                },
-                {
-                    name: 'Bayesian Media Mix Modeling',
-                    icon: 'fas fa-chart-area'
-                },
-                {
-                    name: 'AI and LLM Systems (Agentic, MCP)',
-                    icon: 'fas fa-brain'
-                },
-                {
-                    name: 'Grounded LLM Generation',
-                    icon: 'fas fa-newspaper'
-                },
-                {
-                    name: 'ML Platform Engineering',
-                    icon: 'fas fa-server'
-                },
-                {
-                    name: 'Analytics Governance & Data Quality',
-                    icon: 'fas fa-shield-alt'
-                },
-                {
-                    name: 'Business Intelligence Architecture',
-                    icon: 'fas fa-chart-line'
-                },
-                { 
-                    name: 'Servant Leadership',
-                    icon: 'fas fa-battery-full'
-                },
-                { 
-                    name: 'Python',
-                    icon: 'fab fa-python'
-                },
-                { 
-                    name: 'R',
-                    icon: 'fas fa-chart-bar'
-                },
-                { 
-                    name: 'SQL',
-                    icon: 'fas fa-database'
-                },
-                { 
-                    name: 'GoLang',
-                    icon: 'fas fa-laptop-code'
-                },
-                { 
-                    name: 'Javascript',
-                    icon: 'fab fa-js'
-                },
-                { 
-                    name: 'SFMC (Salesforce)',
-                    icon: 'fas fa-cloud'
-                },
-                { 
-                    name: 'GCP',
-                    icon: 'fab fa-google'
-                },
-                { 
-                    name: 'AWS',
-                    icon: 'fab fa-amazon'
-                },
+                { name: 'Applied Data Science' },
+                { name: 'Data Engineering' },
+                { name: 'AI and ML Deployment' },
+                { name: 'Bayesian Media Mix Modeling' },
+                { name: 'AI and LLM Systems (Agentic, MCP)' },
+                { name: 'Grounded LLM Generation' },
+                { name: 'ML Platform Engineering' },
+                { name: 'Analytics Governance & Data Quality' },
+                { name: 'Business Intelligence Architecture' },
+                { name: 'Servant Leadership' },
+                { name: 'Python' },
+                { name: 'R' },
+                { name: 'SQL' },
+                { name: 'GoLang' },
+                { name: 'Javascript' },
+                { name: 'SFMC (Salesforce)' },
+                { name: 'GCP' },
+                { name: 'AWS' }
             ],
             resume_experience: [
                 {
@@ -382,18 +219,120 @@ export default {
     }
 }
 </script>
-<style>
-.pub-thumb {
-    width: 240px;
-    height: 160px;
+
+<style scoped>
+.cv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-7);
 }
-.pub-media {
-    margin-bottom: 1.5rem;
-    align-items: center;
+
+@media (min-width: 900px) {
+  .cv-grid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
 }
-.center-cropped img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+
+.cv-main h2,
+.cv-side h2 {
+  margin-top: var(--s-6);
+  padding-bottom: var(--s-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.cv-main h2:first-child,
+.cv-side h2:first-child {
+  margin-top: 0;
+}
+
+.cv-main > p.prose {
+  max-width: var(--measure);
+}
+
+.cv-entry {
+  max-width: var(--measure);
+  margin-bottom: var(--s-5);
+}
+
+.cv-entry-head h3 {
+  margin-bottom: var(--s-1);
+}
+
+.cv-entry-head p {
+  margin-bottom: var(--s-2);
+}
+
+.cv-pub {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: var(--s-4);
+  align-items: center;
+  margin-bottom: var(--s-4);
+  max-width: var(--measure);
+}
+
+.cv-pub h3 {
+  font-size: var(--fs-body);
+  margin-bottom: var(--s-1);
+}
+
+.cv-pub h3 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.cv-pub h3 a:hover {
+  color: var(--accent);
+}
+
+.cv-pub p {
+  margin: 0;
+}
+
+.cv-pub-thumb {
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--border);
+}
+
+.cv-pub-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.cv-edu {
+  display: flex;
+  gap: var(--s-3);
+  align-items: center;
+  margin-bottom: var(--s-4);
+}
+
+.cv-edu img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex: 0 0 48px;
+}
+
+.cv-edu p {
+  margin: 0;
+}
+
+.cv-edu-degree {
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .cv-pub {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
