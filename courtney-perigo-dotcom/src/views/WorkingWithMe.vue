@@ -48,7 +48,7 @@ const proofs = [
   <section class="section">
     <div class="container cs-layout">
       <div class="cs-main">
-        <h2>How it works</h2>
+        <h2>How an engagement runs</h2>
         <ol class="cs-steps">
           <li>A short conversation about the one result you need, by when, and how you measure it today.</li>
           <li>A one-page scope that names the result, the measure, the date, and the price. If the data you have cannot support a called shot, the scope says what would make one possible instead.</li>
@@ -64,7 +64,7 @@ const proofs = [
           <li><strong>AI and automated systems.</strong> Designs the AI features and automated workflows that run in production: LLM features grounded in your own data, multi-step pipelines that act on a schedule, each reviewable by the people accountable for it and built to a cost per user set in advance. You hold the system, the tests it is judged against, and its cost per user, in writing.</li>
         </ul>
 
-        <h2>Who it is for</h2>
+        <h2>Who Called Shot is for</h2>
         <p>
           Marketing and analytics leaders at brands and agencies who need a senior operator for a
           defined stretch rather than a permanent hire. Executives who want a second opinion on a
