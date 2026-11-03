@@ -21,7 +21,7 @@ const cases = [
     situation:
       'Enterprise clients were planning media against static marketing mix studies refreshed once a quarter. By the time a read arrived, the plan it described had moved on, and every refresh was a new project with its own data wrangling and its own judgment calls.',
     built:
-      'A production hierarchical Bayesian MMM platform serving multiple clients across more than fifty markets. Model releases are versioned. Refresh pipelines and quality gates run automatically, governed by data-delivery SLAs and input standards, so a new read is a scheduled event rather than a study. An asynchronous scenario-execution service with job submission APIs, a self-healing runner, and a self-service web app lets planning teams run large budget optimizations on demand.',
+      'A production hierarchical Bayesian MMM platform serving multiple clients across more than fifty markets, from regional footprints to national programs. Model releases are versioned. Refresh pipelines and quality gates run automatically, governed by data-delivery SLAs and input standards, so a new read is a scheduled event rather than a study. An asynchronous scenario-execution service with job submission APIs, a self-healing runner, and a self-service web app lets planning teams run large budget optimizations on demand.',
     result:
       'Continuously updated reads that planning teams use directly, helping optimize hundreds of millions of dollars in annual media spend across those clients. Recommendations from the platform have informed seven-figure media reallocations, an account defense win, and new business pitches. Findings are presented to client executive teams and briefed to the agency CEO weekly.'
   },
