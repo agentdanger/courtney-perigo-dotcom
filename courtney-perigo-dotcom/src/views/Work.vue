@@ -21,7 +21,7 @@ const cases = [
     situation:
       'Enterprise clients were planning media against static marketing mix studies refreshed once a quarter. By the time a read arrived, the plan it described had moved on, and every refresh was a new project with its own data wrangling and its own judgment calls.',
     built:
-      'A production hierarchical Bayesian MMM platform serving multiple clients across more than fifty markets, from regional footprints to national programs. Model releases are versioned. Refresh pipelines and quality gates run automatically, governed by data-delivery SLAs and input standards, so a new read is a scheduled event rather than a study. An asynchronous scenario-execution service with job submission APIs, a self-healing runner, and a self-service web app lets planning teams run large budget optimizations on demand.',
+      'A production hierarchical Bayesian MMM platform serving multiple clients across markets, regional footprints, and national programs. Model releases are versioned. Refresh pipelines and quality gates run automatically, governed by data-delivery SLAs and input standards, so a new read is a scheduled event rather than a study. An asynchronous scenario-execution service with job submission APIs, a self-healing runner, and a self-service web app lets planning teams run large budget optimizations on demand.',
     result:
       'Continuously updated reads that planning teams use directly, helping optimize hundreds of millions of dollars in annual media spend across those clients. Recommendations from the platform have informed seven-figure media reallocations, an account defense win, and new business pitches. Findings are presented to client executive teams and briefed to the agency CEO weekly.'
   },
@@ -30,11 +30,11 @@ const cases = [
     eyebrow: 'Leadership under scrutiny',
     title: 'A flagship measurement program returned from escalation to stable in nine weeks',
     where: 'Empower Ocean Media, 2025.',
-    clients: ['sprouts'],
+    clients: ['whataburger'],
     situation:
       'A flagship client\'s measurement program was under C-suite scrutiny. The client was expanding into new markets, and the off-the-shelf modeling approach credited the opening ramp of each new market to media, which produced reads nobody could defend in the room.',
     built:
-      'Rebuilt the modeling approach around how new markets actually behave: pre-launch weeks are handled explicitly rather than zero-padded, the baseline is gated on activation, and where several model specifications fit the data equally well, the read is chosen on credibility rather than fit. Set an operating cadence with the client team so every read was reviewed before it traveled.',
+      'Rebuilt the modeling approach around how new markets actually behave: pre-launch weeks are handled explicitly rather than zero-padded, the baseline is gated on activation, and where several model specifications fit the data equally well, the read is chosen on credibility rather than fit. Set an operating cadence with the client team to unpack insights and calibrate new market strategies with agility.',
     result:
       'Decision-defensible reads in new markets, holdout error cut to a fraction of where it started, and the program back from executive escalation to stable in nine weeks. The agency retained the new modeling capabilities as proprietary IP.'
   },
@@ -72,6 +72,19 @@ const cases = [
     ]
   },
   {
+    id: 'next-to-buy',
+    eyebrow: 'Predictive CRM',
+    title: 'Next to Buy Tire: a model that predicts each customer\'s next purchase and brings it forward',
+    where: 'Cramer-Krasselt, for Belle Tire. Built November 2024, in production since.',
+    clients: ['belletire'],
+    situation:
+      'Tires are a low-frequency purchase that customers put off until they have to make it. Belle Tire already held the signal that says when, because every service visit records the vehicle and its wear. The retailer wanted to bring each customer\'s next purchase forward rather than wait for it, and to keep improving that cycle.',
+    built:
+      'Next to Buy Tire, a proportional hazards survival model that predicts the days until each customer\'s next tire purchase from technician inputs at service, mileage and tire-wear notes, previous transactions, vehicle year, make, and model, and what changed between visits for that customer and VIN. It scores every customer across the entire Belle Tire footprint, more than 180 stores in Michigan, Ohio, Indiana, and Illinois. He designed and built the model hands-on, handed it to the data science team, and led the engineering team through deployment. The prediction runs two programs: retargeting in The Trade Desk, CTV, and social, timed to each customer\'s window, and the CRM program that reaches customers as the window approaches.',
+    result:
+      'Against a holdout, a consistent 5 to 10% acceleration in days to next purchase, and millions of dollars in incremental revenue and new tire purchases. In production since November 2024, the cycle is now a number the business manages and keeps improving.'
+  },
+  {
     id: 'attribution-product',
     eyebrow: 'Product and P&L',
     title: 'An attribution product that added $5M in recurring revenue',
@@ -93,7 +106,7 @@ const cases = [
       <p class="eyebrow">Work</p>
       <h1>Case studies</h1>
       <p class="lede">
-        Five pieces of work, each with the situation, what was built, and what it produced.
+        Six pieces of work, each with the situation, what was built, and what it produced.
         The <RouterLink to="/cv">CV</RouterLink> carries the full record.
       </p>
       <nav class="case-nav" aria-label="Case studies">
