@@ -1,4 +1,4 @@
-/* Components: nav, buttons, cards, hero, footer, tags, chart frame, client logos. */
+/* Components: nav, buttons, cards, hero, footer, tags, chart frame, client logos, Called Shot block. */
 
 /* Nav */
 
@@ -403,4 +403,177 @@
 :root[data-theme="dark"] .client-logos img {
   filter: grayscale(1) invert(1) brightness(1.4);
   opacity: 0.8;
+}
+
+/* Called Shot block (Working with me). The lockup is the brand's SVG masked in the page text color so it follows the theme. */
+
+.cs-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+  margin: var(--s-3) 0 var(--s-6);
+}
+
+.cs-lockup {
+  display: block;
+  width: min(100%, 20rem);
+  aspect-ratio: 594.891 / 75.2;
+  background: currentColor;
+  color: var(--text);
+  -webkit-mask: url('/assets/calledshot/lockup-horizontal.svg') no-repeat left center / contain;
+  mask: url('/assets/calledshot/lockup-horizontal.svg') no-repeat left center / contain;
+}
+
+.cs-tagline {
+  margin: 0;
+  font-size: var(--fs-eyebrow);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.cs-steps li,
+.cs-services li {
+  margin-bottom: var(--s-3);
+}
+
+.cs-title {
+  max-width: 30ch;
+}
+
+.cs-layout {
+  display: grid;
+  gap: var(--s-6);
+  align-items: start;
+}
+
+.cs-main {
+  max-width: var(--measure);
+  min-width: 0;
+}
+
+.cs-main h2:first-child {
+  margin-top: 0;
+}
+
+.cs-main h2 {
+  margin-top: var(--s-6);
+}
+
+.cs-aside {
+  display: grid;
+  gap: var(--s-4);
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .cs-layout {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--s-7);
+  }
+
+  .cs-aside {
+    position: sticky;
+    top: var(--s-5);
+  }
+}
+
+.cs-scope-card .eyebrow {
+  margin-bottom: var(--s-2);
+}
+
+.cs-scope {
+  margin: var(--s-3) 0 0;
+  display: grid;
+  gap: var(--s-1) 0;
+}
+
+.cs-scope dt {
+  font-size: var(--fs-eyebrow);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: var(--s-3);
+}
+
+.cs-scope dt:first-child {
+  margin-top: 0;
+}
+
+.cs-scope dd {
+  margin: 0;
+  color: var(--text);
+}
+
+.cs-scope-note {
+  margin: var(--s-4) 0 0;
+  font-size: var(--fs-small);
+}
+
+.cs-start .actions {
+  margin-top: var(--s-3);
+}
+
+.cs-hero {
+  display: grid;
+  gap: var(--s-6);
+  align-items: start;
+}
+
+.cs-hero-copy {
+  min-width: 0;
+}
+
+.cs-hero-copy .eyebrow {
+  margin-bottom: var(--s-3);
+}
+
+.cs-firm {
+  min-width: 0;
+}
+
+.cs-firm .cs-lockup {
+  width: min(100%, 15rem);
+  margin-bottom: var(--s-5);
+}
+
+.cs-firm p {
+  color: var(--muted);
+}
+
+.cs-firm .actions {
+  margin-top: var(--s-2);
+}
+
+@media (min-width: 900px) {
+  .cs-hero {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--s-7);
+    align-items: center;
+  }
+}
+
+.cs-firm .cs-firm-name {
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: var(--s-2);
+}
+
+.cs-firm .cs-firm-tagline {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: 1.3;
+  color: var(--text);
+  margin-top: var(--s-4);
+  margin-bottom: var(--s-2);
+}
+
+.cs-scope-actions {
+  margin-top: var(--s-4);
 }

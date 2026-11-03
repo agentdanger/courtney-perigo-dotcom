@@ -101,8 +101,8 @@ const articles = [
     <div class="container prose">
       <h2>Working with me</h2>
       <p>
-        Fractional CDAO, marketing mix and measurement, and AI and LLM systems, through Called Shot
-        Advisory. Short engagements with a stated outcome.
+        Fractional CDAO, marketing measurement, audience models, and AI and automated systems,
+        through Called Shot. Every engagement opens with the result named in advance.
       </p>
       <RouterLink class="btn btn-secondary btn-sm" to="/working-with-me">How an engagement starts</RouterLink>
     </div>
