@@ -1,4 +1,4 @@
-/* Components: nav, buttons, cards, hero, footer, tags, chart frame. */
+/* Components: nav, buttons, cards, hero, footer, tags, chart frame, client logos. */
 
 /* Nav */
 
@@ -350,4 +350,57 @@
   color: var(--muted);
   font-size: var(--fs-eyebrow);
   margin: var(--s-3) 0 0;
+}
+
+/* Client logos: a quiet monochrome strip under a case-study head.
+   Each img sets its own height inline so marks and wordmarks read at one
+   visual weight. Light mode desaturates; dark mode inverts the desaturated
+   logo so dark marks turn light on the navy field while counters survive. */
+.client-logos-label {
+  font-family: var(--font-body);
+  font-size: var(--fs-eyebrow);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: var(--s-4) 0 var(--s-2);
+}
+
+.client-logos {
+  list-style: none;
+  margin: var(--s-3) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-5);
+}
+
+.client-logos-label + .client-logos {
+  margin-top: 0;
+}
+
+.client-logos li {
+  display: flex;
+  align-items: center;
+}
+
+.client-logos img {
+  display: block;
+  width: auto;
+  height: 22px;
+  filter: grayscale(1);
+  opacity: 0.72;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .client-logos img {
+    filter: grayscale(1) invert(1) brightness(1.4);
+    opacity: 0.8;
+  }
+}
+
+:root[data-theme="dark"] .client-logos img {
+  filter: grayscale(1) invert(1) brightness(1.4);
+  opacity: 0.8;
 }

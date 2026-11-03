@@ -1,22 +1,36 @@
 <script setup>
+const logos = {
+  whataburger: { name: 'Whataburger', src: '/assets/clients/whataburger.svg', h: 36 },
+  jdsports: { name: 'JD Sports', src: '/assets/clients/jd-sports.svg', h: 26 },
+  petsmart: { name: 'PetSmart', src: '/assets/clients/petsmart.svg', h: 20 },
+  sprouts: { name: 'Sprouts Farmers Market', src: '/assets/clients/sprouts.svg', h: 30 },
+  hometap: { name: 'Hometap', src: '/assets/clients/hometap.svg', h: 22 },
+  cedarfair: { name: 'Cedar Fair', src: '/assets/clients/cedar-fair.png', h: 18 },
+  belletire: { name: 'Belle Tire', src: '/assets/clients/belle-tire.png', h: 22 },
+  edwardjones: { name: 'Edward Jones', src: '/assets/clients/edward-jones.svg', h: 16 },
+  esa: { name: 'Empire Sports Analytics', src: '/assets/clients/empire-sports.png', h: 32 }
+}
+
 const cases = [
   {
     id: 'mmm-platform',
     eyebrow: 'Measurement at scale',
     title: 'A Bayesian marketing mix platform that replaced quarterly studies',
-    where: 'Empower Ocean Media, 2025 to present. Clients served include Whataburger, JD Sports, PetSmart, and Sprouts Farmers Market.',
+    where: 'Empower Ocean Media, 2025 to present.',
+    clients: ['whataburger', 'jdsports', 'petsmart', 'sprouts'],
     situation:
       'Enterprise clients were planning media against static marketing mix studies refreshed once a quarter. By the time a read arrived, the plan it described had moved on, and every refresh was a new project with its own data wrangling and its own judgment calls.',
     built:
-      'A production hierarchical Bayesian MMM platform covering more than fifty markets. Model releases are versioned. Refresh pipelines and quality gates run automatically, governed by data-delivery SLAs and input standards, so a new read is a scheduled event rather than a study. An asynchronous scenario-execution service with job submission APIs, a self-healing runner, and a self-service web app lets planning teams run large budget optimizations on demand.',
+      'A production hierarchical Bayesian MMM platform serving multiple clients across more than fifty markets. Model releases are versioned. Refresh pipelines and quality gates run automatically, governed by data-delivery SLAs and input standards, so a new read is a scheduled event rather than a study. An asynchronous scenario-execution service with job submission APIs, a self-healing runner, and a self-service web app lets planning teams run large budget optimizations on demand.',
     result:
-      'Continuously updated reads that planning teams use directly. Recommendations from the platform have informed seven-figure media reallocations, an account defense win, and new business pitches. Findings are presented to client executive teams and briefed to the agency CEO weekly.'
+      'Continuously updated reads that planning teams use directly, helping optimize hundreds of millions of dollars in annual media spend across those clients. Recommendations from the platform have informed seven-figure media reallocations, an account defense win, and new business pitches. Findings are presented to client executive teams and briefed to the agency CEO weekly.'
   },
   {
     id: 'turnaround',
     eyebrow: 'Leadership under scrutiny',
     title: 'A flagship measurement program returned from escalation to stable in nine weeks',
     where: 'Empower Ocean Media, 2025.',
+    clients: ['sprouts'],
     situation:
       'A flagship client\'s measurement program was under C-suite scrutiny. The client was expanding into new markets, and the off-the-shelf modeling approach credited the opening ramp of each new market to media, which produced reads nobody could defend in the room.',
     built:
@@ -29,6 +43,7 @@ const cases = [
     eyebrow: 'Agentic AI',
     title: 'Giving analysts an AI assistant that reads the real models',
     where: 'Empower Ocean Media, 2025 to present. Public demo: the Wordle MCP server.',
+    clients: ['jdsports', 'hometap'],
     situation:
       'Analysts were already asking AI assistants about the models. Without access to the production systems, the assistant answered confidently from nothing, and every real question became an interrupt for a data scientist.',
     built:
@@ -45,6 +60,7 @@ const cases = [
     eyebrow: 'Production LLM system',
     title: 'An AI beat writer for 10,000 ballclubs at $2.33 per club per month',
     where: 'Empire Sports Analytics, founder and owner, 2022 to present.',
+    clients: ['esa'],
     situation:
       'Empire Legends, a subscription baseball simulation, needed every subscribing club to have its own beat writer: four newspaper-style editions a week, written from the game record, at a cost the subscription price could carry. A language model that computes its own facts gets the score wrong, and one that reads an entire season gets expensive.',
     built:
@@ -60,6 +76,7 @@ const cases = [
     eyebrow: 'Product and P&L',
     title: 'An attribution product that added $5M in recurring revenue',
     where: 'Cramer-Krasselt, SVP, Executive Director of Data Sciences, 2018 to 2025. Chicago, New York, and Milwaukee.',
+    clients: ['cedarfair', 'belletire', 'edwardjones'],
     situation:
       'The agency\'s analytics function was a reporting cost center across three offices. Media clients wanted attribution they could act on, and the analytics P&L, including product development and new business, was his to own.',
     built:
@@ -92,6 +109,19 @@ const cases = [
           <p class="eyebrow">{{ c.eyebrow }}</p>
           <h2>{{ c.title }}</h2>
           <p class="muted small">{{ c.where }}</p>
+          <p v-if="c.clients" class="client-logos-label">Clients served</p>
+          <ul v-if="c.clients" class="client-logos" aria-label="Clients served">
+            <li v-for="k in c.clients" :key="k">
+              <img
+                :src="logos[k].src"
+                :alt="logos[k].name"
+                :title="logos[k].name"
+                :style="{ height: logos[k].h + 'px' }"
+                loading="lazy"
+                decoding="async"
+              >
+            </li>
+          </ul>
         </div>
         <div class="case-body">
           <h3>Situation</h3>
