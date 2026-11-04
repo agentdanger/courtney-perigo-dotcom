@@ -61,11 +61,10 @@
 export default {
     data() {
         return {
-            resume_profile: "Data, analytics, and AI executive with more than 20 years of experience bridging \
-            advanced analytics and business strategy. Leads high-performing teams that ship \
-            production ML platforms, agentic AI systems, production LLM features built to a per-user cost budget, and decision tools that executives trust. \
-            Combines a rigorous academic foundation in Bayesian and frequentist \
-            inference with a practical record of program turnarounds, digital transformation, and measurable ROI.",
+            resume_profile: "Data, analytics, and AI executive with more than 20 years in agencies and in-house. \
+            Leads the teams that ship production ML platforms, agentic AI systems, LLM features built to a per-user cost budget, \
+            and the decision tools executives act on. Trained in Bayesian and frequentist inference, with a record of \
+            turning around programs under executive scrutiny and owning an analytics P&L.",
             resume_education: [
                 {
                     name: 'Northwestern University',
@@ -128,7 +127,7 @@ export default {
                     title: 'SVP, Director of Data Science and Analytics',
                     company: 'Empower Ocean Media',
                     date: '2025 - Present',
-                    description: 'Lead Empower\'s data science and analytics practice and provide technical vision and mentorship for the agency\'s broader analytics organization. Built a production hierarchical Bayesian marketing mix modeling platform that guides media investment decisions across 50+ markets for clients including Whataburger, JD Sports, PetSmart, and Sprouts Farmers Market. Turned around a flagship measurement program under C-suite scrutiny and returned it from executive escalation to stable in nine weeks. Advanced the team\'s agentic AI practice into shipped infrastructure: a production MCP server gives data scientists and analysts AI-assistant access to production models, and an asynchronous scenario-execution service powers self-service budget optimization for planning teams.'
+                    description: 'Lead Empower\'s data science and analytics practice and set technical direction for the agency\'s broader analytics organization. Built a production hierarchical Bayesian marketing mix modeling platform that guides media investment decisions across 50+ markets for clients including Whataburger, JD Sports, PetSmart, and Sprouts Farmers Market. Turned around a flagship measurement program under C-suite scrutiny and returned it from executive escalation to stable in nine weeks. Shipped the team\'s agentic AI infrastructure: a production MCP server gives data scientists and analysts AI-assistant access to production models, and an asynchronous scenario-execution service powers self-service budget optimization for planning teams.'
                 },
                 {
                     title: 'CEO, Owner of Empire Sports Analytics (ESA)',
@@ -140,7 +139,7 @@ export default {
                     title: 'SVP, Executive Director of Data Sciences',
                     company: 'Cramer-Krasselt',
                     date: '2018 - 2025',
-                    description: 'Led a 15+ person analytics organization across the Chicago, New York, and Milwaukee offices. Realigned the team and modernized the tech stack around agile ways of working. Launched a curve-fit attribution microservice adopted by 8 enterprise clients that added $5M in annual recurring revenue and won a 2023 Drum Digital Advertising Award. Owned the analytics P&L, including product development and new business sales, and led a 2018 turnaround that expanded agency billable rates by 300%.'
+                    description: 'Led a 15+ person analytics organization across the Chicago, New York, and Milwaukee offices. Created the agency\'s first advanced analytics team and its first production machine learning. Launched a curve-fit attribution microservice adopted by 8 enterprise clients that added $5M in annual recurring revenue and won a 2023 Drum Digital Advertising Award. Owned the analytics P&L, including product development and new business sales, and led a 2018 turnaround that expanded agency billable rates by 300%.'
                 },
                 {
                     title: 'VP, Director of Decision Sciences',
