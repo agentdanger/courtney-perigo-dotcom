@@ -31,24 +31,15 @@ export default {
             about_website: "This website runs on Google Cloud Platform on App Engine. The front end is Vue, built with Vite, \
             and served as static files. Each Lab tool is backed by its own small service in Python or Go, also on App Engine. \
             The source code is on GitHub.",
-            about_lab: "The Lab pages are real systems rather than demos: the Wordle solver runs against a public API with its own stats, \
+            about_lab: "The Lab pages are running systems: the Wordle solver runs against a public API with its own stats, \
             the portfolio optimizer refreshes daily, and the news recommender ranks articles with a sentence-transformer model. \
             Each has its own repository linked from its page.",
             about_me_interests_list: [
                 {
-                    interest: 'He has deep experience in marketing and product management - creating and executing on strategies to drive growth and profitability through product and business plans.'
-                },
-                {
-                    interest: 'He has a passion for data science and machine learning, and has developed models that power innovative, award-winning business solutions for his clients.'
-                },
-                {
-                    interest: 'There is so much untapped potential for data in business. He wants to help organizations he works for realize that value and turn it into amazing, profitable experiences for their customers.'
-                },
-                {
                     interest: 'He spends his weekends chasing a tennis ball, his son Whitman, and his Brittany Spaniel Oakley, in ascending order of difficulty.'
                 },
                 {
-                    interest: 'His family holiday displays are *definitely* not powered by a Raspberry Pi and a Python script.'
+                    interest: 'His family holiday displays are definitely not powered by a Raspberry Pi and a Python script.'
                 },
                 {
                     interest: 'He would never let a fleet of AI agents run his home server, keep version-controlled diaries of everything they do, and brief the family with a weekly executive update.'

@@ -21,7 +21,7 @@ const routes = [
     component: () => import('../views/Work.vue'),
     meta: {
       title: `${SITE} | work`,
-      description: 'Case studies: a Bayesian marketing mix platform, a measurement turnaround, agentic AI infrastructure, an AI beat writer, and an attribution product.'
+      description: 'Case studies: a Bayesian marketing mix platform, a measurement turnaround, agentic AI infrastructure, an AI beat writer, a predictive CRM model, and an attribution product.'
     }
   },
   {

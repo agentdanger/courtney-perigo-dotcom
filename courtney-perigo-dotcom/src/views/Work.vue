@@ -34,7 +34,7 @@ const cases = [
     situation:
       'A flagship client\'s measurement program was under C-suite scrutiny. The client was expanding into new markets, and the off-the-shelf modeling approach credited the opening ramp of each new market to media, which produced reads nobody could defend in the room.',
     built:
-      'Rebuilt the modeling approach around how new markets actually behave: pre-launch weeks are handled explicitly rather than zero-padded, the baseline is gated on activation, and where several model specifications fit the data equally well, the read is chosen on credibility rather than fit. Set an operating cadence with the client team to unpack insights and calibrate new market strategies with agility.',
+      'Rebuilt the modeling approach around how new markets actually behave: pre-launch weeks are handled explicitly rather than zero-padded, the baseline is gated on activation, and where several model specifications fit the data equally well, the read is chosen on credibility rather than fit. Set an operating cadence with the client team to walk through each read and adjust the new-market plans.',
     result:
       'Decision-defensible reads in new markets, holdout error cut to a fraction of where it started, and the program back from executive escalation to stable in nine weeks. The agency retained the new modeling capabilities as proprietary IP.'
   },
@@ -78,7 +78,7 @@ const cases = [
     where: 'Cramer-Krasselt, for Belle Tire. Built November 2024, in production since.',
     clients: ['belletire'],
     situation:
-      'Tires are a low-frequency purchase that customers put off until they have to make it. Belle Tire already held the signal that says when, because every service visit records the vehicle and its wear. The retailer wanted to bring each customer\'s next purchase forward rather than wait for it, and to keep improving that cycle.',
+      'Tires are a low-frequency purchase that customers put off until they have to make it. Belle Tire already held the signal that says when, because every service visit records the vehicle and its wear. The retailer wanted to bring each customer\'s next purchase forward and keep improving that cycle.',
     built:
       'Next to Buy Tire, a proportional hazards survival model that predicts the days until each customer\'s next tire purchase from technician inputs at service, mileage and tire-wear notes, previous transactions, vehicle year, make, and model, and what changed between visits for that customer and VIN. It scores every customer across the entire Belle Tire footprint, more than 180 stores in Michigan, Ohio, Indiana, and Illinois. He designed and built the model hands-on, handed it to the data science team, and led the engineering team through deployment. The prediction runs two programs: retargeting in The Trade Desk, CTV, and social, timed to each customer\'s window, and the CRM program that reaches customers as the window approaches.',
     result:
@@ -106,8 +106,7 @@ const cases = [
       <p class="eyebrow">Work</p>
       <h1>Case studies</h1>
       <p class="lede">
-        Six pieces of work, each with the situation, what was built, and what it produced.
-        The <RouterLink to="/cv">CV</RouterLink> carries the full record.
+        Six case studies from across the career. The <RouterLink to="/cv">CV</RouterLink> carries the full record.
       </p>
       <nav class="case-nav" aria-label="Case studies">
         <a v-for="c in cases" :key="c.id" :href="'#' + c.id">{{ c.eyebrow }}</a>

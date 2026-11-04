@@ -1,22 +1,29 @@
+# Cloud Build: triggered by a push to main. Builds the site, deploys to App Engine, then deletes the
+# default-service versions that no longer take traffic so the retained-versions cap never stalls a deploy.
+# Scoped to --service=default: the Lab APIs (news, portfolio, wordle, gender-reveal) are separate services
+# deployed from their own repos and are not touched here.
 steps:
-#Create .env file from Google Cloud Build substitution variables
 - name: node:24
   dir: "courtney-perigo-dotcom"
   entrypoint: npm
-  # auto create an environment file before deployment.  create-env is a custom script in package.json
+  # create-env is a custom script in package.json that writes the .env file from Cloud Build substitutions
   args: ["run", "create-env"]
 - name: node:24
   dir: "courtney-perigo-dotcom"
   entrypoint: npm
-  # auto create an environment file before deployment.  create-env is a custom script in package.json
   args: ["install"]
 - name: node:24
   dir: "courtney-perigo-dotcom"
   entrypoint: npm
-  # auto create an environment file before deployment.  create-env is a custom script in package.json
   args: ["run", "build"]
-#The .env file is prepared and ready to deploy to Google App Engine
 - name: "gcr.io/cloud-builders/gcloud"
   dir: "courtney-perigo-dotcom"
-  args: ["app", "deploy"]
+  args: ["app", "deploy", "--quiet"]
+- name: "gcr.io/cloud-builders/gcloud"
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      old=$(gcloud app versions list --service=default --filter="traffic_split=0" --format="value(version.id)")
+      if [ -n "$old" ]; then gcloud app versions delete --service=default --quiet $old; else echo "no old versions"; fi
 timeout: "1600s"

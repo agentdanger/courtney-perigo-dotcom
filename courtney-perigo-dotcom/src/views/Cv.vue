@@ -134,7 +134,7 @@ export default {
                     title: 'CEO, Owner of Empire Sports Analytics (ESA)',
                     company: 'Empire Sports Analytics',
                     date: '2022 - Present',
-                    description: 'Founded ESA to build data products for the sports industry. Empire Legends, its baseball simulation game, gives every subscribing club its own AI beat writer: four newspaper-style editions a week, every fact computed by code before the model writes, checked by a critic that must cite the record, delivered at $2.33 per club per month after a 50% cost reduction. I own the simulation engine, data pipeline, model prompts, product, and economics end to end. The architecture is written up on Medium.'
+                    description: 'Founded ESA to build data products for the sports industry. Empire Legends, its baseball simulation game, gives every subscribing club its own AI beat writer: four newspaper-style editions a week, every fact computed by code before the model writes, checked by a critic that must cite the record, delivered at $2.33 per club per month after a 50% cost reduction. He owns the simulation engine, data pipeline, model prompts, product, and economics end to end. The architecture is written up on Medium.'
                 },
                 {
                     title: 'SVP, Executive Director of Data Sciences',
@@ -170,7 +170,7 @@ export default {
                     title: 'Sr. Marketing Analyst',
                     company: 'Media General, The Tampa Tribune',
                     date: '2005 - 2009',
-                    description: 'Conducted statistical analysis, and developed data visualizations in support of news and sales teams with emphasis on geographic information systems and mapping.'
+                    description: 'Conducted statistical analysis and developed data visualizations in support of news and sales teams with emphasis on geographic information systems and mapping.'
                 }
             ],
             resume_publications: [
@@ -196,7 +196,7 @@ export default {
                     date: '2024',
                     link: 'https://medium.com/towards-data-science/data-science-at-home-solving-the-nanny-schedule-puzzle-with-monte-carlo-and-genetic-algorithms-eb4b63ada9fe',
                     image: '../assets/rubiks_cube_unsplash.jpg',
-                    image_alt: 'A Rubik’s cube on a black background., Credit to Nick Fewings @ Unsplash'
+                    image_alt: 'A Rubik’s cube on a black background. Credit to Nick Fewings @ Unsplash'
                 },
                 {
                     title: 'Get More Out of Your Data With Analytics Microservices',
