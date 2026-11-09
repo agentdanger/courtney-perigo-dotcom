@@ -4,7 +4,6 @@ const logos = {
   jdsports: { name: 'JD Sports', src: '/assets/clients/jd-sports.svg', h: 26 },
   petsmart: { name: 'PetSmart', src: '/assets/clients/petsmart.svg', h: 20 },
   sprouts: { name: 'Sprouts Farmers Market', src: '/assets/clients/sprouts.svg', h: 30 },
-  hometap: { name: 'Hometap', src: '/assets/clients/hometap.svg', h: 22 },
   cedarfair: { name: 'Cedar Fair', src: '/assets/clients/cedar-fair.png', h: 18 },
   belletire: { name: 'Belle Tire', src: '/assets/clients/belle-tire.png', h: 22 },
   edwardjones: { name: 'Edward Jones', src: '/assets/clients/edward-jones.svg', h: 16 },
@@ -30,7 +29,6 @@ const cases = [
     eyebrow: 'Leadership under scrutiny',
     title: 'A flagship measurement program returned from escalation to stable in nine weeks',
     where: 'Empower Ocean Media, 2025.',
-    clients: ['whataburger'],
     situation:
       'A flagship client\'s measurement program was under C-suite scrutiny. The client was expanding into new markets, and the off-the-shelf modeling approach credited the opening ramp of each new market to media, which produced reads nobody could defend in the room.',
     built:
@@ -43,7 +41,7 @@ const cases = [
     eyebrow: 'Agentic AI',
     title: 'Giving analysts an AI assistant that reads the real models',
     where: 'Empower Ocean Media, 2025 to present. Public demo: the Wordle MCP server.',
-    clients: ['jdsports', 'hometap'],
+    clients: ['jdsports'],
     situation:
       'Analysts were already asking AI assistants about the models. Without access to the production systems, the assistant answered confidently from nothing, and every real question became an interrupt for a data scientist.',
     built:
@@ -121,8 +119,8 @@ const cases = [
           <p class="eyebrow">{{ c.eyebrow }}</p>
           <h2>{{ c.title }}</h2>
           <p class="muted small">{{ c.where }}</p>
-          <p v-if="c.clients" class="client-logos-label">Clients served</p>
-          <ul v-if="c.clients" class="client-logos" aria-label="Clients served">
+          <p v-if="c.clients" class="client-logos-label">Brands on this work</p>
+          <ul v-if="c.clients" class="client-logos" aria-label="Brands on this work">
             <li v-for="k in c.clients" :key="k">
               <img
                 :src="logos[k].src"
