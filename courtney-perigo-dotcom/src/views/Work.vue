@@ -4,6 +4,7 @@ const logos = {
   jdsports: { name: 'JD Sports', src: '/assets/clients/jd-sports.svg', h: 26 },
   petsmart: { name: 'PetSmart', src: '/assets/clients/petsmart.svg', h: 20 },
   sprouts: { name: 'Sprouts Farmers Market', src: '/assets/clients/sprouts.svg', h: 30 },
+  hometap: { name: 'Hometap', src: '/assets/clients/hometap.svg', h: 22 },
   cedarfair: { name: 'Cedar Fair', src: '/assets/clients/cedar-fair.png', h: 18 },
   belletire: { name: 'Belle Tire', src: '/assets/clients/belle-tire.png', h: 22 },
   edwardjones: { name: 'Edward Jones', src: '/assets/clients/edward-jones.svg', h: 16 },
@@ -41,7 +42,7 @@ const cases = [
     eyebrow: 'Agentic AI',
     title: 'Giving analysts an AI assistant that reads the real models',
     where: 'Empower Ocean Media, 2025 to present. Public demo: the Wordle MCP server.',
-    clients: ['jdsports'],
+    clients: ['jdsports', 'hometap'],
     situation:
       'Analysts were already asking AI assistants about the models. Without access to the production systems, the assistant answered confidently from nothing, and every real question became an interrupt for a data scientist.',
     built:
